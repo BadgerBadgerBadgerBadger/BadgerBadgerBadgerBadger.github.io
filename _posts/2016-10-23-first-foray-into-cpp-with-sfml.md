@@ -3,8 +3,7 @@ layout: post
 title: First Foray into C++ with SFML
 excerpt: "My first adventure trying build something in C++ using the great SFML framework."
 modified: 2016-06-01T14:17:25-04:00
-categories: game-programming
-tags: [c++][sfml]
+tags: [c++, sfml]
 comments: true
 share: true
 ---
