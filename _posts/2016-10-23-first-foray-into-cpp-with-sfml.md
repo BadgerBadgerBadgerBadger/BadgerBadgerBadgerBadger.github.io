@@ -13,84 +13,73 @@ comments: true
 share: true
 ---
 
-Below is just about everything you'll need to style in the theme. Check the source code to see the many embedded elements within paragraphs.
+Game-programming has always been one of my interests ever since I coded a simple game of Pong! back in college using Processing. But my first job ended up being in web-development and from then on that’s all I’ve been doing. It is easier to get a foot in through the door in web-development than it is in game-development (I don’t have a formal Computer Science education), and hence, two years into being a earning member of society, I’m still in web-development.
 
-# Heading 1
+But my interest in game-development never went away and so recently I picked up C++ and the SFML library to try to see what I can learn and what I can make.
 
-## Heading 2
+After figuring out how to set up SFML for XCode, I got into the thick of things and started coding. It’s been a helluva 10 days and here are some of the things I think are worth noting down because, well, they gave me trouble. And it’s always worth remembering the things that give you trouble.
 
-### Heading 3
+My goals with my first program were simple. Make a sprite that moves across the screen based on user input (Left, Right, Up, Down). If the user keeps holding the button, the sprite accelerates. If the user lets go of the button, the sprite keeps moving with whatever velocity it had achieved during acceleration. There is also a constant drag force acting in the opposite direction of the sprite’s movements that would eventually bring it to a stop when no longer acted upon.
 
-#### Heading 4
+> Simple enough.
 
-##### Heading 5
+# Headers and Header Guards?
 
-###### Heading 6
+One of the first things I had to conceptually decide on was how to structure my header files. Header files and the whole concept of forward declarations doesn’t exist in Java and Javascript (the two languages I’ve used in the past) and so working with header files was a completely new experience for me, especially when it came to project organization. I faced a binary choice here (if there are more ways of doing this, someone do let me know): 
 
-### Body text
+Do I keep them along with the source file, each pair being stored as a unit? Or do I keep all the headers in one place?
 
-Lorem ipsum dolor sit amet, test link adipiscing elit. **This is strong**. Nullam dignissim convallis est. Quisque aliquam.
+Code::Blocks organizes it’s projects by separating out its files into source and a header trees, and the SFML library itself has headers stored in one folder under a hierarchical structure. Although coding in modern IDEs is easier than ever (you move a file and the IDE updates all the hundreds of references for you!), I still wanted all of my headers to be in one place and referable from one root location. So I put them all under the header directory in the root of my project.
 
-![Smithsonian Image]({{ site.url }}/images/3953273590_704e3899d5_m.jpg)
-{: .pull-right}
+Another thing that tripped me up were the header guards. I understood what they were and I understood how to use them, but I let the IDE do the job of creating the guards when I created new header files (the guards were named after the path of the file inside the src folder; example: MOVE_COMPONENT_GRAPHIC_H) with the result that after I’d moved and renamed some files, the header guards did not update (the IDE is not that smart), so I ended up with two header files with the same guard.
 
-*This is emphasized*. Donec faucibus. Nunc iaculis suscipit dui. 53 = 125. Water is H<sub>2</sub>O. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. The New York Times <cite>(That’s a citation)</cite>. <u>Underline</u>. Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.
+> And what happened when I included both in my main.cpp?
 
-HTML and <abbr title="cascading stylesheets">CSS<abbr> are our tools. Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+The second one did not import and I couldn’t figure out why my struct wasn’t usable in the current scope. It took me a good hour to realize that there was nothing wrong with the IDE or the compiler. I had simply not taken the header guards into account.
 
-### Blockquotes
+I still let the IDE generate the guards for me (no point in having an IDE if it doesn’t do the heavy-lifting), but I always double-check to ensure that no other files have the same guard. Doing a quick text-search across the project does the trick.
 
-> Lorem ipsum dolor sit amet, test link adipiscing elit. Nullam dignissim convallis est. Quisque aliquam.
+# nan, nan, nan, nan, nan…
 
-## List Types
+I didn’t realize, initially, that SFML had its own Vector classes (I didn’t RTFM, just jumped into code; Kids, don’t do this. Always RTFM!), and so went ahead and wrote one of my own. A 2D vector class that had x and y members and the usual methods for vector computations, including a method to find the vector’s magnitude and one to normalize it. Now here is how you normalize a vector. As you can see, if the magnitude is zero, you’re in for some trouble.
 
-### Ordered Lists
+Now in Java a division by zero is thrown as an Exception. In NodeJS, a division by zero yields Infinity, but for C++, a division by zero yields nan of the appropriate type (yes, a nan for a double is not the same type as a nan for a float, just like 0 and 0.0 are different types). I didn’t know this would happen, and I’d forgotten to account for vectors of 0 magnitude.
 
-1. Item one
-   1. sub item one
-   2. sub item two
-   3. sub item three
-2. Item two
+> So, what happened?
 
-### Unordered Lists
+Nothing. Literally nothing happened. As in no computation would work because I as computing with nan all over the place and nan computed with any number gives you nan. Took me some printing of the values to figure this one out, though in hindsight this should have been laughably obvious.
 
-* Item one
-* Item two
-* Item three
+# The Drag
 
-## Tables
+Another idiotic thing I did was in writing the drag function. Here’s the first version of that.
 
-| Header1 | Header2 | Header3 |
-|:--------|:-------:|--------:|
-| cell1   | cell2   | cell3   |
-| cell4   | cell5   | cell6   |
-|----
-| cell1   | cell2   | cell3   |
-| cell4   | cell5   | cell6   |
-|=====
-| Foot1   | Foot2   | Foot3   |
-{: .table}
+```cpp
+void scionofbytes::apply_drag(scionofbytes::Mover& mover) {
 
-## Code Snippets
+    scionofbytes::Vec2D drag = mover.velocity.scale(-1);
+    opposite_velocity.normalize();
+    opposite_velocity.scale(scionofbytes::DRAG_COEFFICIENT);
 
-Syntax highlighting via Rouge
-
-```css
-#container {
-  float: left;
-  margin: 0 -240px 0 0;
-  width: 100%;
-}
+    mover.velocity.subtract(drag);
+};
 ```
 
-Non Rouge code example
+Anyone see what I did wrong here? Anyone?
 
-    <div id="awesome">
-        <p>This is great isn't it?</p>
-    </div>
+I’ll wait.
 
-## Buttons
+…
 
-Make any link standout more when applying the `.btn` class.
+…
 
-<div markdown="0"><a href="#" class="btn">This is a button</a></div>
+…
+
+Okay, if you haven’t figured it out already, I subtracted the drag vector when I should have been adding it.
+
+See, I’d already computed the drag force as a vector in the opposite direction to the velocity vector. And by subtracting this vector instead of adding it to velocity, I’d just increased the velocity.
+
+It’s like subtracting a negative number: you actually end up adding move value. See?
+
+Anyway, those were just some of the things I struggled with in my early delving of C++ and SFML. And all of them weren’t even related to programming. I’ll keep posting my adventures as they take place.
+
+Cheers!
