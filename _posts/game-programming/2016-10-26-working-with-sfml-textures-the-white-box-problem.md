@@ -9,9 +9,9 @@ comments: true
 share: true
 ---
 
-So I started using textures in my code, and it’s not been a fun time, mainly because I was missing some key understanding of how c++ keeps things in scope. Sadly I still don’t understand how what I did solved things, but I guess I’ll find out with more research.
+So I started using textures in my code, and it’s not been a fun time, mainly because I was missing some key understanding of how c++ keeps things in scope. Sadly I still don’t understand how what I did solve things, but I guess I’ll find out with more research.
 
-Anyway, I’ll document what I did so that anyone trying this out can see exactly what I did wrong. Or rather which things I did wrong. I still don’t fully understand the root cause.
+Anyway, I’ll document what I did so that anyone trying this out can see exactly what I did wrong. Or rather which steps were probably wrong and how I ended up making things work. I still don’t fully understand the root cause.
 
 I first started out by defining a Ball class (I’m making a Pong! game), like so:
 
