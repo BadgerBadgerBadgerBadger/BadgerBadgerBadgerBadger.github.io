@@ -84,7 +84,7 @@ scionofbytes::Ball ball = scionofbytes::Ball(50, textureManager.get_texture("bal
 
 The `TextureManager` class just stores textures in a map of type `std::map<std::string, sf::Texture>` and the `get_texture` method returns a pointer to a texture by its key. This pointer is then passed on to the constructors which have been changed to accept pointers.
 
-The `GrpahicComponent` class now has a `sf::Texture*` (pointer) type instead of a texture itself and passes on the same to the sprite (which was storing a pointer, anyway).
+The `GraphicComponent` class now has a `sf::Texture*` (pointer) type instead of a texture itself and passes on the same to the sprite (which was storing a pointer, anyway).
 
 And it all works.
 
