@@ -88,4 +88,4 @@ The `GrpahicComponent` class now has a `sf::Texture*` (pointer) type instead of 
 
 And it all works.
 
-![KirbyBall](http://i.imgur.com/kx5lejh)
+![KirbyBall](http://i.imgur.com/kx5lejh.png)
