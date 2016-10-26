@@ -71,7 +71,7 @@ I’m creating the texture as part of the new ball object and as far as I could 
 
 But there was still something going wrong and the texture was being lost before the system started drawing the sprite to the screen.
 
-> And what happens when you draw a `sf::Sprite` to the screen whose texture is lost? You get a White Box (of death|frustration|sadness).
+> And what happens when you draw a `sf::Sprite` to the screen whose texture is lost? You get a White Box (of death\|frustration\|sadness).
 
 So how did I go about fixing this? I created a holder for the textures that would always be in scope and then passed the texture’s pointer to the sprite.
 
