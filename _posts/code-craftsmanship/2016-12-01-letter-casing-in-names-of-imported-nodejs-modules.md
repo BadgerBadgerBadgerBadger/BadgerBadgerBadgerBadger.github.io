@@ -35,7 +35,7 @@ I'm thinking of writing a whole other post to talk about why I dislike Hapi's st
 
 After thinking about it for a while I realized how PascalCased names can be advantageous in certain situations.
 
-In Java, with its concepts of classes, interfaces etc. A class or interface would be PascalCased to indicate that it's not an instance but a class. Its funtions would be static without an object context. Instantiated objects would be camelCased and have non-static methods.
+In Java, with its concepts of classes, interfaces etc. A class or interface would be PascalCased to indicate that it's not an instance but a class. Its functions would be static without an object context. Instantiated objects would be camelCased and have non-static methods.
 
 Javascript, though object-oriented, does not have classes or interfaces. It's inheritance is based on [prototypes](http://javascriptissexy.com/javascript-prototype-in-plain-detailed-language/). Moreover the *object* in Javascript can also be used (and is extensively used) as a dictionary type in other languages. It's quite a versatile little thing.
 
@@ -100,7 +100,7 @@ const co = require('bluebird').coroutine;
 
 > Why?
 
-- I make use of the couroutine pattern extensively (at least once in every asynchronous function) in my code and writing `co` instead of `Promise.coroutine` simplifies life.
+- I make use of the coroutine pattern extensively (at least once in every asynchronous function) in my code and writing `co` instead of `Promise.coroutine` simplifies life.
 
 - Using `co` this way is not something I came up with on my own. [TJ Holowaychuk](https://github.com/tj)'s [`co` library](https://github.com/tj/co) has the same pattern. I use Bluebird's implementation because it's faster (sorry TJ &#x1f605;) but TJ's code is familiar enough that I think others (and myself) will understand what the intent of the function is.
 
