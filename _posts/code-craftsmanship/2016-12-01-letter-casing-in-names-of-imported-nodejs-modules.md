@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Naming Imported NodeJS Modules
+title: Letter Casing in Names of Imported NodeJS Modules
 excerpt: "How I name the modules I import into other modules, in NodeJS."
 modified: 2016-10-26T14:17:25-04:00
 categories: code-craftsmanship
@@ -11,7 +11,11 @@ share: true
 
 *Disclaimer: This isn't a tutorial, guide, or holy writ. This is just how I do things and I'd like to share why it makes sense to me. If it resonates with you, follow it. If it doesn't, follow whatever makes sense to you and your team.*
 
-Styleguides are something I take very sseriously. Give me a programmer who can write clean code with strict adherence to the style, who understands and respects the tenets of readability and judicious use of whitespace, and I'll always take them over people who can write clever algorithms.
+Styleguides are something I take very seriously. To me, a programmer who has great style, writes clean, readable code is worth a lot more than someone who's just clever with algorithms. Cleaner code results in better collaboration within teams and better maintenance of code going forward.
+
+One of the things every good styleguide has is a sensible naming convention. This can mean both naming conventions for variables and functions, on a very broad level and on a more subtle level things such as the letter casing of imported modules.
+
+> Yes, I wrote an entire post about how I case the names of my modules.
 
 I follow a very specific naming convention for when I import modules in NodeJS. They differ for on-site modules and vendor modules but for each, the rules are [mostly] consistent.
 
@@ -72,29 +76,34 @@ Vendor Modules
 --------------
 These are the third-party libraries you get from the npm registry (pretty-much 99% of the time), or directly via a [github remote url](http://stackoverflow.com/a/17509764/2584375).
 
-My policy with vendor modules is this: I try to name them the same way the vendor has in their example code (github/npm/website/blog).
+My policy with vendor modules is this: I try to name them the same way the vendor themselves have in their example code on github | npm | website | blog.
 
 > Why?
 
-It has to do with one of my biggest policies as a programmer: **Write readable code.**
+To make things more readable.
 
 > How does following the vendor's own convention for their library's usage help in code readability?
 
 Here's how:
-- Using libraries the way that the owner/maintainer uses it means that anyone looking at it for the first time will know exactly what it is. The same usage on the owner's site is also the way it's used in my project.
+- Using libraries the way that the owner/maintainer uses it means that when someone looks at your code and looks at the vendor's examples, they'll be seeing the same thing. They can map those examples to your code much faster.
 
-- Since the usage is what's shown on the library owner's GitHub/Npm page, that's most likely how other people have used it too. Stackoverflow posts, tutorials, blog posts, examples: reading other people's code/blogs about the library becomes easier if you see a library being used in the same way.
+- Since the usage is what's shown on the library owner's GitHub/Npm page, that's most likely how other people have used it too. Stackoverflow posts, tutorials, blog posts, examples, what-will-you; reading other people's code/blogs about the library becomes easier if you see a library being used in the same way.
 
 This seems like a small thing, but when you're reading code a certain number of weeks down the line, or debugging stuff by googling it, having vendor libraries named in the same way everywhere really helps.
 
 There are exceptions to every rule, of course, and one of mine is the [`coroutine`](http://bluebirdjs.com/docs/api/promise.coroutine.html) function from [Bluebird](http://bluebirdjs.com/).
 
-I always import it as `co`.
+I always import it as:
+```javascript
+const co = require('bluebird').coroutine;
+```
 
 > Why?
 
-- I make use of the couroutine pattern extensively (at least once in every asynchronous function) in my code and using `co` instead of `Promise.coroutine` simplifies life.
+- I make use of the couroutine pattern extensively (at least once in every asynchronous function) in my code and writing `co` instead of `Promise.coroutine` simplifies life.
 
-- Using `co` this way is not actually my own invention either. [TJ Holowaychuk](https://github.com/tj)'s [`co` library](https://github.com/tj/co) has the same pattern. I use Bluebird's implementation because it's faster (sorry TJ &#x1f605;) but TJ's code is familiar enough that I think others (and myself) will understand what the intent of the function is.
+- Using `co` this way is not something I came up with on my own. [TJ Holowaychuk](https://github.com/tj)'s [`co` library](https://github.com/tj/co) has the same pattern. I use Bluebird's implementation because it's faster (sorry TJ &#x1f605;) but TJ's code is familiar enough that I think others (and myself) will understand what the intent of the function is.
 
-So a little bending of the rules when necessary.
+In Conclusion...
+----------------
+...I love having a set of rules defining code style. It helps me read code faster, helps me grok it faster, and makes me more productive. But even the most stringent rules have to be broken at times and that's what it really comes down to in code craftsmanship: knowing when to follow the rules and when to break them.
