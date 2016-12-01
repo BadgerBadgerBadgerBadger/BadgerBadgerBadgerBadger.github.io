@@ -42,6 +42,7 @@ Javascript, though object-oriented, does not have classes or interfaces. It's in
 Now, what's the advantage of naming modules required from within your own project in PascalCase? You can immediately differentiate between those that are instances vs. those that are just plain objects.
 
 When a module is imported as such:
+
 ```
 const MyModule = require('path/to/my_module')
 ```
@@ -50,6 +51,7 @@ Most likely it will be composed of functions that should be used as-is without a
 On the other hand, when you have a module that exposes an object instantiated from a  *class* (I know I said Javascript doesn't have classes, and it doesn't; read [this](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes) for clarity), or a [constructor function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor), you expose it as such.
 
 So say I have an instance of an AWS Lambda service. I'd expose it as so:
+
 ```
 const AWS = require('aws-sdk');
 const lambda = new AWS.Lambda({apiVersion: '2015-03-31'});
@@ -58,6 +60,7 @@ module.exports = lambda;
 ```
 
 And I import it:
+
 ```
 const lambda = require('path/to/lambda.js')
 ```
@@ -94,6 +97,7 @@ This seems like a small thing, but when you're reading code a certain number of 
 There are exceptions to every rule, of course, and one of mine is the [`coroutine`](http://bluebirdjs.com/docs/api/promise.coroutine.html) function from [Bluebird](http://bluebirdjs.com/).
 
 I always import it as:
+
 ```
 const co = require('bluebird').coroutine;
 ```
