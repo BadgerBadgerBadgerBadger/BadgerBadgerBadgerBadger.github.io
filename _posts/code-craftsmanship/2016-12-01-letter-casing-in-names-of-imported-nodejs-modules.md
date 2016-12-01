@@ -31,7 +31,7 @@ After I joined the company I'm working at (as of this writing), I was introduced
 
 Now the Hapi styleguide honestly sucks. Not because any of the conventions are wrong: I'm not sure if conventions, by their very definition, *can* be wrong ([correct me if I'm wrong on this point](mailto:shuvophoenix@gmail.com)). Conventions just *are*.
 
-I have a whole separate post for why I think the Hapi styelguide sucks [here]().
+I'm thinking of writing a whole other post to talk about why I dislike Hapi's styleguide.
 
 After thinking about it for a while I realized how PascalCased names can be advantageous in certain situations.
 
