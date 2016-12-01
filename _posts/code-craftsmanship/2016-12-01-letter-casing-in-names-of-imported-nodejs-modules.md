@@ -43,7 +43,7 @@ Now, what's the advantage of naming modules required from within your own projec
 
 When a module is imported as such:
 
-```
+```javascript
 const MyModule = require('path/to/my_module')
 ```
 Most likely it will be composed of functions that should be used as-is without a `this` context attached to them. Those functions are just functions and not methods i.e. they don't have any object they are bound to. You can freely pass these around without any issues.
@@ -52,7 +52,7 @@ On the other hand, when you have a module that exposes an object instantiated fr
 
 So say I have an instance of an AWS Lambda service. I'd expose it as so:
 
-```
+```javascript
 const AWS = require('aws-sdk');
 const lambda = new AWS.Lambda({apiVersion: '2015-03-31'});
 
@@ -61,7 +61,7 @@ module.exports = lambda;
 
 And I import it:
 
-```
+```javascript
 const lambda = require('path/to/lambda.js')
 ```
 
@@ -98,7 +98,7 @@ There are exceptions to every rule, of course, and one of mine is the [`coroutin
 
 I always import it as:
 
-```
+```javascript
 const co = require('bluebird').coroutine;
 ```
 
