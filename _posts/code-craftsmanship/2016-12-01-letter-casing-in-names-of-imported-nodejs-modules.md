@@ -21,8 +21,7 @@ I follow a very specific naming convention for when I import modules in NodeJS. 
 
 Here's what I do and why I do it.
 
-Project Modules
----------------
+## Project Modules
 
 These are the modules you write as part of your own project. I won't go into how you should structure your source files or name them: that's beyond the scope of this article. But let's talk about how you can name them once imported into another module.
 
@@ -78,8 +77,7 @@ To summarize:
 
 It's that simple, really.
 
-Vendor Modules
---------------
+## Vendor Modules
 
 These are the third-party libraries you get from the npm registry (pretty-much 99% of the time), or directly via a [github remote url](http://stackoverflow.com/a/17509764/2584375).
 
@@ -113,6 +111,6 @@ const co = require('bluebird').coroutine;
 
 - Using `co` this way is not something I came up with on my own. [TJ Holowaychuk](https://github.com/tj)'s [`co` library](https://github.com/tj/co) has the same pattern. I use Bluebird's implementation because it's faster (sorry TJ &#x1f605;) but TJ's code is familiar enough that I think others (and myself) will understand what the intent of the function is.
 
-In Conclusion...
-----------------
+## In Conclusion...
+
 ...I love having a set of rules defining code style. It helps me read code faster, helps me grok it faster, and makes me more productive. But even the most stringent rules have to be broken at times and that's what it really comes down to in code craftsmanship: knowing when to follow the rules and when to break them.
