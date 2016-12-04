@@ -2,7 +2,7 @@
 layout: post
 title: Letter Casing in Names of Imported NodeJS Modules
 excerpt: "How I name the modules I import into other modules, in NodeJS."
-modified: 2016-11-27T14:17:25-04:00
+modified: 2016-12-01T14:17:25-04:00
 categories: code-craftsmanship
 tags: [nodejs, naming, coding-style]
 comments: true
