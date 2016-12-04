@@ -43,7 +43,7 @@ javascript:(function getDocumentById() {
 })();
 ```
 
-It looks quite messy, unfortuately, but it gets the job done. Just replace the stuff in angle brackets with your own values and this should be up and running (if it isn't, [let me know](mailto:shuvophoenix@gmail.com)).
+It looks quite messy, unfortunately, but it gets the job done. Just replace the stuff in angle brackets with your own values and this should be up and running (if it isn't, [let me know](mailto:shuvophoenix@gmail.com)).
 
 ### Getting Email Records on the Mandrill Dashboard
 
