@@ -27,6 +27,7 @@ I read some stuff while researching this but these are the ones that I think you
 - [Poll: Semicolons in JavaScript](https://news.ycombinator.com/item?id=1547647)
 
 ## This is What People Seem to be Saying (heavily paraphrased)
+
 ### Semico-yes:
 - Not using it introduces weird bugs.
 - My linter says so.
