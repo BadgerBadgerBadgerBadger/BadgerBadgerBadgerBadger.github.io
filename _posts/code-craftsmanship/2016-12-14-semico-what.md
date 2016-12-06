@@ -31,7 +31,7 @@ I read some stuff while researching this but these are the ones that I think you
 ### Semico-yes:
 - Not using it introduces weird bugs.
 - My linter says so.
-- Doughlas Crockford says so.
+- Douglas Crockford says so.
 - It's what I've always done.
 - It's the standard!
 
