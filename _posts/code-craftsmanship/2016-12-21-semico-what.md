@@ -2,7 +2,7 @@
 layout: post
 title: "Semico what?"
 excerpt: "A passing glance at semi-colons in Javascript."
-modified: 2016-12-14T14:17:25-04:00
+modified: 2016-12-21T14:17:25-04:00
 categories: code-craftsmanship
 tags: [javascript, nodejs, coding-style]
 comments: true
@@ -18,7 +18,7 @@ Why have them or not have them? What are the arguments for and against the issue
 > And yes, this was light research. I don't care enough about the issues to have spent more than an hour on it. Do your own research if you care so much.
 
 ## Stuff I Read
-I read some stuff while researching this but these are the ones that I think you should start with. You *should* do your own research as well: don't take my word for it. Branch out from these links and find your own persepective on the matter. If you write a more comprehensive post on the issue, hit me up coz I'd like to read that.
+I read some stuff while researching this but these are the ones that I think you should start with. You *should* do your own research as well: don't take my word for it. Branch out from these links and find your own perspective on the matter. If you write a more comprehensive post on the issue, hit me up coz I'd like to read that.
 
 - [An Open Letter to JavaScript Leaders Regarding Semicolons](http://blog.izs.me/post/2353458699/an-open-letter-to-javascript-leaders-regarding)
 - [How this works...](http://blog.izs.me/post/3393190720/how-this-works)
