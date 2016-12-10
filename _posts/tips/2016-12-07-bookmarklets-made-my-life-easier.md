@@ -9,6 +9,9 @@ comments: true
 share: true
 ---
 
+### Update
+I've put the bookmarklets that I mostly frequently use in every day life on [this repository](https://github.com/scionofbytes/bookmarklets).
+
 ## Being a Developer is Fun
 
 One of the advantages of browsing the web as a web-developer vs. as a layman is the fact that you get to do some pretty cool stuff to make your life easier.
@@ -21,7 +24,7 @@ But before I did that I fired up the [developer console on Chrome](https://devel
 
 Since I could fix the code on the client, I did so and moved on with my life. I never returned to the site and the developers never wrote back. I hope they found the bug-report useful and it helped better their site.
 
-> Where do bookmarklets Come In?
+> Where do bookmarklets come in?
 
 One of the things I take advantage of most are [bookmarklets](http://www.bookmarklets.com/). These are tiny pieces of javascript code that run in the context of whatever page you’re on and have full access to the page’s DOM. They live in the form of a clickable bookmark on your toolbar and do their thing at the click of a mouse button. You can even configure them to ask for input before taking actions making them incredibly versatile.
 
