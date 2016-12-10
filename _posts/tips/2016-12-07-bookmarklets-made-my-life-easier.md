@@ -2,7 +2,7 @@
 layout: post
 title: "Bookmarklets Made My Life Easier"
 excerpt: "Using tiny pieces of script to speed up your browser usage!"
-modified: 2016-12-07T14:17:25-04:00
+modified: 2016-12-10T14:17:25-04:00
 categories: tips
 tags: [javascript, browser]
 comments: true
