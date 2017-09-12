@@ -13,7 +13,7 @@ share: true
 
 > Note: This post covers not just the technical aspects of error handling but also some good practices that have helped me debug errors in production systems.
 
-When I first started coding in Go, a while back, I immediately fell in love with the language. But I won't go into that right now, otherwise this will turn out to be a rather long post.
+I come from a primarily NodeJS background and my coding habits have been heavily influenced by the paradigms most used in Node. I started coding in Go quite recently and I immediately fell in love with the language.
 
 Let's talk about what caused me a lot of headache and frustration: errors. I didn't know what to do with the darned things. The idiomatic way in Go is to return errors as a second value and that's what pretty much all libraries do. There is a panic-recover mechanism but that seems to be mostly used to recover from things like illegal memory access or nil pointer dereference (these shouldn't happen if you code properly).
 
