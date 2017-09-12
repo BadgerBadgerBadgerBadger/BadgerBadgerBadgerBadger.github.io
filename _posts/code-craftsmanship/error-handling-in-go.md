@@ -1,3 +1,14 @@
+---
+layout: post
+title: "Importance of Abstractions - A Story of Async/Await and Generators"
+excerpt: "Understanding why it is important to fully grok the underlying abstraction of a system."
+modified: 2017-14-22T14:17:25-04:00
+categories: code-mechanics
+tags: [javascript, nodejs, coding-mechanics]
+comments: true
+share: true
+---
+
 # Dealing With Errors in Go Projects
 
 > Note: This post covers not just the technical aspects of error handling but also some good practices that have helped me debug errors in production systems.
