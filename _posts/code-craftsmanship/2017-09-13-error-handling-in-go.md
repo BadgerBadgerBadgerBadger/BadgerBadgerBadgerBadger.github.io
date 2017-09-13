@@ -69,7 +69,7 @@ func DbCall(id string) (*string, error) {
 
 By concatenating the errors at each step I retain context. At the top level, when I log, I can see the calls that led to the error. This is better than not having much context but is extremely tedious in practice.
 
-Then I came across [this excellent blog post](https://dave.cheney.net/2016/06/12/stack-traces-and-the-errors-package) by Dave Cheney. And once you've read through it (seriously, read through it before continuing), you'll see that he's implemented the same idea I had but done it a gazillion times better. So I started perusing more things he'd written. The presentation link includes most of the content of the preceeding articles.
+Then I came across [this excellent blog post](https://dave.cheney.net/2016/06/12/stack-traces-and-the-errors-package) by Dave Cheney. And once you've read through it (seriously, read through it before continuing), you'll see that he's implemented the same idea I had but done it a gazillion times better. So I started perusing more things he'd written. The presentation link includes most of the content of the preceding articles.
 
 - [Constant Errors](https://dave.cheney.net/2016/04/07/constant-errors)
 - [Don’t just check errors, handle them gracefully](https://dave.cheney.net/2016/04/27/dont-just-check-errors-handle-them-gracefully)
@@ -91,7 +91,7 @@ After reading through all that and tinkering around for a while, I came up with 
   -  If it is of the custom type you have defined for your project, handle accordingly (you might wanna log these at level Error or Warning since these were expected). If it's an endpoint facing your users, you might wanna have a contract with the client on what codes to return and act accordingly (you might even end up returing a generic error message). If it is an internal endpoint (thinking microservices), you could return an appropriate status code and message while logging the same.
   -  If it is of an unknown type, you might wanna log a fatal. This is an error that should never have happened. After that it's up to you.
 
-I use these guidelines to make sure I have enpugh information during debugging to figure what's going wrong. I still have to do `error != nil` everywhere but I think that's not as bad a thing as I first thought. Unlike exception propagation, this way of doing things makes me stop and think at each step of I wanna let the error propagate on its own or add more context.
+I use these guidelines to make sure I have enough information during debugging to figure what's going wrong. I still have to do `error != nil` everywhere but I think that's not as bad a thing as I first thought. Unlike exception propagation, this way of doing things makes me stop and think at each step if I wanna let the error propagate on its own or add more context.
 
 ## Lastly
 
