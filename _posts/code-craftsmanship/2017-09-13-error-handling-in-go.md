@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "Importance of Abstractions - A Story of Async/Await and Generators"
-excerpt: "Understanding why it is important to fully grok the underlying abstraction of a system."
-modified: 2017-14-22T14:17:25-04:00
-categories: code-mechanics
+title: "Dealing With Errors in Go Projects"
+excerpt: "Error handling in Go pained me. Here's how I dealt with it."
+modified: 2017-09-13T14:17:25-04:00
+categories: coding-practices
 tags: [golang, coding-practices]
 comments: true
 share: true
