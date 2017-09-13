@@ -5,7 +5,7 @@ locale: en_US
 description: Bits, bytes and mayhem!
 logo: site-logo.png
 search: true
-url: https://scionofbytes.github.io
+url: http://scionofbytes.me
 
 # Jekyll configuration
 
@@ -39,7 +39,7 @@ owner:
   name: Shaun
   avatar: bio-photo.jpg
   email: shuvophoenix@gmail.com
-  disqus-shortname:
+  disqus-shortname: scionofbytes-me
   twitter: scionofbytes
   facebook: shaunlors
   github: scionofbytes
