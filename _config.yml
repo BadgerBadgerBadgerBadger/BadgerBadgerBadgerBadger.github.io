@@ -5,7 +5,7 @@ locale: en_US
 description: Bits, bytes and mayhem!
 logo: site-logo.png
 search: true
-url: http://scionofbytes.me
+url: https://scionofbytes.me
 
 # Jekyll configuration
 
