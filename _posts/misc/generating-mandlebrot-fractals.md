@@ -38,6 +38,7 @@ The result turned out to be this thing that works, but isn't particularly perfor
 I also have a version of this with cleaner code on https://openprocessing.org ([this one](https://www.openprocessing.org/sketch/707203)), but I stressed it out too much in terms of resolution and openprocessing is dumb in that it just runs your sketch by default. So as soon as that page opens I can no longer do anything because my stupid code hangs the page. Lovely.
 
 This is how it looks, by the way:
+
 ![p5 editor result](https://i.imgur.com/rKzuPXj.png)
 
 Not too shabby. The basic shape is there, it's a bit rough around the edges because of the low resolution.
@@ -51,6 +52,8 @@ The same visualisations, using Kotlin and on the JVM, with the image being saved
 Anyway, so this is what that ended up looking like:
 
 ![kotlin version low res](https://i.imgur.com/QyoLM9U.png)
+
+
 This is the first version, lower resolution.
 
 And then there's a slighlty higher resolution one.
@@ -65,8 +68,22 @@ I tried to generate a 12000x10000 image. That's 120 million pixels. A 120 mega-p
 
 But for that we'll go step by step. I'm going to use the same crappy code through all the steps and only change a few things here and there.
 
+Just so that we are aware, 200 is the number of iterations at which point I stop checking if the value blew up.
+
 First a 1200x1000 that took 38,785ms:
 
 ![kotlin version 1200x1000](https://i.imgur.com/nI51GLq.png)
 
-This is pretty nice looking, actually, but let's see if we can do something with colors!
+This is pretty nice looking, actually, but let's see if we can do something prettier.
+
+![kotlin version 1200x1000 with extra greys](https://i.imgur.com/fHBJM8q.png)
+
+For each of the points _not_ inside the Mandelbrot set (so those for which the equation blows up above 2), I'm taking the number of iterations it took before it blew up and mapping that from 0 - 200 to 0 - 255 (greyscale color range).
+
+Now we can not only see the scattered Mandelbrot islands, we can also see the possible connections. The connections themselves are probably too small to show up in the visualisation, but once we show the borders in grey, they show up pretty nicely.
+
+Let's try something in another color.
+
+![kotlin version 1200x1000 with blue borders](https://i.imgur.com/bfxHc4w.png)
+
+So for this I decided to color the inside of the Set fully black, and let the outside be mapped from 0 (full black) to #0000FF (full blue), giving us a beautiful blue border.
