@@ -84,6 +84,14 @@ Now we can not only see the scattered Mandelbrot islands, we can also see the po
 
 Let's try something in another color.
 
-![kotlin version 1200x1000 with blue borders](https://i.imgur.com/bfxHc4w.png)
+![kotlin version 1200x1000 with red borders](https://i.imgur.com/d0Mt31G.png)
 
-So for this I decided to color the inside of the Set fully black, and let the outside be mapped from 0 (full black) to #0000FF (full blue), giving us a beautiful blue border.
+So for this I decided to color the inside of the Set fully black, and let the outside be mapped from 0 (full black) to #FF0000(full red), giving us a vivid red border.
+
+ > Side note: I wonder why it's so transparent. I think I messed up an alpha channel somewhere.
+ 
+ Okay, let's do something even more colorful.
+ 
+![kotlin version 1200x1000 with multi-color borders](https://i.imgur.com/xvEKaDS.png)
+
+Nice! Also looks close to what I see in most online visualizations. Here I'm using the same iterations-till-blowup value and then mapping that to a hue.
