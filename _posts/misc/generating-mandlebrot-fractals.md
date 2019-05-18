@@ -95,3 +95,20 @@ So for this I decided to color the inside of the Set fully black, and let the ou
 ![kotlin version 1200x1000 with multi-color borders](https://i.imgur.com/xvEKaDS.png)
 
 Nice! Also looks close to what I see in most online visualizations. Here I'm using the same iterations-till-blowup value and then mapping that to a hue.
+
+And now I'll leave you with the very high 12Kx10K resolution version of this image. And then we can talk about why that was a stupid idea. I won't render it on this page directly because that would tank its load times, so you'll have to click on [this link](https://i.imgur.com/HWGjDy4.jpg) to view it. If you compare it to the low res ones you should see the signifincantly greater amount of detail visible.
+
+I wanted to see the tiniest details in the fractal pattern, and so I thought the way to go about doing that would be to create a very high resolution image. But there's only so much a tiny computer can do. And once you cross the screen resolutions currently available (4K is only 3840 x 2160, compared to the 12K x 10K image I generated which can never be fully represented on a 4K screen), you'll have to zoom in massively into the image to see details. So, while vieweing details, you'll never be able to see the full pictures.
+
+So, apart from those reasons, why else was it a really stupid idea to create an extremely large, high resolution image?
+
+- It takes forever.
+- It still has an upper bound to the resolution.
+- We're dealing with a fractal, we will never be able to probe its infinite depths by trying to create a tremendously large image and then zooming in.
+
+So I decided to watch some more youtuve videos and figure out how to do this better. And I turned to Daniel Shiffman, one of the best youtube educators I know of in the programming space.
+
+<iframe width="1440" height="619" src="https://www.youtube.com/embed/6z7GQewK-Ks" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+Imma make a zoomer thingie.
+
