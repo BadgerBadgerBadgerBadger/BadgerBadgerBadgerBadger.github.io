@@ -14,6 +14,7 @@ This is going to be a post about some exploratory stuff that I did once I learne
 1. [The Mandelbrot Set](#the-mandelbrot-set)
 1. [First Attempt](#first-attempt)
 1. [Second Attempt](#second-attempt)
+1. [Zoomer](#zoomer)
 
 ## The Mandelbrot Set
 
@@ -112,3 +113,12 @@ So I decided to watch some more youtuve videos and figure out how to do this bet
 
 Imma make a zoomer thingie.
 
+## Zoomer
+
+So, I fired up the p5 editor again. Since I was planning to keep the resolution fairly small, I figured I could keep things in the browser. Or rather, _because_ I wanted to keep it in the browser, I decided to go with the low low resolution of 400 x 400.
+
+I also made it so the image can be zoomed using `+` and `-` and panned using the arrow keys. It still happens really slowly, but at least it works.
+
+<iframe src="https://editor.p5js.org/scionofbytes/embed/kdAFrs4jI"></iframe>
+
+I decided to get a little bit fancy and let the image appear iteration by iteration all the way up to 200. The iterations here is the maximum number of iterations at which we stop testing if the z value will grow beyond 2. As you can see, the more the iterations performed, the more detailed the picture. This effect is more apparent when you are zoomed into one of the spots. You can see the details becoming finer right in front of your eyes.
