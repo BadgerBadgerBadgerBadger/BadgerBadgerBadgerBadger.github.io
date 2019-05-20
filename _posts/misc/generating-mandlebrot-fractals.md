@@ -9,16 +9,38 @@ comments: true
 share: true
 ---
 
-This is going to be a post about some exploratory stuff that I did once I learned of just how cool the Mandelbrot Set is. I had known of the set for a long time, seen trippy visualisations (as someone pointed out, youtube is full of them), but this was the first time I felt like attempting it myself.
+## Intro
 
-1. [The Mandelbrot Set](#the-mandelbrot-set)
-1. [First Attempt](#first-attempt)
-1. [Second Attempt](#second-attempt)
-1. [Zoomer](#zoomer)
+Around a few weeks ago, somewhere in late April of 2019, I became fascinated with the Mandelbrot Set. I came across an interesting video by [Ben Sparks](https://www.bensparks.co.uk/) on [Numberphile](https://www.youtube.com/watch?v=FFftmWSzgmk) and he spoke of the Mandelbrot Set. He starts off with the idea of stable iterations, first on a one-dimensional number line and then on a two dimensional complex plane, and demonstrates how, on iterating on the square of a given number, the result can either blow up and tend towards infinity or remain stable and tend towards 0. Or at least that's the idea I got. Someone more mathy correct me if I'm wrong.
+
+The visualisations in the video were quite nicely done and I got an itch to try them myself. My best friend has been studying Daniel Shiffman's [Code! Programming with p5.js for Beginners](https://www.youtube.com/watch?v=HerCR8bw_GE&list=PLRqwX-V7Uu6Zy51Q-x9tMWIv9cueOFTFA&index=1) and that reminded me of my own early years in programming when I kept myself motivated by building trippy animations and other cool stuff you can do with a library like p5js (though back then only [Processing](https://processing.org) existed).
+
+So I thought, why not try my hand at generating the Mandelbrot Set?
+
+## Complex Numbers
+
+But first we need to talk about Complex Numbers. There are [a ton](https://www.youtube.com/watch?v=gHUHZXjpwOE) [of videos](https://www.youtube.com/watch?v=sZrOxm5Gszk) [on youtube](https://www.youtube.com/watch?v=SP-YJe7Vldo) about Complex Numbers. Going into the details of why the exist, myself, is not that great an idea. Let's just say that for our purposes we can think of complex numbers existing on a line perpindicular to our regular number line. If you take a piece of graph paper and mark a line from left to right, and then another line that crosses that line at 90 degress, from top to bottom, you can imagine that the horizontal line represents the real number line, and the vertical line represents the complex number line. And thus we have a complex plane to work with.
+
+I highly suggest watching the videos I've linked to to really grasp the ideas behind Complex Numbers and how they represent a plane, but for our purposes let's just say we have a grid and two numbers to work with, one representing a horizontal position on the grid, and one representing a vertical. And these give us a point.
 
 ## The Mandelbrot Set
 
-I'm not going to talk about the Mandelbrot Set myself. There are much better and more interesting explanations out there. I'll link you guys to those and you can come back once you've had your fill. These are some of the things that inspired me and some of the resources that I looked up afterwards. I'll put them in the same order I encountered them.
+The Mandelbrot set starts with the idea of iteration. Say you have a number **z**. This is a complex number of two parts, but for now let's imagine it's a simple number.
+
+Now let's square **z**. Well, that's simple enough. Squaring **z** gives us **z<sup>2</sup>**. Let's take another number **c** and add it to our result to get **z<sup>2</sup> + c**. Let this be our new z.
+
+So we have the operation **z' = z<sup>2</sup> + c**
+And then we can do this again but now instead of our original **z** we are using our new value **z'**. This we way keep feeding the result of the previous operation into the next one. We keep iterating like this untill we have a reson to stop. We can start with a value of **z = 0**, but it's the **c** that's the important number, here.
+
+The Mandelbrot Set, as I understand it, is the set of all numbers in the Complex Plane that, when put under this iteration, does not blow up. The **c** in our equation is the number we're testing The not-blowing-up part is important, we'll come back to that.
+
+So, when speaking of the Mandelbrot set what we do is, for each point in our grid, we test to see if, when put under iteration via the **z' = z<sup>2</sup> + c** operation, where **c = the point**, if the value blows up, then the point is not part of the Mandelbrot Set. And if it does not, then it is.
+
+Honestly, this is all very mathy and I am going to stop with the Math now. I highly recommend you watch the above videos for a solid understanding of Complex Numbers and the Mandelbrot Set. From here on out I will be talking mostly code. 
+
+Let's say we have a grid of pixels, and each pixel can be represented by coordinates. Let's say also that we have a function (the programming kind, not the math kind) `testMandelbrot` which takes a coordinate `c` and tells us if `c` is in the Mandelbrot Set or not.
+
+And so we proceed.
 
 1. [What's so special about the Mandelbrot Set? - Numberphile](https://www.youtube.com/watch?v=FFftmWSzgmk) - A beautiful video with lovely visualizations that made me want to start playing around with processing and generating my own visualisations.
 1. [The Mandelbrot Set - Numberphile](https://www.youtube.com/watch?v=NGMRB4O922I&t=16s) - More about the Mandelbrot Set.
