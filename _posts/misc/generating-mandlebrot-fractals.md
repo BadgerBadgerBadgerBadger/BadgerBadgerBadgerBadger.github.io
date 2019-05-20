@@ -38,52 +38,36 @@ So, when speaking of the Mandelbrot set what we do is, for each point in our gri
 
 Honestly, this is all very mathy and I am going to stop with the Math now. I highly recommend you watch the above videos for a solid understanding of Complex Numbers and the Mandelbrot Set. From here on out I will be talking mostly code. 
 
-Let's say we have a grid of pixels, and each pixel can be represented by coordinates. Let's say also that we have a function (the programming kind, not the math kind) `testMandelbrot` which takes a coordinate `c` and tells us if `c` is in the Mandelbrot Set or not.
+Let's say we have a grid of pixels, and each pixel can be represented by coordinates. Let's say also that we have a function (the programming kind, not the math kind) `testMandelbrot` which takes a coordinate `c` and tells us if `c` is in the Mandelbrot Set or not. That function and most of the math we need to perform is in [this file](https://github.com/ScionOfBytes/smooth-mandelbrot/blob/master/js/compy-stuff.js#L20). As you can see, it requires very little code.
 
-And so we proceed.
+For a proper understanding of why all this math is happening (and especially if my attempt to explain wasn't sufficient), have a look at these videos.
 
-1. [What's so special about the Mandelbrot Set? - Numberphile](https://www.youtube.com/watch?v=FFftmWSzgmk) - A beautiful video with lovely visualizations that made me want to start playing around with processing and generating my own visualisations.
 1. [The Mandelbrot Set - Numberphile](https://www.youtube.com/watch?v=NGMRB4O922I&t=16s) - More about the Mandelbrot Set.
-1. [Mandelbrot Set from Wolfram Mathworld](http://mathworld.wolfram.com/MandelbrotSet.html) - I tried to grok this and then promptly gave up on it.
 1. [Mandelbrot Set on Vsauce](https://www.youtube.com/watch?v=MwjsO6aniig) - A very entertaining and education video by the beloved Michael Stevens.
-1. [Understanding Julia and Mandelbrot Sets by Karl Sims](https://www.karlsims.com/julia.html) - This one helped me a _lot_.
 
-## First Attempt
+And then read this excellent little page by Karl Sims [Understanding Julia and Mandelbrot Sets by Karl Sims](https://www.karlsims.com/julia.html) - this one helped me a _lot_.
 
-> I am going to assume you've seen enough of the above videos/articles that I won't have to repeat the math behind it.
+## Early Attempts
 
-I first started with [p5js](https://p5js.org) on https://editor.p5js. Here's my [Sketch](https://editor.p5js.org/scionofbytes/full/UfCfqKVrY). As you can no doubt tell from the commented out bits and the debugging functions, this is a very rough attempt at getting something going. With a window size of 450x200, the rendering happens pretty fast, but nowhere close to real-time (which, for me, needs to be at least 30 fps).
+My first attempt was semi-successful. I made many mistakes, wrote a lot of messy code, and managed to get something going that rendered very slow even for a 450 x 200 resolution canvas. You can find it [here](https://editor.p5js.org/scionofbytes/full/UfCfqKVrY). If you play around with the resolution, you will notice that upping it to something still small like 600 x 350 will make it render significantly more slower than previously. This is no surprise. It might only be an increase of 200 pixels horizontally and 150 pixels vertically, but overall there are now 30K more pixels to scan than before.
 
-I suspect this is because I've made several mistakes here. I'm iterating way too high (200!), actually waiting for the numbers to hit Infinity (rather than stopping as soon as they go over 2), using a complex package with a whole lot of weird code rather than rolling a very minimal solution since I need only complex multiplication and addition, which, with some algebra, could be done much more efficiently rather than allocating an entirely new complex number type. But, anyway, I wasn't thinking of all that, I was going for the fastest implementation rather than the fastest program.
-
-The result turned out to be this thing that works, but isn't particularly performant.
-
-I also have a version of this with cleaner code on https://openprocessing.org ([this one](https://www.openprocessing.org/sketch/707203)), but I stressed it out too much in terms of resolution and openprocessing is dumb in that it just runs your sketch by default. So as soon as that page opens I can no longer do anything because my stupid code hangs the page. Lovely.
+I also have a version of this with cleaner code on https://openprocessing.org ([this one](https://www.openprocessing.org/sketch/707203)), but I stressed it out too much in terms of resolution and openprocessing is taking too long to render it.
 
 This is how it looks, by the way:
 
 ![p5 editor result](https://i.imgur.com/rKzuPXj.png)
 
-Not too shabby. The basic shape is there, it's a bit rough around the edges because of the low resolution.
-
-## Second Attempt
-
-I decided I needed more juice so instead of doing this in Javascript, I'd do this in [Processing 3](https://processing.org). I'd have the JVM and the native performance that would entail. But I find the editor to be incredibly clunky and I'm far too used to my Jetbrains IDEs. So I fire up IDEA, got the Processing library, set everything up for Kotlin (yes, there's no way I'm programming in Java, eat my shorts), and got cracking at it.
-
-The same visualisations, using Kotlin and on the JVM, with the image being saved to a png instead of being displayed on screen. I planned to go for much higher resolutions, so I thought starting with saving the images to disk directly might be the way to go.
+I decided I needed more processing power so instead of doing this in Javascript, my plan was to try it in [Processing 3](https://processing.org).
 
 Anyway, so this is what that ended up looking like:
 
 ![kotlin version low res](https://i.imgur.com/QyoLM9U.png)
 
-
-This is the first version, lower resolution.
-
-And then there's a slighlty higher resolution one.
+This is the first version, lower resolution. And then there's a slighlty higher resolution version.
 
 ![kotlin version higher res](https://i.imgur.com/OxFtnsN.png)
 
-These took way too long to generate, the first one clocking in at 2251ms, the second at 7869ms! Hecking no way that's anywhere close to real-time.
+These took way too long to generate, though, the first one clocking in at 2251ms, the second at 7869ms.
 
 I'm still making mistakes here. Still using a full package to do simple complex math (it's not as contradictory as it sounds especially if you call it _imaginary_ math instead of _complex_ math). I did stop waiting for the computed value to grow to Infinity. This time I'm stopping as soon as it grows above 2. But no performance gain over the JS version at all. I'm probably doing somethind really dumb here. But before I go into that, let me tell you what I tried to do.
 
