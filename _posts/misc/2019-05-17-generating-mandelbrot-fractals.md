@@ -2,7 +2,7 @@
 layout: post
 title: Generating the Mandelbrot Set
 excerpt: "My explorations with the Mandelbrot Set, visualising it, playing around with it, etc."
-modified: 2019-05-17T14:17:25-04:00
+modified: 2019-05-20T21:17:25-04:00
 categories: misc
 tags: [web-workers, canvas, fractals]
 comments: true
