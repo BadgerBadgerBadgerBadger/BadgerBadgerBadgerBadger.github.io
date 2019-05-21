@@ -19,7 +19,7 @@ So I thought, why not try my hand at generating the Mandelbrot Set?
 
 ## Complex Numbers
 
-First we need to talk about Complex Numbers. There are [a ton](https://www.youtube.com/watch?v=gHUHZXjpwOE) [of videos](https://www.youtube.com/watch?v=sZrOxm5Gszk) [on YouTube](https://www.youtube.com/watch?v=SP-YJe7Vldo) about Complex Numbers. I won't go into the details of what they are _exactly_ or why they exist. Let's just say that for our purposes we can think of complex numbers existing on a line perpindicular to our regular number line. If you take a piece of graph paper and mark a line from left to right, and then another line that crosses that line at 90 degress, from top to bottom, you can imagine that the horizontal line represents the real number line, and the vertical line represents the complex number line. This gives us a Complex _Plane_ to work with.
+First, we need to talk about Complex Numbers. There are [a ton](https://www.youtube.com/watch?v=gHUHZXjpwOE) [of videos](https://www.youtube.com/watch?v=sZrOxm5Gszk) [on YouTube](https://www.youtube.com/watch?v=SP-YJe7Vldo) about Complex Numbers. I won't go into the details of what they are _exactly_ or why they exist. Let's just say that for our purposes we can think of complex numbers existing on a line perpindicular to our regular number line. If you take a piece of graph paper and mark a line from left to right, and then another line that crosses that line at 90 degress, from top to bottom, you can imagine that the horizontal line represents the real number line, and the vertical line represents the complex number line. This gives us a Complex _Plane_ to work with.
 
 I highly suggest watching the videos I've linked to really grasp the ideas behind Complex Numbers and how they represent a plane, but for the purpose of this post, let's just say we have a grid and two numbers to work with, one number representing a horizontal position on the grid, and one representing a vertical. And these give us a point.
 
@@ -31,7 +31,7 @@ Let's square **z** giving us **z<sup>2</sup>**. Let's take another number **c** 
 
 We have the operation **z' = z<sup>2</sup> + c**
 
-We can do this again but this time, instead of our original **z** we are using our new value **z'**. This we way keep feeding the result of the previous operation into the next one. We keep iterating like this untill we have a reason to stop. We can start with a value **z = 0**, but it's the **c** that's noteworthy here.
+We can do this again but this time, instead of our original **z** we are using our new value **z'**. This we, way keep feeding the result of the previous operation into the next one. We keep iterating like this until we have a reason to stop. We can start with a value **z = 0**, but it's the **c** that's noteworthy here.
 
 The Mandelbrot Set, as I understand it, is the set of all numbers in the Complex Plane that, when put under this iteration, does not blow up. The **c** in our equation is the number we're testing.
 
@@ -52,7 +52,7 @@ And then read this excellent little page by Karl Sims-- [Understanding Julia and
 
 ## Early Attempts
 
-My first attempt was semi-successful. I made many mistakes, wrote a lot of messy code, and managed to get something going that rendered very slowly even for a 450 x 200 resolution canvas. You can find it [here](https://editor.p5js.org/scionofbytes/full/UfCfqKVrY). If you play around with the resolution, you will notice that upping it slightly to 600 x 350 will make it render significantly slower than the initial 400 x 200 setting. This is no surprise. It might only be an increase of 200 pixels horizontally and 150 pixels vertically, but overall there are now 30K more pixels to scan than before.
+My first attempt was semi-successful. I made many mistakes, wrote a lot of messy code, and managed to get something going that rendered very slowly even for a 450 x 200 resolution canvas. You can find it [here](https://editor.p5js.org/scionofbytes/full/UfCfqKVrY). If you play around with the resolution, you will notice that upping it slightly to 600 x 350 will make it render significantly slower than the initial 400 x 200 setting. This is no surprise. It might only be an increase of 200 pixels horizontally and 150 pixels vertically, but overall, there are now 30K more pixels to scan than before.
 
 I also have a version of this with cleaner code on https://openprocessing.org ([this one](https://www.openprocessing.org/sketch/707203)), but I stressed it out too much in terms of resolution and openprocessing is taking too long to render it.
 
@@ -108,7 +108,7 @@ Let's do something even more colorful.
 
 This looks closer to what I see in most online visualisations. Here I'm using the same iterations-till-blowup value and then mapping that to a hue (think [HSL](https://en.wikipedia.org/wiki/HSL_and_HSV)).
 
-Now I'll leave you with the 12K x 10K resolution version of this image. I won't render it on this page directly because that would tank its load time. You can click on [this link](https://i.imgur.com/HWGjDy4.jpg) to view it. If you compare it to the low res ones you should see a signifincantly greater amount of detail visible.
+Now I'll leave you with the 12K x 10K resolution version of this image. I won't render it on this page directly because that would tank its load time. You can click on [this link](https://i.imgur.com/HWGjDy4.jpg) to view it. If you compare it to the low res ones you should see a significantly greater amount of detail visible.
 
 ## A More Sensible Approach
 
@@ -179,7 +179,7 @@ First, we [transfer control of our canvas to an offscreen version](https://devel
 
 Transferrable objects, in short, are those that you can send to a Web Worker and it will be a true memory transfer. The sending thread loses reference to the transferrable (if I try to do anything with `offScreen` after this bit of code, I will get an error), and the receiving thread assumes full control. 
 
-And that is exactly what we want in this case. We let the painter do the job of painting so our main thread is free to interact with the user. It does so in two ways. A mouse click event and a key type event. I won't go into the code of those. They aren't very interesting or pertinent to this article. Let's just say, they work and they send a `draw` command to the painter with some parameters.
+Which is exactly what we want-- we let the painter do the job of painting so our main thread is free to interact with the user. It does so in two ways. A mouse click event and a key type event. I won't go into the code of those. They aren't very interesting or pertinent to this article. Let's just say, they work and they send a `draw` command to the painter with some parameters.
 
 <script src="http://gist-it.appspot.com/https://github.com/ScionOfBytes/smooth-mandelbrot/blob/master/js/painter.js"></script>
 
@@ -189,7 +189,7 @@ First, the `setup`. I'm assigning the canvas and its context, retrieved from the
 
 Note that I'm not actually slicing up the original canvas. Instead, I'm creating baby canvases, each given to one of the acolytes. Later, once the acolytes have drawn on one of these canvases, we will take the resulting image and paint it onto our main canvas. I hope this analogy of a master painter and their acolytes provides a good analogy for how this process works.
 
-Something I should have talked about much earlier is that the Mandelbrot Set lives somewhere between -3 and 1 on the Complex Line and -2 and 2 on the Real Line. Since canvas is hundreds of pixels wide and similarly high, we need to map these values from a large range into a smaller one. Which is easy enough to do with a simple `map` function. 
+Something I should have talked about much earlier is that the Mandelbrot Set lives somewhere between -3 and 1 on the Complex Line and -2 and 2 on the Real Line. Since the canvas is hundreds of pixels wide and similarly high, we need to map these values from a large range into a smaller one. Which is easy enough to do with a simple `map` function. 
 
 But the acolytes, unless they know exactly by how much each of their canvases are offset from the main canvas, won’t do this computation correctly. Hence, we need to provide them with this info. They also need to know the dimensions of the original canvas so we send that in, too. Furthermore, they need to know what range they need to map their canvases to. So we also pass in the ranges for the **x** direction and for the **y** direction.
 
