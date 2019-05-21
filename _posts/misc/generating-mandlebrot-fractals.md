@@ -51,33 +51,37 @@ And then read this excellent little page by Karl Sims [Understanding Julia and M
 
 My first attempt was semi-successful. I made many mistakes, wrote a lot of messy code, and managed to get something going that rendered very slow even for a 450 x 200 resolution canvas. You can find it [here](https://editor.p5js.org/scionofbytes/full/UfCfqKVrY). If you play around with the resolution, you will notice that upping it to something still small like 600 x 350 will make it render significantly more slower than previously. This is no surprise. It might only be an increase of 200 pixels horizontally and 150 pixels vertically, but overall there are now 30K more pixels to scan than before.
 
-I also have a version of this with cleaner code on https://openprocessing.org ([this one](https://www.openprocessing.org/sketch/707203)), but I stressed it out too much in terms of resolution and openprocessing is taking too long to render it.
+I also have a version of this with cleaner code on https://openprocessing.org ([this one](https://www.openprocessing.org/sketch/707203)), but I stressed it out too much in terms of resolution and [openprocessing](https://openprocessing.org) is taking too long to render it.
 
 This is how it looks, by the way:
 
 ![p5 editor result](https://i.imgur.com/rKzuPXj.png)
 
-I decided I needed more processing power so instead of doing this in Javascript, my plan was to try it in [Processing 3](https://processing.org).
+I decided it was running slow because it was in Javascript. I am ashamed to say that even after five years of working in the industry I still have such naive thoughts. The truth was my code was merely bad and lacking any sort of polish or optimisation. 
 
-Anyway, so this is what that ended up looking like:
+So the next step of my plan was to try to do the same thing in [Processing 3](https://processing.org).
+
+I started small:
 
 ![kotlin version low res](https://i.imgur.com/QyoLM9U.png)
 
-This is the first version, lower resolution. And then there's a slighlty higher resolution version.
+And then went a tiny bit bigger.
 
 ![kotlin version higher res](https://i.imgur.com/OxFtnsN.png)
 
 These took way too long to generate, though, the first one clocking in at 2251ms, the second at 7869ms.
 
-I'm still making mistakes here. Still using a full package to do simple complex math (it's not as contradictory as it sounds especially if you call it _imaginary_ math instead of _complex_ math). I did stop waiting for the computed value to grow to Infinity. This time I'm stopping as soon as it grows above 2. But no performance gain over the JS version at all. I'm probably doing somethind really dumb here. But before I go into that, let me tell you what I tried to do.
+I was still making mistakes here. I was using a full package to do the complex math and several other overly complicated things. There wasn't a noticeable performance gain over the JS code.
 
-I tried to generate a 12000x10000 image. That's 120 million pixels. A 120 mega-pixel image. I tried to generate that on my laptop. And I made a royal mess of it, too. Not only did it take over an hour to do, I forgot to save it, so just to show you guys that image I'll have to let my laptop run hot for an hour and it won't even be that great an image. You'll get to see it anyway.
+And then I decided to do something really stupid. I wanted to see a highly zoomed in version of the Mandelbrot Set and admire the beautiful fractal patterns so I thought, why not make a _really_ large image and then zoom into that using a regular image viwere and admire the fractals that way?
 
-But for that we'll go step by step. I'm going to use the same crappy code through all the steps and only change a few things here and there.
+So I tried to generate a 12000x10000 image. That's 120 million pixels. A 120 mega-pixel image. I tried to generate that on my laptop. And I made a royal mess of it, too. Not only did it take over an hour to do, I forgot to save it, so just to show you guys that image I'll have to let my laptop run hot for an hour, again, and it won't even be that great an image. You'll get to see it anyway.
 
-Just so that we are aware, 200 is the number of iterations at which point I stop checking if the value blew up.
+But let's take a step back.
 
-First a 1200x1000 that took 38,785ms:
+I didn't want to just make a 120 megapixel image. I wanted to make a 12 gigapixel one. But the moment I tried to allocate an array that large JVM told me to stick my head where the sun don't shine. Okay, 12K x 10K it would be. I wanted this image to look extra special so I decided to make some smaller ones look really good.
+
+First a 1200 x 1000 that took 38,785ms:
 
 ![kotlin version 1200x1000](https://i.imgur.com/nI51GLq.png)
 
@@ -85,46 +89,44 @@ This is pretty nice looking, actually, but let's see if we can do something pret
 
 ![kotlin version 1200x1000 with extra greys](https://i.imgur.com/fHBJM8q.png)
 
-For each of the points _not_ inside the Mandelbrot set (so those for which the equation blows up above 2), I'm taking the number of iterations it took before it blew up and mapping that from 0 - 200 to 0 - 255 (greyscale color range).
+For each of the points _not_ inside the Mandelbrot set, I'm taking the number of iterations it took before it blew up and mapping that from 0 - 200 (since 200 is the maximum number of iterations I'm checking) to 0 - 255 (8 bit greyscale color range).
 
-Now we can not only see the scattered Mandelbrot islands, we can also see the possible connections. The connections themselves are probably too small to show up in the visualisation, but once we show the borders in grey, they show up pretty nicely.
+Now we can not only see the scattered Mandelbrot islands, we can also see the connections between them. These connections are too thin to show up on such a low resolution image, but the surrounding shading gives them away.
 
 Let's try something in another color.
 
 ![kotlin version 1200x1000 with red borders](https://i.imgur.com/d0Mt31G.png)
 
-So for this I decided to color the inside of the Set fully black, and let the outside be mapped from 0 (full black) to #FF0000(full red), giving us a vivid red border.
-
- > Side note: I wonder why it's so transparent. I think I messed up an alpha channel somewhere.
+For this I decided to color the inside of the Set fully black, and let the outside be mapped from 0 (full black) to #FF0000(full red), giving us a vivid red border.
  
- Okay, let's do something even more colorful.
+Let's do something even more colorful.
  
 ![kotlin version 1200x1000 with multi-color borders](https://i.imgur.com/xvEKaDS.png)
 
-Nice! Also looks close to what I see in most online visualizations. Here I'm using the same iterations-till-blowup value and then mapping that to a hue.
+This looks closer to what I see in most online visualisations. Here I'm using the same iterations-till-blowup value and then mapping that to a hue (think [HSL](https://en.wikipedia.org/wiki/HSL_and_HSV)).
 
-And now I'll leave you with the very high 12Kx10K resolution version of this image. And then we can talk about why that was a stupid idea. I won't render it on this page directly because that would tank its load times, so you'll have to click on [this link](https://i.imgur.com/HWGjDy4.jpg) to view it. If you compare it to the low res ones you should see the signifincantly greater amount of detail visible.
+Now I'll leave you with the 12K x 10K resolution version of this image. I won't render it on this page directly because that would tank its load time. You'll can click on [this link](https://i.imgur.com/HWGjDy4.jpg) to view it. If you compare it to the low res ones you should see the signifincantly greater amount of detail visible.
 
-I wanted to see the tiniest details in the fractal pattern, and so I thought the way to go about doing that would be to create a very high resolution image. But there's only so much a tiny computer can do. And once you cross the screen resolutions currently available (4K is only 3840 x 2160, compared to the 12K x 10K image I generated which can never be fully represented on a 4K screen), you'll have to zoom in massively into the image to see details. So, while vieweing details, you'll never be able to see the full pictures.
+## A More Sensible Approach
 
-So, apart from those reasons, why else was it a really stupid idea to create an extremely large, high resolution image?
+I wanted to see the tiniest details in the fractal pattern, and I thought the way to go about doing that would be to create a very high resolution image. But there's only so much a tiny computer can do. And once you cross the screen resolutions currently available (4K is only 3840 x 2160, compared to the 12K x 10K image I generated which can never be fully represented on a 4K screen), you'll have to zoom in a lot to see details. So, while vieweing details, you'll never be able to see the full picture, anyway.
 
-- It takes forever.
-- It still has an upper bound to the resolution.
-- We're dealing with a fractal, we will never be able to probe its infinite depths by trying to create a tremendously large image and then zooming in.
+Then there's the matter of how long it takes to generate one of these. If you want to play around with iteration values or colors or any other paramter, you would have to generate the static image all over again. Not fun.
 
-So I decided to watch some more youtuve videos and figure out how to do this better. And I turned to Daniel Shiffman, one of the best youtube educators I know of in the programming space.
+I decided to watch some more youtuve videos and figure out how to do this better. I turned to Daniel Shiffman, one of the best youtube educators I know of in the programming space.
 
 <iframe width="1440" height="619" src="https://www.youtube.com/embed/6z7GQewK-Ks" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-Imma make a zoomer thingie.
+A new plan formed in my mind.
 
-## Zoomer
+## Zooming and Panning
 
-So, I fired up the p5 editor again. Since I was planning to keep the resolution fairly small, I figured I could keep things in the browser. Or rather, _because_ I wanted to keep it in the browser, I decided to go with the low low resolution of 400 x 400.
+I fired up the p5 editor again. Since I was planning to keep the resolution fairly small, I figured I could keep things in the browser. Or rather, _because_ I wanted to keep it in the browser, I decided to go with the low low resolution of 400 x 400.
 
 I also made it so the image can be zoomed using `+` and `-` and panned using the arrow keys. It still happens really slowly, but at least it works.
 
 <iframe src="https://editor.p5js.org/scionofbytes/embed/kdAFrs4jI"></iframe>
 
-I decided to get a little bit fancy and let the image appear iteration by iteration all the way up to 200. The iterations here is the maximum number of iterations at which we stop testing if the z value will grow beyond 2. As you can see, the more the iterations performed, the more detailed the picture. This effect is more apparent when you are zoomed into one of the spots. You can see the details becoming finer right in front of your eyes.
+I decided to get a little bit fancy and let the image appear iteration by iteration all the way up to 200. The iterations here is the maximum number of iterations at which we stop testing if the z value will grow beyond 2 (blow up). As you can see, the more the iterations performed, the more detailed the picture. This effect is more apparent when you are zoomed into one of the spots. You can see the details becoming finer right in front of your eyes.
+
+Zooming and panning is indeed the way to go. If you are to look at only a certain part of the image at a time, why bother rendering anything else. Graphics programmers have known of this since ages beyond reckoning. It took me a failed attempt at generating a high res image at speed to think of doing the same thing (and ideas from Shiffman's video).
