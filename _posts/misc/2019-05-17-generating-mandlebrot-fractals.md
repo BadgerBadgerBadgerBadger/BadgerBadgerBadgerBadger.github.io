@@ -125,8 +125,85 @@ I fired up the p5 editor again. Since I was planning to keep the resolution fair
 
 I also made it so the image can be zoomed using `+` and `-` and panned using the arrow keys. It still happens really slowly, but at least it works.
 
-<iframe src="https://editor.p5js.org/scionofbytes/embed/kdAFrs4jI"></iframe>
+<iframe width="400" height="400" src="https://editor.p5js.org/scionofbytes/embed/kdAFrs4jI"></iframe>
 
-I decided to get a little bit fancy and let the image appear iteration by iteration all the way up to 200. The iterations here is the maximum number of iterations at which we stop testing if the z value will grow beyond 2 (blow up). As you can see, the more the iterations performed, the more detailed the picture. This effect is more apparent when you are zoomed into one of the spots. You can see the details becoming finer right in front of your eyes.
+> Note: In case the embed is not working, go [here](https://editor.p5js.org/scionofbytes/full/kdAFrs4jI).
 
-Zooming and panning is indeed the way to go. If you are to look at only a certain part of the image at a time, why bother rendering anything else. Graphics programmers have known of this since ages beyond reckoning. It took me a failed attempt at generating a high res image at speed to think of doing the same thing (and ideas from Shiffman's video).
+I decided to get a little bit fancy and let the image appear iteration by iteration all the way up to 200. The iterations here are the maximum number of iterations at which we stop testing if the z value will grow beyond 2 (blow up). As you can see, the more iterations performed, the more detailed the picture. This effect is clearer when you are zoomed into one of the edges. You can see the details becoming finer right in front of your eyes.
+
+Zooming and panning is the way to go forward. If you are to look at only a part of the image at a time, why bother rendering the rest? Graphics programmers have known of this since ages beyond reckoning. It took me a failed attempt at generating a high res image at speed to think of doing the same thing (and ideas from Shiffman's video).
+
+## Making It Smoother
+
+This rendering is still very clunky, and quite slow. Even at smaller iterations. I want at least 200 iterations to get good fractal detail which will make this run really slowly. But Javascript is single threader and there isn't any more I can squeeze out of it. Or can I?
+
+[Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) have been a thing for a while. [OffScreen Canvases](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas) are a somewhat newer thing (and not very well supported on non-Chrome browsers). The demo I present here might not work if you're not on the latest Chrome and I apologise for that. Making it work in other ways is possible but too tedious and not something I want to do.
+
+Play around with it first. Click on any part of the image to center it and Use `alt/option + up arrow/down arrow` to zoom in and out. You can zoom in pretty deep before the fractal finally gives up; numbers on a computer only have so much precision.
+
+<iframe width="600" height="350" src="https://smooth-mandelbrot.p.scionofbytes.me"></iframe>
+
+The entire code for it (which is small), can be found here: https://github.com/ScionOfBytes/smooth-mandelbrot
+
+Let's talk about how it works and why it is so much smoother than the previous version (though not as smooth as I would ultimately like it to be).
+
+## Divide and Conquer
+
+Web Workers allow us to run honest-to-goodness OS threads and offload tasks to them. My main goals for my worker threads were:
+1. Free up the main thread for processing user input.
+1. Break up the rendering task between multiple workers to speed it up.
+
+We start with the `sketch.js` our entry point.
+
+<script src="http://gist-it.appspot.com/https://github.com/ScionOfBytes/smooth-mandelbrot/blob/master/js/sketch.js"></script>
+
+We set up a canvas, attach a click and keyboard listener, and add it to our DOM. We also start the `painter.js` worker who, as the name suggests, will be doing all the work of painting our canvas. And then we send a `setup` command to the painter asking it to set everything up and do the first paint.
+
+The interesting bits here are 
+```javascript
+const offScreen = canvas.transferControlToOffscreen()
+```
+and
+```javascript
+const message = {
+    message: 'setup',
+    canvas: offScreen
+}
+const transfers = [offScreen]
+```
+
+The first [transfer control of our canvas to an offscreen](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/transferControlToOffscreen) version which we then send to our painter. We are detaching the painting part and the displaying part. Even though the canvas is still part of our DOM and displayed as such, the painting is done by the painter in a different thread and the results show up automatically. Also note the function call we make to send the offscreen canvas to our painter worker. That second parameter is an array of [Transferrable](https://developer.mozilla.org/en-US/docs/Web/API/Transferable) objects to send to the worker.
+
+Transferrable objects, in short, are those that you can send to a Web Worker and it will be a true memory transfer. The sending thread loses reference to the transferrable (if I try to do anything with `offScreen` after this bit of code, I will get an error), and the receiving thread assumes full control. 
+
+And that is exactly what we want in this case. We let the painter do the job of painting so our main thread is free to interact with the user. It does so in two ways. A mouse click event and a key type event. I won't go into the code of those. They aren't very interesting or pertinent to this article. Let's just say, they work and they send a `draw` command to the painter with some parameters.
+
+<script src="http://gist-it.appspot.com/https://github.com/ScionOfBytes/smooth-mandelbrot/blob/master/js/painter.js"></script>
+
+There is a lot going on here but we need not focus on all of it. Let's look at the interesting bits.
+
+First, the `setup`. I'm assigning the canvas and its context, retrieved from the setup event sent by the main thread, to the global variables for the painter. Then I start divying up the tasks. I decided, somewhat arbitrarily that I want the task of painting to be broken up into 8 parts. I'm sure there is a way to figure out what the optimal number should be, but I just decided to go for 8. So I create 8 `acolytes`. These acolytes get only a portion of the canvas to work on. I'm slicing up the canvas into 8 vertical slices and we need to know what the width of each such segment should be `segmentLength = canvas.width / numOfAcolytes`. 
+
+Note that I'm not actually slicing up the original canvas. Instead I'm creating baby canvases, each given to one of the acolytes. Later, once the acolytes have drawn on one of these canvases, we will take the resulting image and paint it onto our main canvas. I hope this analogy of a master painter and their acolytes gives provides a good analogy for how this process works.
+
+Something I should have talked about much earlier is that the Mandelbrot Set lives somewhere between -3 and 1 on the Complex Line and -2 and 2 on the Real Line. But our canvas is hundreds of pixels wide and similarly high. We need to map these values from a large range into a small range. Which is easy enough to do with a simple `map` function. But the acolytes, unless they know exactly by how much each of their canvases are offset from the main canvas won't do this computation correctly. Hence we need to provide them with this info. They also need to know the dimensions of the original canvas so we send that in too. Furthermore, they need to know what range they need to map their canvases into. So we also pass in the ranges for the x direction and for the y direction.
+
+Most of this info is only sent during setup. We don't change the size of the original canvas or the number of acolytes (and thus the width of each acolyte's segment) during the lifetime of the app. Only the boundaries change when we pan or zoom and we send this information when we issue `draw` commands.
+
+So let's talk about the `draw` command, our second case in the switch-case. When receiving a `draw` command, the painter could receive mouse or keyboard events from the main thread. We allow users to pan the canvas by clicking on a point in the image and we pan so that that point becomes the new center of the image. The `if (mousePos.x !== undefined) {` block of the `if` statement takes care of this. I won't explain the math here. Suffice it to say, that based on the position of the mouse click, we adjust the boundaries. Similarly, in the `} else if (zoomBy) {` block, we adjust the boundaries so we are zooming in/out of the image.
+
+Either way, once the new boundaries are computed, the global `xBounds` and `yBounds` variables are updated and the `draw` function of the painter is called. This is a really simple function that sends the boundaries and number of iterations to the acolytes and asks them to paint their pieces of the canvas. The acolytes do that (we'll talk about that next), and send these images back which we capture in the `onAcolyteMessage` function. We know which acolyte sent the image, hence we know which piece of the canvas they were given and we paint the image onto the canvas at that place.
+
+Note, I am not waiting to collect all the responses from each acolyte for each draw command before updating the canvas. That would probably lead to smoother looking updates. Right now if you pan or zoom quickly you can see the update happening in bands as each acolyte draws their portion of the image.
+
+<script src="http://gist-it.appspot.com/https://github.com/ScionOfBytes/smooth-mandelbrot/blob/master/js/acolyte.js"></script>
+
+The code for the acolytes is quite simple as well. In the `setup` command we capture the canvas and context for drawing and we capture the boundaries. And then it draws once. Further, when it receives more draw commands, it updates its knowledge of the boundaries and draws its part of the image again.
+
+The `draw` function itself isn't very different from what I've done in previous versions of the generator. Iterate over the pixels, map it into the correct range, figure out if it is part of the set or not and color accordingly. It then gets a copy of the image from its canvas and sends that to the painter (again via Transferrable). It seems while a normal canvas can have its drawing part detached and in a different thread with updates to the drawing appearing on the canvas, the same is not true if you use an OffscreenCanvas instance. This is still an experimental API so it will be really interesting to see how it develops. 
+
+>Note: You might have noticed that the acolytes are receiving `maxIters` as well. Currently they aren't doing anything interesting with this variable. I've set it to a fixed value and it stays there. I could potentially play with it but I don't want to.
+
+And that's mostly it. I have a main thread which kicks everything off and then handles user input and sends to the painter. The painter decides the image boundaries based on user input (panning/zooming), and then offloads the drawing of sections of the canvas to the acolytes.
+
+Hope you enjoyed the post. Feedback is appreciated.
