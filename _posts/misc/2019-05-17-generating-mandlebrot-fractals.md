@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Generating Mandelbrot Sets with Processing
+title: Generating the Mandelbrot Set
 excerpt: "My explorations with the Mandelbrot Set, visualising it, playing around with it, etc."
 modified: 2019-05-17T14:17:25-04:00
 categories: misc
-tags: [kotlin, processing, generative-art]
+tags: [web-workers, canvas, fractals]
 comments: true
 share: true
 ---
