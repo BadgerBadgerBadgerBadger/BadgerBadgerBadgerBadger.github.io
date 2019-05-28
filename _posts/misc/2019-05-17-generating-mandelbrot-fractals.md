@@ -19,7 +19,7 @@ So I thought, why not try my hand at generating the Mandelbrot Set?
 
 ## Complex Numbers
 
-First, we need to talk about Complex Numbers. There are [a ton](https://www.youtube.com/watch?v=gHUHZXjpwOE) [of videos](https://www.youtube.com/watch?v=sZrOxm5Gszk) [on YouTube](https://www.youtube.com/watch?v=SP-YJe7Vldo) about Complex Numbers. I won't go into the details of what they are _exactly_ or why they exist. Let's just say that for our purposes we can think of complex numbers existing on a line perpindicular to our regular number line. If you take a piece of graph paper and mark a line from left to right, and then another line that crosses that line at 90 degress, from top to bottom, you can imagine that the horizontal line represents the real number line, and the vertical line represents the complex number line. This gives us a Complex _Plane_ to work with.
+First, we need to talk about Complex Numbers. There are [a ton](https://www.youtube.com/watch?v=gHUHZXjpwOE) [of videos](https://www.youtube.com/watch?v=sZrOxm5Gszk) [on YouTube](https://www.youtube.com/watch?v=SP-YJe7Vldo) about Complex Numbers. I won't go into the details of what they are _exactly_ or why they exist. Let's just say that for our purposes we can think of complex numbers existing on a line perpindicular to our regular number line. If you take a piece of graph paper and mark a line from left to right, and then another line that crosses that line at 90 degrees, from top to bottom, you can imagine that the horizontal line represents the real number line, and the vertical line represents the complex number line. This gives us a Complex _Plane_ to work with.
 
 I highly suggest watching the videos I've linked to really grasp the ideas behind Complex Numbers and how they represent a plane, but for the purpose of this post, let's just say we have a grid and two numbers to work with, one number representing a horizontal position on the grid, and one representing a vertical. And these give us a point.
 
@@ -31,7 +31,7 @@ Let's square **z** giving us **z<sup>2</sup>**. Let's take another number **c** 
 
 We have the operation **z' = z<sup>2</sup> + c**
 
-We can do this again but this time, instead of our original **z** we are using our new value **z'**. This we, way keep feeding the result of the previous operation into the next one. We keep iterating like this until we have a reason to stop. We can start with a value **z = 0**, but it's the **c** that's noteworthy here.
+We can do this again but this time, instead of our original **z** we are using our new value **z'**. This way, we keep feeding the result of the previous operation into the next one. We keep iterating like this until we have a reason to stop. We can start with a value **z = 0**, but it's the **c** that's noteworthy here.
 
 The Mandelbrot Set, as I understand it, is the set of all numbers in the Complex Plane that, when put under this iteration, does not blow up. The **c** in our equation is the number we're testing.
 
