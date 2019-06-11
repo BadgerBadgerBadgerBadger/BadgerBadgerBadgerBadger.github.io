@@ -2,12 +2,15 @@
 layout: post
 title: Generating the Mandelbrot Set
 excerpt: "My explorations with the Mandelbrot Set, visualising it, playing around with it, etc."
-modified: 2019-05-20T21:17:25-04:00
+modified: 2019-06-11T21:19:25-04:00
 categories: misc
 tags: [web-workers, canvas, fractals]
 comments: true
 share: true
 ---
+
+## Update
+> The shared github repo for the end product of this post is in version 2 state. [@lovasoa](https://github.com/lovasoa) kindly contributed a pull request which massivley improved performance and allowed the rendering to happen at full screen with much better speed and taught me many things in the process. I've added these improvements as an updated section at the end of the post. Many thanks [@lovasoa](https://github.com/lovasoa). The first version, on which most of this post is based is still available for perusal at https://github.com/ScionOfBytes/smooth-mandelbrot/tree/v1.0.
 
 ## Intro
 
@@ -142,7 +145,9 @@ This rendering is still very clunky, and quite slow. Even at smaller iterations.
 
 [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) have been a thing for a while. [OffScreen Canvases](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas) are somewhat newer (and not very well supported on non-Chrome browsers). The demo I present here might not work if you're not on the latest Chrome and I apologise for that. Making it work in other ways is possible but too tedious and not something I want to do.
 
-Play around with it. Click on any part of the image to center it and Use `alt/option + up arrow/down arrow` to zoom in and out. You can zoom in pretty deep before the fractal finally gives up; numbers on a computer only have so much precision.
+> I've since learned that a Uint8ClampedArray works much better than an OffScreenCanvas both in terms of performance and browser compatibility. It needs more code for computing array indices and colors but overall much better outcome. See the end of the post for details.
+
+Play around with it. ~Click on any part of the image to center it~ Click and drag to pan and use `alt/option + up arrow/down arrow` or the scroll wheel/pad to zoom in and out. You can zoom in pretty deep before the fractal finally gives up; numbers on a computer only have so much precision.
 
 <iframe width="600" height="350" src="https://smooth-mandelbrot.p.scionofbytes.me"></iframe>
 
@@ -212,3 +217,14 @@ The `draw` function itself isn't very different from what I've done in previous 
 And that's mostly it. I have a main thread which kicks everything off and then handles user input and sends to the painter. The painter decides the image boundaries based on user input (panning/zooming), and then offloads the drawing of sections of the canvas to the acolytes.
 
 Hope you enjoyed the post. Feedback is appreciated.
+
+## Updates
+
+[@lovasoa](https://github.com/lovasoa) was kind enough to contribute several optimisation updates that make smooth mandelbrot worh its name. These include but are not limited to:
+
+- Using Uint8ClampedArray in the Acolytes for setting color values and passing that back instead of the more Canvas objects. This also means that with the non-standard OffScreenCanvas not in use the demo actually works on more browsers.
+- Inlining a lot of the Complex math.
+- Introducing a mouse-based scroll.
+- Doing some stuff with flooring numbers using a bitwise OR operator that looks like black magic.
+
+I'd recommend taking a look at his [PR](https://github.com/ScionOfBytes/smooth-mandelbrot/pull/1) to get a feel for the changes.
