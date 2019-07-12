@@ -149,9 +149,9 @@ This rendering is still very clunky, and quite slow. Even at smaller iterations.
 
 Play around with it. ~Click on any part of the image to center it~ Click and drag to pan and use `alt/option + up arrow/down arrow` or the scroll wheel/pad to zoom in and out. You can zoom in pretty deep before the fractal finally gives up; numbers on a computer only have so much precision.
 
-<iframe width="600" height="350" src="https://smooth-mandelbrot.p.scionofbytes.me"></iframe>
+<iframe width="600" height="350" src="https://smooth-mandelbrot.badgerbadgerbadgerbadger.dev"></iframe>
 
-The entire code for it (which is small), can be found here: https://github.com/ScionOfBytes/smooth-mandelbrot
+The entire code for it (which is small), can be found here: https://github.com/BadgerBadgerBadgerBadger/smooth-mandelbrot
 
 Let's talk about how it works and why it is so much smoother than the previous version (though not as smooth as I would ultimately like it to be).
 
@@ -220,11 +220,11 @@ Hope you enjoyed the post. Feedback is appreciated.
 
 ## Updates
 
-[@lovasoa](https://github.com/lovasoa) was kind enough to contribute several optimisation updates that make smooth mandelbrot worh its name. These include but are not limited to:
+[@lovasoa](https://github.com/lovasoa) was kind enough to contribute several optimisation updates that make smooth mandelbrot worth its name. These include but are not limited to:
 
-- Using Uint8ClampedArray in the Acolytes for setting color values and passing that back instead of the more Canvas objects. This also means that with the non-standard OffScreenCanvas not in use the demo actually works on more browsers.
+- Using Uint8ClampedArray in the Acolytes for setting color values and passing that back instead of the heavier Canvas objects. Additionally with the non-standard OffScreenCanvas not in use the demo actually works on more browsers.
 - Inlining a lot of the Complex math.
 - Introducing a mouse-based scroll.
-- Doing some stuff with flooring numbers using a bitwise OR operator that looks like black magic.
+- Flooring numbers using a bitwise OR operator that looks like black magic.
 
 I'd recommend taking a look at his [PR](https://github.com/ScionOfBytes/smooth-mandelbrot/pull/1) to get a feel for the changes.
