@@ -149,7 +149,7 @@ This rendering is still very clunky, and quite slow. Even at smaller iterations.
 
 Play around with it. ~Click on any part of the image to center it~ Click and drag to pan and use `alt/option + up arrow/down arrow` or the scroll wheel/pad to zoom in and out. You can zoom in pretty deep before the fractal finally gives up; numbers on a computer only have so much precision.
 
-<iframe width="600" height="350" src="https://smooth-mandelbrot.badgerbadgerbadgerbadger.dev"></iframe>
+<iframe width="600" height="350" src="https://smooth-mandelbrot.p.badgerbadgerbadgerbadger.dev"></iframe>
 
 The entire code for it (which is small), can be found here: https://github.com/BadgerBadgerBadgerBadger/smooth-mandelbrot
 
