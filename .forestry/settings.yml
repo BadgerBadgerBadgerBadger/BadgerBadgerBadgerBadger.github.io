@@ -2,22 +2,22 @@
 new_page_extension: md
 auto_deploy: false
 admin_path: ''
-webhook_url:
+webhook_url: 
 sections:
-  - type: heading
-    label: Content
-  - type: directory
-    path: docs
-    label: Docs
-    create: all
-    match: "**/*"
-    templates:
-      - documentation-page
-  - type: heading
-    label: Settings
-  - type: document
-    path: data/settings.json
-    label: Menu
+- type: heading
+  label: Content
+- type: directory
+  path: docs
+  label: Docs
+  create: all
+  match: "**/*"
+  templates:
+  - documentation-page
+- type: heading
+  label: Settings
+- type: document
+  path: data/settings.json
+  label: Menu
 upload_dir: static
 public_path: ''
 front_matter_path: ''
