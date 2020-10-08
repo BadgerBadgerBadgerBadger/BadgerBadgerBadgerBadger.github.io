@@ -1,24 +1,31 @@
 {
-  "name": "so-simple-theme",
-  "author": "Michael Rose <michael@mademistakes.com>",
-  "homepage": "http://mmistakes.github.io/so-simple-theme/",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/mmistakes/so-simple-theme.git"
+  "name": "jamdocs",
+  "private": true,
+  "scripts": {
+    "build": "gridsome build",
+    "develop": "gridsome develop",
+    "explore": "gridsome explore"
   },
-  "bugs": {
-    "url": "https://github.com/mmistakes/so-simple-theme/issues"
-  },
-  "engines": {
-    "node": ">= 0.10.0"
+  "dependencies": {
+    "@gridsome/plugin-google-analytics": "^0.1.0",
+    "@gridsome/plugin-sitemap": "^0.2.1",
+    "@gridsome/remark-prismjs": "0.0.6",
+    "@gridsome/source-filesystem": "^0.6.0",
+    "@gridsome/transformer-remark": "^0.3.4",
+    "graphql-playground-html": "^1.6.22",
+    "gridsome": "^0.7.0",
+    "gridsome-plugin-algolia": "^2.1.1",
+    "kind-of": "^6.0.3",
+    "minimist": "^1.2.3",
+    "serialize-javascript": "^3.1.0",
+    "typeface-source-sans-pro": "^0.0.54",
+    "vue-feather-icons": "^4.22.0",
+    "vuex": "^3.1.1",
+    "websocket-extensions": "^0.1.4"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-jshint": "~0.6.3",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-watch": "~0.5.2",
-    "grunt-contrib-imagemin": "~0.2.0",
-    "grunt-svgmin": "~0.2.0"
+    "node-sass": "^4.13.1",
+    "sass-loader": "^7.1.0",
+    "style-resources-loader": "^1.2.1"
   }
 }

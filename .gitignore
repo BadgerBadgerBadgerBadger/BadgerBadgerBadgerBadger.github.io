@@ -1,9 +1,9 @@
-_site
+*.log
+.cache
 .DS_Store
-*.sublime-project
-*.sublime-workspace
-codekit-config.json
+src/.temp
 node_modules
-.sass-cache
-.jekyll-metadata
-.idea
+dist
+.env
+.env.*
+.netlify
