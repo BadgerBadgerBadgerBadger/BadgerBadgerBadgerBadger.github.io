@@ -1,20 +1,21 @@
 <template>
   <Layout>
     <h1>
-      {{ $page.doc.title }}
+      {{ $page.post.title }}
     </h1>
-    <div class="markdown" v-html="$page.doc.content"/>
+    <h3> {{ $page.post.tags.join(' ') }} </h3>
+    <div class="markdown" v-html="$page.post.content"/>
   </Layout>
 </template>
 
 <page-query>
-query Doc ($path: String!) {
-doc: doc (path: $path) {
+query Post ($path: String!) {
+post: post (path: $path) {
 title
 path
-date (format: "D. MMMM YYYY")
-timeToRead
+categories
 content
+tags
 }
 }
 </page-query>
@@ -23,9 +24,9 @@ content
 export default {
   metaInfo () {
     return {
-      title: this.$page.doc.title,
+      title: this.$page.post.title,
       meta: [
-        { key: 'description', name: 'description', content: this.$page.doc.description }
+        { key: 'description', name: 'description', content: this.$page.post.description }
       ]
     }
   }

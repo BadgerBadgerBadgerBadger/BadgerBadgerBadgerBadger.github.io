@@ -3,10 +3,7 @@
     <div class="content">
       <h1>{{ $static.metadata.siteName }} - {{ this.description }}</h1>
       <nav>
-        <!-- To use other icons here, you need to import them in the Shortcut component -->
-        <Shortcut icon="play-icon" link="/getting-started" text="Introduction"/>
-        <Shortcut icon="sliders-icon" link="/theme-configuration" text="Configuration"/>
-        <Shortcut icon="eye-icon" link="/theme-configuration#changing-colors" text="Change colors"/>
+        <Shortcut :link="latestPost.path" icon="book-icon" text="Blog"/>
       </nav>
       <GitLink class="git" size="large"/>
     </div>
@@ -15,24 +12,36 @@
 
 <static-query>
 query {
-metadata {
+metadata: metadata {
 siteName
+}
+topPost: allPost(limit: 1) {
+edges {
+node {
+path
+categories
+title
+}
+}
 }
 }
 </static-query>
 
 <script>
-import GitLink from '~/components/GitLink.vue'
 import Shortcut from '~/components/Shortcut.vue'
 
 export default {
   components: {
-    GitLink,
     Shortcut
   },
   data () {
     return {
-      description: 'The ultimate static generated documentation theme for the JAM-stack'
+      description: 'badger badger badger badger'
+    }
+  },
+  computed: {
+    latestPost () {
+      return this.$static.topPost.edges[0].node
     }
   },
   metaInfo () {
@@ -42,7 +51,7 @@ export default {
         {
           key: 'description',
           name: 'description',
-          content: 'A theme for static site documentation based on Gridsome, ready to deploy to Netlify in one click.'
+          content: 'badger badger badger badger'
         }
       ]
     }

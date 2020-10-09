@@ -2,46 +2,34 @@
   <aside :class="{'sidebar--open' : this.$store.state.sidebarOpen}" class="sidebar">
     <nav>
       <ul>
-        <li v-for="{ node } in $static.menu.edges" :key="node.id" class="section">
-          <h3 class="section-title">{{ node.section }}</h3>
+        <li v-for="{ node: menuItem } in $static.menu.edges" :key="menuItem.id" class="section">
+          <h3 class="section-title">{{ menuItem.section }}</h3>
           <ul>
-            <li v-for="item in node.topics" :key="item.title">
-              <g-link :to="'/' + item.slug" class="topic">{{ item.title }}</g-link>
-              <ul v-for="{ node } in $static.docs.edges" v-if="checkAnchors(node.slug, item.slug)" :key="node.id">
-                <li v-for="heading in node.headings" :key="heading.value">
-                  <a :href="'/' + item.slug + heading.anchor" class="sub-topic">{{ heading.value }}</a>
-                </li>
-              </ul>
+            <li v-for="{node: post} in $static.posts.edges" v-if="menuItem.section === 'Blog Stuff'" :key="menuItem.id">
+              <a :href="post.path" class="topic">{{ post.title }}</a>
             </li>
           </ul>
         </li>
       </ul>
-      <GitLink class="git"/>
     </nav>
   </aside>
 </template>
 
 <static-query>
-query Menu {
+query {
 menu: allMenu(order:ASC) {
 edges {
 node {
 section
-topics {
-title
-slug
 }
 }
 }
-}
-docs: allDoc {
+posts: allPost {
 edges {
 node {
-slug
-headings {
-value
-anchor
-}
+path
+categories
+title
 }
 }
 }
@@ -174,7 +162,7 @@ ul {
 }
 
 .topic {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .sub-topic {

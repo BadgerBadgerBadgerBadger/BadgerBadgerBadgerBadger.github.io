@@ -1,4 +1,4 @@
-// This is where project configuration and plugin options are located. 
+// This is where project configuration and plugin options are located.
 // Learn more: https://gridsome.org/docs/config
 
 // Changes here require a server restart.
@@ -16,17 +16,30 @@ function addStyleResource (rule) {
 }
 
 module.exports = {
-  siteName: 'Jamdocs',
-  siteUrl: 'https://jamdocs.samuelhorn.com',
+  siteName: 'BadgerBadgerBadgerBadger',
+  siteUrl: 'https://badgerbadgerbadgerbadger.dev',
   templates: {
-    Doc: '/:slug',
+    Post: '/:slug',
+    Single: '/:slug',
   },
   plugins: [
     {
       use: '@gridsome/source-filesystem',
       options: {
-        path: 'docs/**/*.md',
-        typeName: 'Doc',
+        path: 'posts/**/*.md',
+        typeName: 'Post',
+        remark: {
+          plugins: [
+            '@gridsome/remark-prismjs'
+          ]
+        }
+      }
+    },
+    {
+      use: '@gridsome/source-filesystem',
+      options: {
+        path: 'singles/*.md',
+        typeName: 'Single',
         remark: {
           plugins: [
             '@gridsome/remark-prismjs'

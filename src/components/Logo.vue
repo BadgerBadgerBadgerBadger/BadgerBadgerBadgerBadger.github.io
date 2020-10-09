@@ -2,12 +2,12 @@
   <g-link class="logo" title="Back to home" to="/">
     <transition name="theme">
       <div v-if="color == 'dark'">
-        <g-image alt="logo" src="~/assets/img/logo-bright.svg"/>
+        <g-image alt="logo" src="~/assets/img/badger-logo.png"/>
       </div>
     </transition>
     <transition name="theme">
       <div v-if="color == 'bright'">
-        <g-image alt="logo" src="~/assets/img/logo-dark.svg"/>
+        <g-image alt="logo" src="~/assets/img/badger-logo.png"/>
       </div>
     </transition>
   </g-link>
@@ -41,6 +41,7 @@ export default {
   }
 
   img {
+    border-radius: 50%;
     height: 100%;
     width: auto;
   }
