@@ -13,7 +13,7 @@ I've come across many mTLS tutorials on the internet but none that took me end-t
 
 # Let's Start with the Barebones
 
-Okay, that's a bit of a lie. I won't explain what [TLS](https://www.cloudflare.com/learning/ssl/transport-layer-security-tls) is or how it works. I am going to assume you already know some of the basics. Now if you know what TLS is, mTLS gets really easy to understand. So let's quickly recap how TLS works.
+## Serve Me! -insert evil cackle-
 
 In a traditional TLS setup, used every time you see that green padlock icon in your browser's address bar, the browser is verifying the server's identity. When you go to a website you access it by using an address such as [badgerbadgerbadgerbadger.dev](https://badgerbadgerbadgerbadger.dev). If the website has TLS support (and if you encounter one in 2021 that _does not_ have TLS support, seriously, don't use it), the browser will ask it to send over its certificate in order to verify that the website is actually who it says it is. The website sends back such a certificate which has a [_CommonName_ (also knwown as a _Fully Qualified Domain Name_, or _FQDN_)](https://www.godaddy.com/garage/whats-a-fully-qualified-domain-name-fqdn-and-whats-it-good-for/) field which _should_ match the address you entered in the address bar. For `https://badgerbadgerbadgerbadger.dev` the returned certificate _should_ have a _CommonName_ of *badgerbadgerbadgerbadger.dev*. Your browser will see that the _CommonName_ and the name in the address matches and it will be satisfied that you are indeed visiting a website which says who it is.
 
@@ -23,7 +23,7 @@ In a traditional TLS setup, used every time you see that green padlock icon in y
 
 That's where [_Certificate Authorities (CAs)_](https://support.dnsimple.com/articles/what-is-certificate-authority/) come in. These are organizations that have (allegedly) gone through rigorous audits and whose trustworthiness has been verified to an extent that if they say that a website is who it says it is, that's good enough for browsers to trust that website. And how does this process work, you say? We'll get to that when we get to the more hands-on section of this post.
 
-# Ti(m)e to Reciprocate
+## Ti(m)e to Reciprocate
 
 Alright, so web browsers know who the server is. The server can be trusted. But can the browser be trusted? Maybe, maybe not. But to make our usecase more practical let's move away from the example of an end-user using a browser and move to two backend machines talking to each other. Let's imagine we have a traditional client-server architecture where _Machine A_ needs to get data from _Machine B_ at random intervals, and the way that _Machine B_ has decided it wants _Machine A_ to authenticate is Mutual TLS.
 
@@ -272,8 +272,8 @@ Most of it is informational except the _Common Name_ which is _very important_. 
 
 ```
 ❯ ll
--rw-r--r--  1 shak  staff   1.7K  15 Mar 25:08 mtls-talk.ca.crt
--rw-r--r--  1 shak  staff   3.2K  15 Mar 25:03 mtls-tut.ca.key
+-rw-r--r-- mtls-talk.ca.crt
+-rw-r--r-- mtls-tut.ca.key
 ```
 We now have a _private key_ and a _x509 certificate_ for our CA. And that's enough to get us started on the next step: creating the server-side certificate. The process is _very similar_ to what we did for the CA certificates with one key difference. We'll start the same as before by generating a private key.
 
@@ -285,11 +285,11 @@ And now we're going to derive a X509 certificate from this private key, _however
 
 ```bash
 openssl req -new -sha256 -key server.mtls-tut.local.key \
-    -subj "/C=BE/ST=AN/O=Sentiance/CN=server.mtls-tut.local" \
+    -subj "/C=BE/ST=AN/CN=server.mtls-tut.local" \
     -out server.mtls-tut.local.csr
 ```
 
-The CSR includes the same fields we used to generate the certificate of our CA. In essence they serve the same function: identification of an entity, be it a server or organization. In the CA's case there isn't any higher authority to authenticate them. They _are_ the highest digital authority. For a server certificate, the CA is the higher authority that authenticates them. Since we have our own CA, we can sign our own certificate.
+The CSR includes the same fields we used to generate the certificate of our CA (I decided to include it as part of the command instead of starting an interactive session). In essence they serve the same function: identification of an entity, be it a server or organization. In the CA's case there isn't any higher authority to authenticate them. They _are_ the highest digital authority. For a server certificate, the CA is the higher authority that authenticates them. Since we have our own CA, we can sign our own certificate.
 
 ```bash
 openssl x509 -req -in server.mtls-tut.local.csr \
@@ -300,3 +300,260 @@ openssl x509 -req -in server.mtls-tut.local.csr \
 If we break down the command a bit, we'll see that we're taking the CSR as an input, accept the CA key and cert and apart from a few options, outputing a X509 certificate.
 
 Phew again! We have our CA and we managed to get some server certificates out of it. Can we see some TLS action already?!
+
+## Putting it All Together
+
+Alright, now we're going to talk to our backend via our reverse proxy using _https_. Instead of making the request to http://server.mtls-tut.local:8089/headers we'll be making it to https://server.mtls-tut.local/headers (the 443 is implied). If we try it right now...
+```bash
+curl -H "heyo: mayo" https://server.mtls-tut.local/headers
+curl: (60) SSL certificate problem: unable to get local issuer certificate
+More details here: https://curl.haxx.se/docs/sslcerts.html
+
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
+```
+...curl is going to complain. If you visit the address in your browser you'll see:
+
+![image](https://user-images.githubusercontent.com/5138570/110142147-28728800-7dd6-11eb-8912-e7293bc97999.png)
+
+If we go ahead and [inspect the certificate](https://www.howtogeek.com/292076/how-do-you-view-ssl-certificate-details-in-google-chrome/) that's being returned to the browser:
+
+![image](https://user-images.githubusercontent.com/5138570/110142288-4b9d3780-7dd6-11eb-9969-1bd4c7e66345.png)
+
+Hey, that's not right! We went to all this trouble to generate a server-side certificate but Traeifk isn't even using it! What gives?
+
+Well, we give. I think. Never really explrored that expression. We haven't configured Traefik to use our certificates, yet. Let's open up the dynamic configuration and add a few lines.
+
+```toml
+[http]
+
+[http.routers]
+
+[http.routers.traeifk-api]
+rule = "Host(`traefik.local`)"
+service = "api@internal"
+
+[http.routers.mtls-tut]
+rule = "Host(`server.mtls-tut.local`)"
+service = "mtls-tut"
+
+[http.services]
+[http.services.mtls-tut.loadBalancer]
+[[http.services.mtls-tut.loadBalancer.servers]]
+url = "http://127.0.0.1:6969/"
+
+[tls]
+[[tls.certificates]]
+certFile = "/path/to/mtls-tut/server.mtls-tut.local.crt"
+keyFile = "/path/to/mtls-tut/server.mtls-tut.local.key"
+```
+
+We added our server cert and key to traeifk's TLS Certificate store. Now Traefik won't have to rely on its default certificate and can serve up ours, instead.
+
+Now let's try curling again:
+```bash
+❯ curl -H "heyo: mayo" https://server.mtls-tut.local/headers
+curl: (60) SSL certificate problem: unable to get local issuer certificate
+More details here: https://curl.haxx.se/docs/sslcerts.html
+
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
+```
+
+Dang it! It still doesn't work. Let's take a look at the browser:
+
+![image](https://user-images.githubusercontent.com/5138570/110143321-6ae89480-7dd7-11eb-9e98-abb3f9a9c82b.png)
+
+Alright, at least it's returning the right certificate (and not some default ones generated by Traefik), but the browser and curl both still complain. Why?
+
+### Certificate Stores
+
+Each install of an OS (Operating System) comes bundled with a store of Root Certificates. Remember that Root Certificate we generated a few paragraphs earlier that identified our CA and had all those fields about location and name? Every CA has Root Certificates that they distribute (not the private key, mind you, _never_ the private key) once the CA has been deemed trustworthy. OSes and even browsers can choose to include these Root Certificates in their Certificate Store.
+
+What this means is that when a certificate issued by one of these CAs to a server makes its way to a browser, the browser verifies if one of the Root Certificates it holds in its Certificate Store has signed the certificate it gets back from the server. If that's the case, the browser knows the certificate can be trusted. Similarly curl relies on the OSes certificate store (it is entirely possible for your browser and your OS to have different Certificate Stores, though _most_, if not all, of the Root Certificates in their stores will be identical) to figure out the validity of a server certificate.
+
+In our case our CA that we made five whole minutes back isn't known to either our browser or to curl.
+
+### Trust
+
+One way to remedy that is by adding our CA's Root Certificate to these stores, but that's drastic. There's a reason those stores only have trusted Root Certifcicates in them and you shouldn't mess around with that.
+
+What we can do instead is to tell curl to trust our CA for the duration of a specific request:
+```bash
+❯ curl --cacert /path/to/mtls-tut/mtls-talk.ca.crt -H "heyo: mayo" https://server.mtls-tut.local/headers
+
+Accept-Encoding: gzip
+Accept: */*
+X-Forwarded-Proto: https
+X-Real-Ip: 127.0.0.1
+X-Forwarded-For: 127.0.0.1
+X-Forwarded-Host: server.mtls-tut.local
+X-Forwarded-Port: 443
+User-Agent: curl/7.64.1
+Heyo: mayo
+```
+Et voila! Now the certificate returned by our server is trusted because we have explicitly told curl which Root Certificate to trust as the higher authority.
+
+## Finally, mTLS!
+
+Alright, we're in the final stretch, only a little bit more, I promise.
+
+Let's finally add mTLS to our reverse proxy. We start by updating our Traefik dynamic config, again:
+```toml
+[http]
+
+[http.routers]
+
+[http.routers.traeifk-api]
+rule = "Host(`traefik.local`)"
+service = "api@internal"
+
+[http.routers.mtls-tut]
+rule = "Host(`server.mtls-tut.local`)"
+service = "mtls-tut"
+
+[http.routers.mtls-tut.tls]
+options = "myTLSOptions"
+
+[http.services]
+[http.services.mtls-tut.loadBalancer]
+[[http.services.mtls-tut.loadBalancer.servers]]
+url = "http://127.0.0.1:6969/"
+
+[tls]
+[[tls.certificates]]
+certFile = "/path/to/mtls-tut/server.mtls-tut.local.crt"
+keyFile = "/path/to/mtls-tut/server.mtls-tut.local.key"
+
+[tls.options]
+[tls.options.myTLSOptions]
+[tls.options.myTLSOptions.clientAuth]
+clientAuthType = "RequireAnyClientCert"
+```
+
+This time not only did we add a new section for configuring client-auth, we also applied that config to our router. So now our router should require _some_ client certificate to be present. And if we try curling...
+```bash
+❯ curl --cacert mtls-talk.ca.crt -H "heyo: mayo" https://server.mtls-tut.local/headers
+curl: (35) error:1401E412:SSL routines:CONNECT_CR_FINISHED:sslv3 alert bad certificate
+```
+... we see that it is so. The server won't let us unless we provide a client certificate. So let's generate one.
+
+### The Same Old Song and Dance
+
+The process of generating a client-side certificate is _identical_ to creating a server-side one. Remember how we made a private key for the server, made a CSR out of it, then got the CA to sign that CSR giving us the final cert? We're going to repeat the exact same steps, only this time changing the _CommonName_ to `client.mtls-tut.local`.
+
+```bash
+❯ openssl genrsa -out client.mtls-tut.local.key 2048
+Generating RSA private key, 2048 bit long modulus
+............................+++
+..................+++
+e is 65537 (0x10001)
+
+❯ openssl req -new -sha256 -key client.mtls-tut.local.key \
+    -subj "/C=BE/ST=AN/CN=client.mtls-tut.local" \
+    -out client.mtls-tut.local.csr
+
+❯ openssl x509 -req -in client.mtls-tut.local.csr \
+    -CA mtls-talk.ca.crt -CAkey mtls-tut.ca.key \
+    -CAcreateserial -out client.mtls-tut.local.crt \
+    -days 500 -sha256
+Signature ok
+subject=/C=BE/ST=AN/CN=client.mtls-tut.local
+Getting CA Private Key
+```
+If all went well, we should have 3 new files:
+
+```bash
+❯ ll
+-rw-r--r-- client.mtls-tut.local.crt
+-rw-r--r-- client.mtls-tut.local.csr
+-rw-r--r-- client.mtls-tut.local.key
+-rw-r--r-- mtls-talk.ca.crt
+-rw-r--r-- mtls-talk.srl
+-rw-r--r-- mtls-tut.ca.key
+-rw-r--r-- server.mtls-tut.local.crt
+-rw-r--r-- server.mtls-tut.local.csr
+-rw-r--r-- server.mtls-tut.local.key
+```
+
+Awesome! And now we need to ask curl to _use_ these files when making a request:
+```bash
+❯ curl --key client.mtls-tut.local.key --cert client.mtls-tut.local.crt \
+	--cacert mtls-talk.ca.crt -H "heyo: mayo" https://server.mtls-tut.local/headers
+
+Accept: */*
+X-Forwarded-For: 127.0.0.1
+X-Forwarded-Port: 443
+Accept-Encoding: gzip
+User-Agent: curl/7.64.1
+Heyo: mayo
+X-Forwarded-Host: server.mtls-tut.local
+X-Forwarded-Proto: https
+X-Real-Ip: 127.0.0.1
+```
+We have successfully implemented mTLS! Break out da champagne...
+
+...later.
+
+We still have one last thing to do (I _promise_, this is the last bit).
+
+### It's a Matter of Trust
+
+Eagle-eyed readers will have noticed that our Traefik configuration is trusting any certificate that we send. For curl to work we had to tell it exactly from which CA to expect the server certifcate. But our Traefik configuration is requiring _any_ client cert. It's in the name `RequireAnyClientCert`. The problem with this being how easy it is to create your own CA and generate certificates. We just did it.
+
+So in order to restrict Traefik to trusting only specific CAs we have to enter those Root Certificates into Traeifk's trust store and set the value of `clientAuthType` to `RequireAndVerifyClientCert`
+
+```toml
+[http]
+
+[http.routers]
+
+[http.routers.traeifk-api]
+rule = "Host(`traefik.local`)"
+service = "api@internal"
+
+[http.routers.mtls-tut]
+rule = "Host(`server.mtls-tut.local`)"
+service = "mtls-tut"
+
+[http.routers.mtls-tut.tls]
+options = "myTLSOptions"
+
+[http.services]
+[http.services.mtls-tut.loadBalancer]
+[[http.services.mtls-tut.loadBalancer.servers]]
+url = "http://127.0.0.1:6969/"
+
+[tls]
+[[tls.certificates]]
+certFile = "/path/to/mtls-tut/server.mtls-tut.local.crt"
+keyFile = "/path/to/mtls-tut/server.mtls-tut.local.key"
+
+[tls.options]
+[tls.options.myTLSOptions]
+[tls.options.myTLSOptions.clientAuth]
+clientAuthType = "RequireAndVerifyClientCert"
+caFiles = ["/Users/shak/mtls-tut/client.mtls-tut.local.crt"]
+```
+
+If you curl again:
+```bash
+❯ curl --key client.mtls-tut.local.key --cert client.mtls-tut.local.crt \
+	--cacert mtls-talk.ca.crt -H "heyo: mayo" https://server.mtls-tut.local/headers
+
+Accept-Encoding: gzip
+X-Forwarded-Host: server.mtls-tut.local
+X-Real-Ip: 127.0.0.1
+Accept: */*
+Heyo: mayo
+X-Forwarded-For: 127.0.0.1
+X-Forwarded-Port: 443
+X-Forwarded-Proto: https
+User-Agent: curl/7.64.1
+```
+
+Well of course it will work! The certificates we're using for our client-auth was generated by the CA we've told Traefik to trust. But if we try to use a certificate generated by a different CA or change our Traefik config to trust a different CA for client-auth, this call would fail.
+
+Verifying that last claim is left as an exercise for the reader.
