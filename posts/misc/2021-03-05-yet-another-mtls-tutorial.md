@@ -9,14 +9,14 @@ comments: true
 share: true
 ---
 
-I've come across many mTLS tutorials on the internet but none them took me through the process, end-to-end, in a satisfying fashion. I hope to do in this tutorial is to start with the ideas of TLS and mTLS and conclude with an implementation you could reasonably productionize. Although we'll be using a Golang server as our backend and Traefik as our reverse proxy, these ideas translate to other technologies as well.
+I've come across many mTLS tutorials on the internet but none of them took me through the process, end-to-end, in a satisfying fashion. I hope to do in this tutorial is to start with the ideas of TLS and mTLS and conclude with an implementation you could reasonably productionize. Although we'll be using a Golang server as our backend and Traefik as our reverse proxy, these ideas translate to other technologies as well.
 # Let's Start with the Barebones
 
 ## Serve Me!
 
-In a traditional TLS setup, the kind you encounter every time you see that green padlock icon in your browser's address bar, it is the browser verifying the server's identity. When you go to a website you access it via an address such as [badgerbadgerbadgerbadger.dev](https://badgerbadgerbadgerbadger.dev). If the website has TLS support (and if you encounter one in 2021 that _does not_ have TLS support, seriously, don't use it), the browser will ask it to send over its server-side certificate in order to verify that the website is actually who it says it is. The website sends back such a certificate which has a [_CommonName_ (also knwown as a _Fully Qualified Domain Name_, or _FQDN_)](https://www.godaddy.com/garage/whats-a-fully-qualified-domain-name-fqdn-and-whats-it-good-for/) field which _should_ match the address you entered in the address bar. For https://badgerbadgerbadgerbadger.dev the returned certificate _should_ have a _CommonName_ of **badgerbadgerbadgerbadger.dev**. Your browser will see that the _CommonName_ and the name in the address matches and it will be satisfied that you are indeed visiting a website who is what it claims to be.
+In a traditional TLS setup, the kind you encounter every time you see that green padlock icon in your browser's address bar, it is the browser verifying the server's identity. When you go to a website you access it via an address such as [badgerbadgerbadgerbadger.dev](https://badgerbadgerbadgerbadger.dev). If the website has TLS support (and if you encounter one in 2021 that _does not_ have TLS support, seriously, don't use it), the browser will ask it to send over its server-side certificate in order to verify that the website is actually who it says it is. The website sends back such a certificate which has a [_CommonName_ (also known as a _Fully Qualified Domain Name_, or _FQDN_)](https://www.godaddy.com/garage/whats-a-fully-qualified-domain-name-fqdn-and-whats-it-good-for/) field which _should_ match the address you entered in the address bar. For https://badgerbadgerbadgerbadger.dev the returned certificate _should_ have a _CommonName_ of **badgerbadgerbadgerbadger.dev**. Your browser will see that the _CommonName_ and the name in the address match and it will be satisfied that you are indeed visiting a website who is what it claims to be.
 
-"But wait!" I hear you say, "Couldn't anyone send back a certificate with a _CommonName_ field set to whatever?" Astute observation. Indeed, anyone can create a certificate, attach whatever _CommonName_ they choose, and send it back to your browser...
+"But wait!" I hear you say, "Couldn't anyone send back a certificate with a _CommonName_ field set to whatever?" Astute observation. Indeed, anyone can create a certificate, attach whatever _CommonName_ they choose and send it back to your browser...
 
 ...except, they can't.
 
@@ -24,15 +24,15 @@ That's where [_Certificate Authorities (CAs)_](https://support.dnsimple.com/arti
 
 ## Ti(m)e to Reciprocate
 
-Alright, so web browsers know who the server is. The server can be trusted. But can the browser be trusted? Maybe, maybe not. But to make our usecase more practical let's move away from the example of an end-user using a browser and move to two backend machines talking to each other. Let's imagine we have a traditional client-server architecture where _Machine A_ needs to get data from _Machine B_ at random intervals, and the way that _Machine B_ has decided it wants _Machine A_ to authenticate is Mutual TLS.
+Alright, so web browsers know who the server is. The server can be trusted. But can the browser be trusted? Maybe, maybe not. But to make our use case more practical let's move away from the example of an end-user using a browser and move to two backend machines talking to each other. Let's imagine we have a traditional client-server architecture where _Machine A_ needs to get data from _Machine B_ at random intervals, and the way that _Machine B_ has decided it wants _Machine A_ to authenticate is Mutual TLS.
 
 If you understood how a server identified itself to the client by using a certificate trusted by a third party, you're already most of the way to understanding mTLS: it's kind of in the name.
 
-In mTLS (_Mutual_ TLS) the server sends its certificate as usual, but the client has to send one too. Let's say _Machine B_ (the server) identifies itself as `machineb.com` and has a certificate with a matching _CommonName_, that's one side of the equation. In order for the other side (_Machine A_, the client) to do its part, it also needs to obtain a certificate. This certificate doesn't have to have a specific _CommonName_. It doesn't _have_ to be `machinea.com`. But if we're only using public CAs, the easiest thing for _Machine A_ to do is to prove to a CA that they own `machinea.com` and then be issued a certiciate for that _CommonName_. _Machine B_, on its end will know to expect requests from _Machine A_ authenticated by a certificate which has the _CommonName_ of `machinea.com`.
+In mTLS (_Mutual_ TLS) the server sends its certificate as usual, but the client has to send one too. Let's say _Machine B_ (the server) identifies itself as `machineb.com` and has a certificate with a matching _CommonName_, that's one side of the equation. In order for the other side (_Machine A_, the client) to do its part, it also needs to obtain a certificate. This certificate doesn't have to have a specific _CommonName_. It doesn't _have_ to be `machinea.com`. But if we're only using public CAs, the easiest thing for _Machine A_ to do is to prove to a CA that they own `machinea.com` and then be issued a certificate for that _CommonName_. _Machine B_, on its end will know to expect requests from _Machine A_ authenticated by a certificate that has the _CommonName_ of `machinea.com`.
 
 Are there other ways to do this? Sure. _Machine B_ could host its own CA and issue a certificate to _Machine A_. That way _Machine B_ knows exactly what to expect since it's the one that issued the certificate.
 
-I'll end this section with a link to a [really nice article which has some informative diagrams](https://medium.com/sitewards/the-magic-of-tls-x509-and-mutual-authentication-explained-b2162dec4401).
+I'll end this section with a link to a [really nice article that has some informative diagrams](https://medium.com/sitewards/the-magic-of-tls-x509-and-mutual-authentication-explained-b2162dec4401).
 
 # Let's Get Our Hands Dirty
 
@@ -68,7 +68,7 @@ Feel free to implement this in your language of choice if you don't have the Gol
 ## Curl It
 
 ```bash
-curl -H "heyo: mayo" http://localhost:6969/headers
+❯ curl -H "heyo: mayo" http://localhost:6969/headers
 ```
 
 What, did you think we were going to write some HTML and JS code? Do I look like I'm in a masochistic mood? [Curl](https://curl.se/) is good enough for our needs. If you don't have it installed, google (or your choice of search engine) is your friend.
@@ -193,7 +193,7 @@ The final piece of this first part of the puzzle is modifying our `/etc/hosts` f
 
 Let's try curl again.
 ```bash
-curl -H "heyo: mayo" http://server.mtls-talk.local:8089/headers
+❯ curl -H "heyo: mayo" http://server.mtls-talk.local:8089/headers
 ```
 
 Note that we are now accessing the http entrypoint of our reverse proxy and not our backend. Your response should look something like:
@@ -211,11 +211,11 @@ Accept: */*
 
 All those extra headers are telling us that Traefik is successfully routing our request to our backend at port [6969](https://camo.githubusercontent.com/42cef8be0203e843fc1c25b4be92bb6314721e180e3c23cfd1019387d2de628e/687474703a2f2f69302e6b796d2d63646e2e636f6d2f70686f746f732f696d616765732f6f726967696e616c2f3030302f3435302f3135342f3832302e6a706567).
 
-Phew! All that work and we haven't even stared on the TLS part of things.
+Phew! All that work and we haven't even started on the TLS part of things.
 
 ## TLS Time
 
-First we're going to need a CA. You _could_ go to the trouble of getting a certificates online. If you have two domain names you own, getting certificates from [Let's Encrypt](https://letsencrypt.org/) is an inexpensive solution. But for our tutorial we'll stick with out local resources. Let's make a CA!
+First we're going to need a CA. You _could_ go to the trouble of getting a certificate online. If you have two domain names you own, getting certificates from [Let's Encrypt](https://letsencrypt.org/) is an inexpensive solution. But for our tutorial we'll stick with our local resources. Let's make a CA!
 
 ### Break Open that Bottle of openssl
 
@@ -277,7 +277,7 @@ Most of it is informational except the _CommonName_ which is _very important_. G
 -rw-r--r-- mtls-talk.ca.crt
 -rw-r--r-- mtls-tut.ca.key
 ```
-We now have a _private key_ and a _x509 certificate_ for our CA. And that's enough to get us started on the next step: creating the server-side certificate. The process is _very similar_ to what we did for the CA certificate with one key difference. 
+We now have a _private key_ and a _X509 certificate_ for our CA. And that's enough to get us started on the next step: creating the server-side certificate. The process is _very similar_ to what we did for the CA certificate with one key difference. 
 
 We'll start the same as before by generating a _private key_.
 
@@ -303,7 +303,7 @@ The CSR includes the same fields we used to generate the certificate of our CA (
     -CAcreateserial -out server.mtls-tut.local.crt \
     -days 500 -sha256
 ```
-If we break down the command a bit, we'll see that we're taking the CSR as an input, accepting the CA key and cert, and apart from a few config options, outputing a _X509 certificate_.
+If we break down the command a bit, we'll see that we're taking the CSR as an input, accepting the CA key and cert, and apart from a few config options, outputting a _X509 certificate_.
 
 Phew again! We have our CA and we managed to get some server certificates out of it. Can we see some TLS action already?!
 
@@ -329,7 +329,7 @@ If we go ahead and [inspect the certificate](https://www.howtogeek.com/292076/ho
 
 Hey, that's not right! We went to all that trouble to generate a server-side certificate but Traeifk isn't even using it! What gives?
 
-Well, we give. I think. Never really explrored that expression. We haven't configured Traefik to use our certificates, yet. Let's open up the dynamic configuration and add a few lines.
+Well, we give. I think. Never really explored that expression. We haven't configured Traefik to use our certificates, yet. Let's open up the dynamic configuration and add a few lines.
 
 ```toml
 [http]
@@ -355,7 +355,7 @@ certFile = "/path/to/mtls-tut/server.mtls-tut.local.crt"
 keyFile = "/path/to/mtls-tut/server.mtls-tut.local.key"
 ```
 
-We added our server cert and key to traeifk's TLS Certificate store. Now Traefik won't have to rely on its default certificate and can serve up ours, instead.
+We added our server cert and key to Traeifk's TLS Certificate store. Now Traefik won't have to rely on its default certificate and can serve up ours, instead.
 
 Now let's try curling again:
 ```bash
@@ -384,7 +384,7 @@ In our case our CA that we made five whole minutes back isn't known to either ou
 
 ### Trust
 
-One way to remedy that is by adding our CA's Root Certificate to these stores, but that's drastic. There's a reason those stores only have trusted Root Certifcicates in them and you shouldn't mess around with that.
+One way to remedy that is by adding our CA's Root Certificate to these stores, but that's drastic. There's a reason those stores only have trusted Root Certificates in them and you shouldn't mess around with that.
 
 What we can do instead is to tell curl to trust our CA for the duration of a specific request:
 ```bash
@@ -508,7 +508,7 @@ We have successfully implemented mTLS! Break out da champagne...
 
 We still have one last thing to do (I _promise_, this is the last bit).
 
-### It's a Matter of Trust
+### Trust, Again
 
 Eagle-eyed readers will have noticed that our Traefik configuration is trusting any certificate that we send. For curl to work we had to tell it exactly from which CA to expect the server certifcate. But our Traefik configuration is requiring _any_ client cert. It's in the name `RequireAnyClientCert`. The problem with this being how easy it is to create your own CA and generate certificates. We just did it in a few minutes.
 
