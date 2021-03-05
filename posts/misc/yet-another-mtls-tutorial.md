@@ -213,3 +213,90 @@ Accept: */*
 All those extra headers are telling us that Traefik is successfully routing our request to our backend at port [6969](https://camo.githubusercontent.com/42cef8be0203e843fc1c25b4be92bb6314721e180e3c23cfd1019387d2de628e/687474703a2f2f69302e6b796d2d63646e2e636f6d2f70686f746f732f696d616765732f6f726967696e616c2f3030302f3435302f3135342f3832302e6a706567).
 
 Phew! All that work and we haven't even stared on the TLS part of things.
+
+## TLS Time
+
+First we're going to need a CA. Now, you _could_ go to the trouble of getting certificates online. If you have two domain names you own, getting certificates from [Let's Encrypt](https://letsencrypt.org/) is an inexpensive solution. But for our tutorial we'll stick with out local resoueces. Let's make a CA!
+
+### Break Open that Bottle of openssl
+
+Making your own CA is [surprisingly simple](https://gist.github.com/fntlnz/cf14feb5a46b2eda428e000157447309) (getting others to trust it is a different matter). You'll need [openssl](https://github.com/openssl/openssl) which _should_ already be installed on your platform of choice but if it isn't, you can do that bit yourself.
+
+Once you have it, it's time to make the most important decision so far: what are you going to call your CA? I'll keep things simple for myself and call mine `mtls-tut.ca`. Not too imaginative but it's been a long week. The first thing we need to do now that we've decided a name is to create the _[Root](https://www.thesslstore.com/blog/root-certificates-intermediate/) [Certificate](https://www.kinamo.be/en/support/faq/what-are-root-and-intermediate-ssl-certificates)_. The _Root Certificate_ is a **Big Deal™**. This is the certificate that will be acting as-- you guessed it-- the root of all certificates issued by our CA. Other certificates will draw their authority _from_ this Root Certificate. So let's begin.
+
+First, we need a private key.
+```bash
+openssl genrsa \
+    -out mtls-tut.ca.key 4096
+```
+The [private key](https://sectigo.com/resource-library/public-key-vs-private-key) is basically a really big random number. We need to keep this number secret. Most CAs don't even keep these keys online. If it can't be accessed via a network it (probably) can't be hacked. CAs take the security of their private keys _[very seriously]_(https://security.stackexchange.com/questions/24896/how-do-certification-authorities-store-their-private-root-keys). In our case, we can choose to be somewhat lackadaisical about the security of our private key. I'm going to store it in a directory called `mtls-tut` and pretend it is guarded by digital pitbulls.
+
+![timothy-perry-G9_4owLR9b4-unsplash (1)](https://user-images.githubusercontent.com/5138570/110125634-d32d7b00-7dc3-11eb-9c2f-c8f27adb255d.jpg)
+
+If you ran the comman you should see output like this:
+```
+Generating RSA private key, 4096 bit long modulus
+..............................................................................................................++
+.........................++
+e is 65537 (0x10001)
+❯ ls
+mtls-tut.ca.key
+~/mtls-tut ❯
+```
+
+With a key in hand we need to derive a [X509 certificate](https://blog.keyfactor.com/what-is-x509-certificate). I will let you read up on what the X509 format looks like. For our purposes we need to know that the certificate is a collection of fields such as _country_, _city_, _region_, some more, and most importantly
+```bash
+openssl req -x509 -new -nodes \
+    -key mtls-tut.ca.key \
+    -sha256 -days 1024 \
+    -out mtls-talk.ca.crt
+```
+You will get an interactive prompt asking you to enter values for the fields I mentioned above.
+```
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) []:BE
+State or Province Name (full name) []:Flanders
+Locality Name (eg, city) []:
+Organization Name (eg, company) []:
+Organizational Unit Name (eg, section) []:
+Common Name (eg, fully qualified host name) []:mtls-tut.ca
+Email Address []:
+```
+Most of it is informational except the _Common Name_ which is _very important_. Get that one right.
+
+```
+❯ ll
+-rw-r--r--  1 shak  staff   1.7K  15 Mar 25:08 mtls-talk.ca.crt
+-rw-r--r--  1 shak  staff   3.2K  15 Mar 25:03 mtls-tut.ca.key
+```
+We now have a _private key_ and a _x509 certificate_ for our CA. And that's enough to get us started on the next step: creating the server-side certificate. The process is _very similar_ to what we did for the CA certificates with one key difference. We'll start the same as before by generating a private key.
+
+```bash
+openssl genrsa -out server.mtls-tut.local.key 2048
+```
+
+And now we're going to derive a X509 certificate from this private key, _however_, we will sign this certificate with the CA key and cert we generated earlier. To do this we first need a [CSR (Certificate Signing Request)](https://www.sslshopper.com/what-is-a-csr-certificate-signing-request.html). A CSR is a _request_ that is signed by the private key of the server and submitted to the CA. If the CA is happy with it, they will issue a _certificate_ based on it.
+
+```bash
+openssl req -new -sha256 -key server.mtls-tut.local.key \
+    -subj "/C=BE/ST=AN/O=Sentiance/CN=server.mtls-tut.local" \
+    -out server.mtls-tut.local.csr
+```
+
+The CSR includes the same fields we used to generate the certificate of our CA. In essence they serve the same function: identification of an entity, be it a server or organization. In the CA's case there isn't any higher authority to authenticate them. They _are_ the highest digital authority. For a server certificate, the CA is the higher authority that authenticates them. Since we have our own CA, we can sign our own certificate.
+
+```bash
+openssl x509 -req -in server.mtls-tut.local.csr \
+    -CA mtls-talk.ca.crt -CAkey mtls-tut.ca.key \
+    -CAcreateserial -out server.mtls-tut.local.crt \
+    -days 500 -sha256
+```
+If we break down the command a bit, we'll see that we're taking the CSR as an input, accept the CA key and cert and apart from a few options, outputing a X509 certificate.
+
+Phew again! We have our CA and we managed to get some server certificates out of it. Can we see some TLS action already?!
