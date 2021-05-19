@@ -20,4 +20,10 @@ I wondered if I should be sending a sound signal to the Arduino and have it anal
 
 I finally settled on sending commands to the Ardunio to update the lights and leave all major processing work to whatever device would be sending those commands.
 
+## First Attempt: Blinky Lights
+
 This was the first thing I got working.
+
+https://youtu.be/PtheEff-c6o
+
+It's a fairly simple circuit with pins 2 - 13 each connected to an LED through 1k ohm resistors. All pins are on OUTPUT mode. I have a processing program that reads the audio-in of my laptop and pulls out the volume. I then mapped that volume value to a 1 - 12 range and sent commands to the Arduino over the serial port. Each command was just a number
