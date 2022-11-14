@@ -2,7 +2,7 @@
 layout: post
 title: Building Rant
 excerpt: "A fun little service I wrote to help me rant better."
-modified: 2022-11-14T21:19:25-04:00
+modified: 2022-11-14T21:13:25-04:00
 categories: misc
 tags: [golang, humor, intepreters]
 comments: true
