@@ -2,6 +2,7 @@
 title: 'Sound & Lights: Dev Log #1'
 date: 
 slug: ''
+published: false
 
 ---
 I recently began trying my hands at small electronics projects. I got myself a starter kit with an Arduino Uno, some wires, capacitors, resistors, and all the other little goodies they package in starter kits.
