@@ -4,6 +4,7 @@
       <h1>{{ $static.metadata.siteName }} - {{ this.description }}</h1>
       <nav>
         <Shortcut :link="latestPost.path" icon="book-icon" text="Blog"/>
+        <Shortcut :link="latestPost.path" icon="users-icon" text="Hire Me!"/>
       </nav>
       <GitLink class="git" size="large"/>
     </div>
