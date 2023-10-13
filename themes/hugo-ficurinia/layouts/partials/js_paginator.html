@@ -10,74 +10,32 @@
         }
         return res;
     }
-
     function renderImage(image, link, alt) {
         if (!image) return '';
         return `<a href="${link}"><img src="${image}" alt="${alt}" /></a>`;
     }
-
     function renderSingleArticle(article) {
-        {
-            {
-                if (.
-                Site.Params.tagsInArticlePreview |
-            default
-                true
-            )
-            }
-        }
+        {{ if (.Site.Params.tagsInArticlePreview | default true) }}
         const tags = renderTags(article.tags)
-        {
-            { else
-            }
-        }
+        {{ else }}
         const tags = ''
-        {
-            {
-                end
-            }
-        }
+        {{ end }}
 
-        {
-            {
-                if .
-                Site.Params.imageInArticlePreview
-            }
-        }
+        {{ if .Site.Params.imageInArticlePreview }}
         const img = renderImage(article.image, article.link, article.imageAlt)
-        {
-            { else
-            }
-        }
+        {{ else }}
         const img = ''
-        {
-            {
-                end
-            }
-        }
+        {{ end }}
 
-        {
-            {
-                if (site.Params.articleSummary | default
-                true
-            )
-            }
-        }
+        {{ if (site.Params.articleSummary | default true) }}
         const continueReadingStr = '{{ i18n "continueReading" | safeJS }}'
         const summ = `<div class="articlePreview">
             <p>${article.summary}</p>
             <p><a href="${article.link}">${continueReadingStr} </a></p>
         </div>`
-        {
-            { else
-            }
-        }
+        {{ else }}
         const summ = ''
-        {
-            {
-                end
-            }
-        }
+        {{ end }}
 
         const dateStr = '{{ i18n "date" | safeJS }}'
 
@@ -99,7 +57,6 @@
         </article>
         `;
     }
-
     function renderArticles(articles) {
         let rendered = articles.map(a => renderSingleArticle(a)).join('\n');
         document.getElementById('postlist').innerHTML += rendered;

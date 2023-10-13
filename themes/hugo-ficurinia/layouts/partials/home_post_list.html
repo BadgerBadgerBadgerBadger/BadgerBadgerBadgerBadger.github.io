@@ -3,21 +3,21 @@
 {{ $featuredPostsList := slice }}
 {{ $pagination := slice }}
 {{ if site.Params.enableFeatured | default false }}
-{{ $featuredPostsList = where $allPostsList "Params.featured" true }}
-{{ $postsList = union (where $allPostsList "Params.featured" false) (where $allPostsList "Params.featured" nil) }}
-{{ $pagination = (.Ctx.Paginate $postsList).Pages }}
-{{ if eq .Ctx.Paginator.PageNumber 1 }}
-{{- partial "featured_articles.html" $featuredPostsList -}}
-{{ end }}
+    {{ $featuredPostsList = where $allPostsList "Params.featured" true }}
+    {{ $postsList = union (where $allPostsList "Params.featured" false) (where $allPostsList "Params.featured" nil) }}
+    {{ $pagination = (.Ctx.Paginate $postsList).Pages }}
+    {{ if eq .Ctx.Paginator.PageNumber 1 }}
+        {{- partial "featured_articles.html" $featuredPostsList -}}
+    {{ end }}
 {{ else }}
-{{ $pagination = (.Ctx.Paginate $postsList).Pages }}
+    {{ $pagination = (.Ctx.Paginate $postsList).Pages }}
 {{ end }}
 
 {{/* pagination */}}
 <div class="postlist {{ if site.Params.gridView }}gridView{{ end }}" id="postlist">
-    {{ range $pagination }}
+{{ range $pagination }}
     {{- partial "article_card.html" . -}}
-    {{ end }}
+{{ end }}
 </div>
 <div id="getNextBtnContainer"></div>
 {{- partial "paginator.html" .Ctx -}}

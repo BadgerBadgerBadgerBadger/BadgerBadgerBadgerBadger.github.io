@@ -1,5 +1,5 @@
 <div class="search">
-    <input id="searchbar" placeholder='{{ i18n "searchbarTxt" }}' type="text"/>
+    <input id="searchbar" type="text" placeholder='{{ i18n "searchbarTxt" }}' />
     <span class="nerdlink" onclick="newSearch();">&#xf002;</span>
 </div>
 <script>
@@ -8,8 +8,5 @@
         if (!term) return;
         location.href = `/search?q=${term}`;
     }
-
-    searchbar.onkeyup = (ev) => {
-        if (ev.keyCode == 13) newSearch()
-    };
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
 </script>

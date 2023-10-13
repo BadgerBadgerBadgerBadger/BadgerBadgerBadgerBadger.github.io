@@ -1,10 +1,10 @@
 {{ if .Site.Params.plausibleScriptUrl }}
-{{ if .Site.Params.plausibleDomain }}
-<script
-        async
-        data-domain="{{ .Site.Params.plausibleDomain }}"
-        defer
-        src="{{ .Site.Params.plausibleScriptUrl }}"
-></script>
-{{ end }}
+    {{ if .Site.Params.plausibleDomain }}
+        <script
+            async
+            defer
+            data-domain="{{ .Site.Params.plausibleDomain }}"
+            src="{{ .Site.Params.plausibleScriptUrl }}"
+        ></script>
+    {{ end }}
 {{ end }}
