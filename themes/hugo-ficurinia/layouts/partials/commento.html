@@ -1,8 +1,8 @@
 {{ if and .Site.Params.commento (.Params.comments | default true) }}
-<script
-        data-no-fonts="true"
+    <script
         defer
         src="{{ .Site.Params.commento }}"
-></script>
-<div id="commento"></div>
+        data-no-fonts="true"
+    ></script>
+    <div id="commento"></div>
 {{ end }}

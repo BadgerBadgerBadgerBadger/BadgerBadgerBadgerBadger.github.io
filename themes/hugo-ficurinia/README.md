@@ -10,8 +10,7 @@ A prickly blog theme for Hugo
 
 [Code for the demo website](https://gitlab.com/gabmus/gabmus.gitlab.io) (really my personal website)
 
-[Screenshot gallery](https://gabmus.gitlab.io/hugo-ficurinia-screenshots/) showcasing 256 of the possible configurations
-that Ficurinia offers.
+[Screenshot gallery](https://gabmus.gitlab.io/hugo-ficurinia-screenshots/) showcasing 256 of the possible configurations that Ficurinia offers.
 
 # Customization
 
@@ -175,8 +174,7 @@ summaryLength = 70  # number of words for article summaries
 
 ### Supported icons
 
-For the `[[menu.icons]]` menu. They match identifier, name and url can be whatever. Here's a list of supported
-identifiers:
+For the `[[menu.icons]]` menu. They match identifier, name and url can be whatever. Here's a list of supported identifiers:
 
 - discord
 - email
@@ -200,8 +198,7 @@ identifiers:
 
 ## Colors
 
-Colors are completely customizable. They are defined in [`data/colors.yml`](data/colors.yml). Just copy that file over
-to `yoursite/data/colors.yml` and customize it to your liking.
+Colors are completely customizable. They are defined in [`data/colors.yml`](data/colors.yml). Just copy that file over to `yoursite/data/colors.yml` and customize it to your liking.
 
 ## Footer columns
 
@@ -268,8 +265,7 @@ Every post can have various parameters in the frontmatter, here are some that yo
 - `imageCaption`: a markdown text rendered as a caption for the article image described above
 - `featured`: boolean, indicate if the post should be shown as featured
 - `comments`: boolean, if true it enables comments for the current post, if false it disables them (default is true)
-- `showDate`: boolean, true by default, if false hides the date. Useful for non-article pages where the date isn't
-  important
+- `showDate`: boolean, true by default, if false hides the date. Useful for non-article pages where the date isn't important
 - `showTitle`: boolean, true by default, if false hides the title.
 - `showShare`: boolean, true by default, if false hides the share button.
 - `norss`: boolean, if set to true the page will be skipped in the rss feed
@@ -290,11 +286,9 @@ You can tweak the TOC settings in your `config.toml`:
 
 # Generate icons
 
-It's best to use the provided `generate_icons.sh` script to generate all necessary icons for your website. This script
-requires ImageMagick, that you will need to install separately.
+It's best to use the provided `generate_icons.sh` script to generate all necessary icons for your website. This script requires ImageMagick, that you will need to install separately.
 
-For the best results, place your logo in svg format inside the `static` directory of your website, rename it
-to `logo.svg` and then call `./themes/hugo-ficurinia/generate_icons.sh static/logo.svg`.
+For the best results, place your logo in svg format inside the `static` directory of your website, rename it to `logo.svg` and then call `./themes/hugo-ficurinia/generate_icons.sh static/logo.svg`.
 
 The script will take care of generating all the icons you need.
 
@@ -314,18 +308,17 @@ Finally, make sure to edit your config.toml to include the following:
 
 # Inject custom content
 
-Ficurinia supports injecting custom content into the theme. There are several files you can create
-in `layouts/partials/inject` that will be included inside the theme in different places.
+Ficurinia supports injecting custom content into the theme. There are several files you can create in `layouts/partials/inject` that will be included inside the theme in different places.
 
-| Partial                                       | Placement                      |
-|-----------------------------------------------|--------------------------------|
-| `layouts/partials/inject/body.html`           | Before closing the `body` tag  |
-| `layouts/partials/inject/content-after.html`  | After a post or page content   |
-| `layouts/partials/inject/content-before.html` | Before a post or page content  |
-| `layouts/partials/inject/footer.html`         | At the beginning of the footer |
-| `layouts/partials/inject/head.html`           | Before closing the `head` tag  |
-| `layouts/partials/inject/header-after.html`   | Before closing the header      |
-| `layouts/partials/inject/header-before.html`  | At the beginning of the header |
+| Partial | Placement |
+|---------|-----------|
+| `layouts/partials/inject/body.html` | Before closing the `body` tag |
+| `layouts/partials/inject/content-after.html` | After a post or page content |
+| `layouts/partials/inject/content-before.html` | Before a post or page content |
+| `layouts/partials/inject/footer.html` | At the beginning of the footer |
+| `layouts/partials/inject/head.html` | Before closing the `head` tag |
+| `layouts/partials/inject/header-after.html` | Before closing the header |
+| `layouts/partials/inject/header-before.html` | At the beginning of the header |
 
 # Does *Ficurinia* mean anything?
 

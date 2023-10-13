@@ -12,10 +12,10 @@ features = ["posts", "shortcodes", "comments", "analytics"]
 logo = "/img/logo.png"
 
 [author]
-name = "Gabriele Musco"
-homepage = "https://gabmus.org"
+  name = "Gabriele Musco"
+  homepage = "https://gabmus.org"
 
 [module]
-[module.hugoVersion]
-extended = true
-min = "0.80.0"
+  [module.hugoVersion]
+    extended = true
+    min = "0.80.0"

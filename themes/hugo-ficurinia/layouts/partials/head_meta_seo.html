@@ -1,15 +1,15 @@
-<meta content="{{ .Site.Params.Author }}" name="author"/>
+<meta name="author" content="{{ .Site.Params.Author }}" />
 {{ if .IsPage }}
-{{ if .Params.tags }}
-<meta content='{{ delimit (sort .Params.tags) ", "}}' name="keywords"/>
-{{ end }}
-{{ if .Params.description }}
-<meta content="{{ .Params.description }}" name="description"/>
+    {{ if .Params.tags }}
+        <meta name="keywords" content='{{ delimit (sort .Params.tags) ", "}}' />
+    {{ end }}
+    {{ if .Params.description }}
+        <meta name="description" content="{{ .Params.description }}" />
+    {{ else }}
+        <meta name="description" content="{{ substr .Summary 20 }}" />
+    {{ end }}
 {{ else }}
-<meta content="{{ substr .Summary 20 }}" name="description"/>
-{{ end }}
-{{ else }}
-{{ if .Site.Params.description }}
-<meta content="{{ .Site.Params.description }}" name="description"/>
-{{ end }}
+    {{ if .Site.Params.description }}
+        <meta name="description" content="{{ .Site.Params.description }}" />
+    {{ end }}
 {{ end }}
