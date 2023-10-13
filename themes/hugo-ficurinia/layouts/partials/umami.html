@@ -1,0 +1,10 @@
+{{ if .Site.Params.umamiScriptUrl }}
+{{ if .Site.Params.umamiWebsiteId }}
+<script
+        async
+        data-website-id="{{ .Site.Params.umamiWebsiteId }}"
+        defer
+        src="{{ .Site.Params.umamiScriptUrl }}"
+></script>
+{{ end }}
+{{ end }}

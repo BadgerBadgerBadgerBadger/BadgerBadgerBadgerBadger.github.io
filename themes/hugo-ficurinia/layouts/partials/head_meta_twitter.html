@@ -1,0 +1,33 @@
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content='{{ trim (trim .Site.BaseURL "http://") "https://" }}'
+      property="twitter:domain"
+/>
+<meta content="{{ .Permalink | absURL }}" property="twitter:url"/>
+
+{{ if .IsPage }}
+<meta content="{{ .Title }}" name="twitter:title"/>
+
+{{ $image := .Site.Params.icon512 | default "/img/icon.svg" }}
+{{ if .Params.Image }}
+{{ if or (hasPrefix .Params.Image "/") (hasPrefix .Params.Image "http://") (hasPrefix .Params.Image "https://") }}
+{{ $image = .Params.Image }}
+{{ else }}
+{{ $image = print .Permalink "/" .Params.Image }}
+{{ end }}
+{{ end }}
+<meta content="{{ $image | absURL }}"
+      name="twitter:image"/>
+{{ if .Params.description }}
+<meta content="{{ .Params.description }}" name="twitter:description"/>
+{{ else }}
+<meta content="{{ substr .Summary 0 160 }}" name="twitter:description"/>
+{{ end }}
+{{ else }}
+<meta content='{{ .Site.Title | default "Ficurinia" }}'
+      name="twitter:title"/>
+{{ if .Site.Params.description }}
+<meta content="{{ .Site.Params.description }}" name="twitter:description"/>
+{{ end }}
+<meta content='{{ .Site.Params.icon512 | default "/img/icon.svg" | absURL }}'
+      name="twitter:image"/>
+{{ end }}
