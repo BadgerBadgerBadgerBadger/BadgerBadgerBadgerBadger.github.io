@@ -1,0 +1,8 @@
+baseURL = 'https://badgerbadgerbadgerbadger.dev/'
+languageCode = 'en-us'
+title = 'Badger Badger Badger Badger'
+theme = "hugo-ficurinia"
+
+cleanDestinationDir = true
+copyright = "Badgerman"
+googleAnalytics = "UA-66106064-2"
