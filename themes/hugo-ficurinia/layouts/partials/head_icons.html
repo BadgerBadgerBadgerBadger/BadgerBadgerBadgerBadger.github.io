@@ -1,0 +1,20 @@
+<link
+        href='{{ .Site.Params.favicon | default "/favicon.png" }}'
+        rel="icon"
+/>
+<link
+        href='{{ .Site.Params.faviconIco | default "/favicon.ico" }}'
+        rel="shortcut icon"
+        type="image/x-icon"
+/>
+<link
+        href='{{ .Site.Params.appletouch | default "/apple-touch-icon.png" }}'
+        rel="apple-touch-icon"
+/>
+{{ if .Site.Params.svgicon }}
+<link
+        href='{{ .Site.Params.svgicon | default "/logo.svg" }}'
+        rel="icon"
+        type="image/svg+xml"
+/>
+{{ end }}

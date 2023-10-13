@@ -1,0 +1,42 @@
+<meta content='{{ .Site.Title | default "Ficurinia" }}'
+      property="og:site_name"/>
+{{ if .IsPage }}
+<meta content="{{ .Title }}" property="og:title"/>
+<meta content="article" property="og:type"/>
+
+<meta
+        content="{{ .Site.Params.Author }}" property="article:author"/>
+<meta
+        content='{{ .Date.Format "2006-01-02T15:04:05Z-0700" }}'
+        property="article:published_time"/>
+{{ if .Params.tags }}
+{{ range sort .Params.tags }}
+<meta content="{{ . }}" property="article:tag"/>
+{{ end }}
+{{ end }}
+<meta content="{{ .Permalink }}" property="og:url"/>
+{{ $image := .Site.Params.icon512 | default "/img/icon.svg" }}
+{{ if .Params.Image }}
+{{ if or (hasPrefix .Params.Image "/") (hasPrefix .Params.Image "http://") (hasPrefix .Params.Image "https://") }}
+{{ $image = .Params.Image }}
+{{ else }}
+{{ $image = print .Permalink "/" .Params.Image }}
+{{ end }}
+{{ end }}
+<meta content="{{ $image | absURL }}"
+      property="og:image"/>
+{{ if .Params.description }}
+<meta content="{{ .Params.description }}" property="og:description"/>
+{{ else }}
+<meta content="{{ substr .Summary 0 160 }}" property="og:description"/>
+{{ end }}
+{{ else }}
+<meta content='{{ .Site.Title | default "Ficurinia" }}'
+      property="og:title"/>
+{{ if .Site.Params.description }}
+<meta content="{{ .Site.Params.description }}" property="og:description"/>
+{{ end }}
+<meta content="blog" property="og:type"/>
+<meta content='{{ .Site.Params.icon512 | default "/img/icon.svg" | absURL }}'
+      property="og:image"/>
+{{ end }}

@@ -1,0 +1,15 @@
+<div class="search">
+    <input id="searchbar" placeholder='{{ i18n "searchbarTxt" }}' type="text"/>
+    <span class="nerdlink" onclick="newSearch();">&#xf002;</span>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+
+    searchbar.onkeyup = (ev) => {
+        if (ev.keyCode == 13) newSearch()
+    };
+</script>
