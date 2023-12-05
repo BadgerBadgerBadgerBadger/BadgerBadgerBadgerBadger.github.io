@@ -3,7 +3,7 @@
         <input type="checkbox" id="main-nav-toggler" />
     {{ end }}
     <ul id="main-nav">
-        <li><a href="/themes/hugo-ficurinia/static">{{ i18n "home" }}</a></li>
+        <li><a href="/">{{ i18n "home" }}</a></li>
         {{ if (.Site.Params.showPostsLink | default true) }}
             <li><a href="/posts">{{ i18n "posts" }}</a></li>
         {{ end }}
