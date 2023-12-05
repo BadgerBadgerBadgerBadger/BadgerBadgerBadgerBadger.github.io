@@ -1,8 +1,25 @@
 baseURL = 'https://badgerbadgerbadgerbadger.dev/'
-languageCode = 'en-us'
+languageCode = 'en-gb'
 title = 'Badger Badger Badger Badger'
 theme = "hugo-ficurinia"
 
+defaultContentLanguage = "en"
+
 cleanDestinationDir = true
-copyright = "Badgerman"
+copyright = "Shaun Das - [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/)."
 googleAnalytics = "UA-66106064-2"
+
+[params]
+    author = "Shaun Das"
+    description = "A place for my thoughts."
+
+    imageInArticlePreview = true
+    fitImageInArticlePreview = true
+    bigArticleTitle = false
+
+[menu]
+    [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = 10
