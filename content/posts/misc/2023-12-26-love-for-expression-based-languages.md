@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Love for Expression Languages
-modified: 2023-12-27T00:00:00+01:00
+modified: 2023-12-26T00:00:00+01:00
 categories: misc
-tags: [programming-languages]
+tags: [programming-languages, rust]
 comments: true
 share: true
 ---
