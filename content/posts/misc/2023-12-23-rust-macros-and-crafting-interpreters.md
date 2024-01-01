@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Rust Macros and Advent of Code
-modified: 2023-12-27T00:00:00+01:00
+modified: 2023-12-31T00:00:00+01:00
 categories: misc
 tags: [programming-languages, rust]
 comments: true
