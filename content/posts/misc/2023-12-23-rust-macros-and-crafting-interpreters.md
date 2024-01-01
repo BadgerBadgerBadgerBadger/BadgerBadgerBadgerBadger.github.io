@@ -1,20 +1,20 @@
 ---
 layout: post
-title: Rust Macros and Advent of Code
+title: Rust Macros (while Crafting Interpreters)
 modified: 2023-12-31T00:00:00+01:00
 categories: misc
-tags: [programming-languages, rust]
+tags: [programming-languages, rust, macros, crafting-interpreters]
 comments: true
 share: true
 ---
 
 I have never used [Rust](https://www.rust-lang.org/) extensively. The few times I have tried have ended up in me giving up due to unwinnable fights against the [borrow-checker](https://doc.rust-lang.org/1.8.0/book/references-and-borrowing.html). By the recommendation of a friend I am giving this another shot. 
 
-I'm making my way through [Robert Nystrom's](https://journal.stuffwithstuff.com/) [Crafting Interpreters](https://craftinginterpreters.com/) as well as doing [this year's Advent of Code](https://adventofcode.com/2023). I am late to the latter but I am enjoying myself regardless. I am using Rust as my language of choice for both endevours.
+I'm making my way through [Robert Nystrom's](https://journal.stuffwithstuff.com/) [Crafting Interpreters](https://craftinginterpreters.com/) as well as doing [2023's Advent of Code](https://adventofcode.com/2023). I am late to the latter but I am enjoying myself regardless. I am using Rust as my language of choice for both endevours.
 
 I am on the [Representing Code](https://craftinginterpreters.com/representing-code.html) chapter of Crafting Intepreters where Robert mentions using a separate tool for generating the classes for various Expression types instead of hand-writing each since they share a tedious amount of boilerplate. Had I been writing this in Go, this is the path I would have followed. However, with Rust, we have the power of [macros](https://doc.rust-lang.org/book/ch19-06-macros.html) which presents me with the perfect opportunity to learn how they work.
 
-In Java (which is the language of choice for the first of the two interpreters we write with Robert, in the book), Robert recommends structuring expressions as subcalsses of an [abstract](https://www.digitalocean.com/community/tutorials/abstract-class-in-java) Expression class. The following code shows this, along with the `Binary` class that would extend the abstract Expression class:
+In Java (which is the language of choice for the first of the two interpreters we write with Robert, in the book), Robert recommends structuring Expressions as subcalsses of an [abstract](https://www.digitalocean.com/community/tutorials/abstract-class-in-java) Expression class. The following code shows this, along with the `Binary` class that would extend the abstract Expression class:
 
 ```java
 package com.craftinginterpreters.lox;
@@ -64,15 +64,17 @@ impl Binary {
 
 But similar to Robert's approach, instead of writing these out by hand, we shall automate. I'm thinking of a macro which might look like this: 
 ```rust
-create_expression!(Binary, left: Expr, operator: Token, right: Expr)
+create_expr!(Binary, left: Expr, operator: Token, right: Expr);
 ```
 Which will, hopefully, result in the definition of the `Binary` struct as shown above as well as a constructor function. We will define the `Expr` enum by hand and `Token` is already available as a type I've previously defined.
 
+> **Note**: Our macro accepts two arguments, the first being the name of the expression type and the second being a variadic list of its fields. In the `Binary` case, `Binary` is the name of the expression and `left, `operator` and `right` would be its fields. For a different Expression type, say, `Unary` this would like like `create_expr!(Unary, operator: Token, right: Expr);`.
+
 Now let's read up on how macros work in rust. My first stab at it involved [this page](https://doc.rust-lang.org/rust-by-example/macros.html) on the [_rust-by_example_](https://doc.rust-lang.org/stable/rust-by-example/) site. While it reads like a perfectly passable statement of facts, I find the language difficult to parse.
 
-When I decided to give learning Rust another go I looked for articles which could explain the _magic_ behind Rust in an intuitive way. One of my first stumbling blocks was the module system and it kept baffling me untill I came across [this article](https://www.sheshbabu.com/posts/rust-module-system/) and the secrets were finally laid bare. I recommend reading it if you have a few minutes to spare. It's not long but very informative.
+When I decided to give learning Rust another go I looked for articles which could explain the _magic_ behind Rust in an intuitive way. One of my first stumbling blocks was the module system and it kept baffling me untill I came across [this article](https://www.sheshbabu.com/posts/rust-module-system/) and the secrets were finally laid bare. Something in it _clicked_ in my head. I recommend reading it if you have a few minutes to spare. It's not long but very informative.
 
-The tutorial from the [LogRocket blog](https://blog.logrocket.com/macros-in-rust-a-tutorial-with-examples/) told me that I could use repeating arguments for macros and have repeating blocks of code generated for those arguments. It also reminded me that I can't write the `enum Expr` by hand. The enum has a list of types it supports and this list will be generated by the macro. So taking that into account, I need to reach for something like this:
+The tutorial from the [LogRocket blog](https://blog.logrocket.com/macros-in-rust-a-tutorial-with-examples/) told me that I could use repeating arguments for macros and have repeating blocks of code generated for those arguments. It also reminded me that I can't write the `enum Expr` by hand, nor can I do multiple invocations of my `create_expr` macro with for each of my Expression types. The base `enum Expr` needs to know all its variants right at the beginning. So taking that into account, I need to reach for something like this:
 ```rust
 macro_rules!(
   Binary, left: Expr, operator: Token, right: Expr;
@@ -82,7 +84,7 @@ macro_rules!(
 )
 ```
 
-This is the analog of this block in Robert'se Java code:
+This is the analog of this block in Robert's Java code:
 ```java
 defineAst(outputDir, "Expr", Arrays.asList(
   "Binary   : Expr left, Token operator, Expr right",
@@ -94,7 +96,7 @@ defineAst(outputDir, "Expr", Arrays.asList(
 
 After reading through [another article](https://earthly.dev/blog/rust-macros/) that did not help me much (I find the examples too simplistic), I finally came across [A Practical Intro to Macros in Rust 1.0](https://danielkeep.github.io/practical-intro-to-macros.html) by [Daniel Keep](https://github.com/DanielKeep) which has just the kind of real-world usecase with which I like to learn things, not only because it provides the necessary complexity to dive deeper into a system but also for the personal insights the author has gleamed from having attempted a task.
 
-> **Side Note**: Daniel only has one other article on his blog, [Rust Iterator Cheat Sheet](https://danielkeep.github.io/itercheat_baked.html) which is also a fun read. He seems to be one of those amazing writers who only have the one or two pieces out but from whom you'd wish to read a lot more. I've let him know via a [Github issue](https://github.com/DanielKeep/DanielKeep.github.io/issues/18) since that's the only way I could see to reach him. I do hope he writes a lot more.
+> **Side Note**: Daniel only has one other article on his blog, [Rust Iterator Cheat Sheet](https://danielkeep.github.io/itercheat_baked.html) which is also a fun read. He seems to be one of those amazing writers who only have the one or two pieces out but from whom you'd wish to read a lot more. I've let him know via a [Github issue](https://github.com/DanielKeep/DanielKeep.github.io/issues/18) since that's the only way I could see to reach him. I hope he writes more.
 
 This was the first stab at defining the `create_expr` macro:
 ```rust
@@ -242,4 +244,4 @@ At least for this very contrived, manual invocation. As I continue writing the i
 
 > Note: `rlox` is the name of the first interpreter I'm building, from the book. Robert implements the first in Java and calls it _jlox_, and the second in C and calls it _clox_. I will be writing both in Rust, so once I'm done with `rlox`, I'm not quite sure what to name the second.
 
-> **Random Aside**: I avoided asking Githup Copilot to do all my work for me. I think I could have fed it the macro syntax I wanted to use and the result I was looking for and it would have spat out exactly the macro that I needed. But I feel that would have robbed me of the opportunity to learn how macros in Rust actually work. For example, did you know that unlike, say, [C](https://www.programiz.com/c-programming/c-preprocessor-macros), macros in rust do not expand into text but rather into [directly into AST](https://rustc-dev-guide.rust-lang.org/macro-expansion.html). I feel these are the fascinating tidbits are what you miss unless you do your own research.
+> **Random Aside**: I avoided asking Githup Copilot to do all my work for me. I think I could have fed it the macro syntax I wanted to use and the result I was looking for and it would have spat out exactly the macro that I needed. But I feel that would have robbed me of the opportunity to learn how macros in Rust actually work. For example, did you know that unlike, say, [C](https://www.programiz.com/c-programming/c-preprocessor-macros), macros in rust do not expand into text but rather into [directly into AST](https://rustc-dev-guide.rust-lang.org/macro-expansion.html). I feel these are the fascinating tidbits are what you miss unless you do your own research. However, for running through and making sense of error messages, I find it to be the perfect tool.
