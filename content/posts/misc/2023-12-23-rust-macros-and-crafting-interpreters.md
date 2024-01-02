@@ -10,11 +10,11 @@ share: true
 
 I have never used [Rust](https://www.rust-lang.org/) extensively. The few times I have tried have ended up in me giving up due to unwinnable fights against the [borrow-checker](https://doc.rust-lang.org/1.8.0/book/references-and-borrowing.html). By the recommendation of a friend I am giving this another shot. 
 
-I'm making my way through [Robert Nystrom's](https://journal.stuffwithstuff.com/) [Crafting Interpreters](https://craftinginterpreters.com/) as well as doing [2023's Advent of Code](https://adventofcode.com/2023). I am late to the latter but I am enjoying myself regardless. I am using Rust as my language of choice for both endevours.
+I'm making my way through [Robert Nystrom's](https://journal.stuffwithstuff.com/) [Crafting Interpreters](https://craftinginterpreters.com/) as well as doing [2023's Advent of Code](https://adventofcode.com/2023). I am late to the latter but I am enjoying myself regardless. I am using Rust as my language of choice for both endeavours.
 
-I am on the [Representing Code](https://craftinginterpreters.com/representing-code.html) chapter of Crafting Intepreters where Robert mentions using a separate tool for generating the classes for various Expression types instead of hand-writing each since they share a tedious amount of boilerplate. Had I been writing this in Go, this is the path I would have followed. However, with Rust, we have the power of [macros](https://doc.rust-lang.org/book/ch19-06-macros.html) which presents me with the perfect opportunity to learn how they work.
+I am on the [Representing Code](https://craftinginterpreters.com/representing-code.html) chapter of Crafting Interpreters where Robert mentions using a separate tool for generating the classes for various Expression types instead of hand-writing each since they share a tedious amount of boilerplate. Had I been writing this in Go, this is the path I would have followed. However, with Rust, we have the power of [macros](https://doc.rust-lang.org/book/ch19-06-macros.html) which presents me with the perfect opportunity to learn how they work.
 
-In Java (which is the language of choice for the first of the two interpreters we write with Robert, in the book), Robert recommends structuring Expressions as subcalsses of an [abstract](https://www.digitalocean.com/community/tutorials/abstract-class-in-java) Expression class. The following code shows this, along with the `Binary` class that would extend the abstract Expression class:
+In Java (which is the language of choice for the first of the two interpreters we write with Robert, in the book), Robert recommends structuring Expressions as subclasses of an [abstract](https://www.digitalocean.com/community/tutorials/abstract-class-in-java) Expression class. The following code shows this, along with the `Binary` class that would extend the abstract Expression class:
 
 ```java
 package com.craftinginterpreters.lox;
@@ -68,11 +68,11 @@ create_expr!(Binary, left: Expr, operator: Token, right: Expr);
 ```
 Which will, hopefully, result in the definition of the `Binary` struct as shown above as well as a constructor function. We will define the `Expr` enum by hand and `Token` is already available as a type I've previously defined.
 
-> **Note**: Our macro accepts two arguments, the first being the name of the expression type and the second being a variadic list of its fields. In the `Binary` case, `Binary` is the name of the expression and `left, `operator` and `right` would be its fields. For a different Expression type, say, `Unary` this would like like `create_expr!(Unary, operator: Token, right: Expr);`.
+> **Note**: Our macro accepts two arguments, the first being the name of the expression type and the second being a variadic list of its fields. In the `Binary` case, `Binary` is the name of the expression and `left`, `operator` and `right` would be its fields. For a different Expression type, say, `Unary` this would be `create_expr!(Unary, operator: Token, right: Expr);`.
 
 Now let's read up on how macros work in rust. My first stab at it involved [this page](https://doc.rust-lang.org/rust-by-example/macros.html) on the [_rust-by_example_](https://doc.rust-lang.org/stable/rust-by-example/) site. While it reads like a perfectly passable statement of facts, I find the language difficult to parse.
 
-When I decided to give learning Rust another go I looked for articles which could explain the _magic_ behind Rust in an intuitive way. One of my first stumbling blocks was the module system and it kept baffling me untill I came across [this article](https://www.sheshbabu.com/posts/rust-module-system/) and the secrets were finally laid bare. Something in it _clicked_ in my head. I recommend reading it if you have a few minutes to spare. It's not long but very informative.
+When I decided to give learning Rust another go I looked for articles which could explain the _magic_ behind Rust in an intuitive way. One of my first stumbling blocks was the module system and it kept baffling me until I came across [this article](https://www.sheshbabu.com/posts/rust-module-system/) and the secrets were finally laid bare. Something in it _clicked_ in my head. I recommend reading it if you have a few minutes to spare. It's not long but very informative.
 
 The tutorial from the [LogRocket blog](https://blog.logrocket.com/macros-in-rust-a-tutorial-with-examples/) told me that I could use repeating arguments for macros and have repeating blocks of code generated for those arguments. It also reminded me that I can't write the `enum Expr` by hand, nor can I do multiple invocations of my `create_expr` macro with for each of my Expression types. The base `enum Expr` needs to know all its variants right at the beginning. So taking that into account, I need to reach for something like this:
 ```rust
@@ -94,7 +94,7 @@ defineAst(outputDir, "Expr", Arrays.asList(
 ));
 ```
 
-After reading through [another article](https://earthly.dev/blog/rust-macros/) that did not help me much (I find the examples too simplistic), I finally came across [A Practical Intro to Macros in Rust 1.0](https://danielkeep.github.io/practical-intro-to-macros.html) by [Daniel Keep](https://github.com/DanielKeep) which has just the kind of real-world usecase with which I like to learn things, not only because it provides the necessary complexity to dive deeper into a system but also for the personal insights the author has gleamed from having attempted a task.
+After reading through [another article](https://earthly.dev/blog/rust-macros/) that did not help me much (I find the examples too simplistic), I finally came across [A Practical Intro to Macros in Rust 1.0](https://danielkeep.github.io/practical-intro-to-macros.html) by [Daniel Keep](https://github.com/DanielKeep) which has just the kind of real-world use case with which I like to learn things, not only because it provides the necessary complexity to dive deeper into a system but also for the personal insights the author has gleamed from having attempted a task.
 
 > **Side Note**: Daniel only has one other article on his blog, [Rust Iterator Cheat Sheet](https://danielkeep.github.io/itercheat_baked.html) which is also a fun read. He seems to be one of those amazing writers who only have the one or two pieces out but from whom you'd wish to read a lot more. I've let him know via a [Github issue](https://github.com/DanielKeep/DanielKeep.github.io/issues/18) since that's the only way I could see to reach him. I hope he writes more.
 
@@ -132,7 +132,7 @@ Our `<something>` happens to be `$name:ident, $($field:ident : $typ: ty),+`. The
 1. `$name:ident`
 2. `$($field:ident : $typ: ty),+`
 
-The first is for captruing our sytax for defining the name of the expression type, while the second is for capturing a list of one or more fields. You'll notice the second piece also has the form `$(<something>),+` but this time with a `,` separator. And our `<something>` in this case happens to be `$field:ident : $typ: ty` which match syntax of the form `left: Expr` (for an explanation of what `ty` and `ident` mean, I recommend reading through some of the blog posts I've already linked).
+The first is for capturing our syntax for defining the name of the expression type, while the second is for capturing a list of one or more fields. You'll notice the second piece also has the form `$(<something>),+` but this time with a `,` separator. And our `<something>` in this case happens to be `$field:ident : $typ: ty` which matches syntax of the form `left: Expr` (for an explanation of what `ty` and `ident` mean, I recommend reading through some of the blog posts I've already linked).
 
 Trying to compile it, it works!
 
@@ -166,7 +166,7 @@ error: expected expression, found `Expr`
 
 I have no idea what I did wrong here. So I will turn to Github Copilot and see if it can help me. [Copilot Chat](https://docs.github.com/en/copilot/github-copilot-chat/about-github-copilot-chat) to be specific; it seems to be a version of ChatGPT restricted to answering programming-related questions.
 
-It's answers pointed out that I had made some glaring initial mistakes. I blame my girlfriend's vaccuming (that was a joke, don't @ me, I love her very much).
+It's answers pointed out that I had made some glaring initial mistakes. I blame my girlfriend's vacuuming (that was a joke, don't @ me, I love her very much).
 
 This is the offending piece of code:
 ```rust
