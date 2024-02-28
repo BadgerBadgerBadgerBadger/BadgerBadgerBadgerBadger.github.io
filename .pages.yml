@@ -2,9 +2,14 @@ media: "content/media"
 
 content:
   - name: posts
+    filename: "{year}-{month}-{day}-{fields.title}.md"
     label: Posts
     path: content/posts
     type: collection
+    view:
+      fields: [title, modified]
+      primary: title
+      sort: [modified, title]
     fields:
       - name: layout
         type: select
