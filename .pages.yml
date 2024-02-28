@@ -1,12 +1,10 @@
-media:
-  output: "content/media"
-  categories: "image"
+media: "content/media"
 
 content:
   - name: posts
     label: Posts
-    type: markdown
     path: content/posts
+    type: collection
     fields:
       - name: title
-        type: text
+        type: string
