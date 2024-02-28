@@ -1,0 +1,12 @@
+media:
+  output: "content/media"
+  categories: "image"
+
+content:
+  - name: posts
+    label: Posts
+    type: markdown
+    path: content/posts
+    fields:
+      - name: title
+        type: text
