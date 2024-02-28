@@ -6,5 +6,44 @@ content:
     path: content/posts
     type: collection
     fields:
+      - name: layout
+        type: select
+        options:
+          values:
+            - value: post
+              label: Post
       - name: title
         type: string
+        required: true
+      - name: excerpt
+        type: string
+        required: true
+      - name: modified
+        type: date
+        required: true
+        options:
+          format: YYYY-MM-DDTHH:mm:ssZ
+      - name: categories
+        type: select
+        required: true
+        options:
+          values:
+            - value: code-craftsmanship
+              label: Code Craftsmanship
+            - value: dev-log
+              label: Devlog
+            - value: game-programming
+              label: Game Programming
+            - value: misc
+              label: Misc
+            - value: tips
+              label: Tips
+      - name: tags
+        type: string
+        list: true
+      - name: comments
+        type: boolean
+        default: true
+      - name: share
+        type: boolean
+        default: true
