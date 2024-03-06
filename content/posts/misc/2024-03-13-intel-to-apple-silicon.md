@@ -31,7 +31,41 @@ I put it off for as long as I could. I wanted to have everything running as nati
 
 If you open the [Activity Monitor](https://support.apple.com/guide/activity-monitor/welcome/mac), you can [check which apps are running on Rosetta](https://thenextweb.com/news/how-to-check-app-running-m1-native-version-on-mac). In the CPU tab, look at the Kind column. It will either say _Intel_ or _Apple_.
 
-I managed to discover several things running on Rosetta and then went and found Apple Silicon versions of them.
+I managed to discover several things running on Rosetta and then went and found Apple Silicon versions of them. For example I have some bash scripts that open tunnels the company's internal network. For managing these multiple tunnels the script uses [tmux](https://github.com/tmux/tmux/wiki). I discovered in Activity Monitor that I had several `bash` processes running as Kind `Intel`. I suspected `tmux` spawned these processes, so I did a quick check:
+
+```bash
+➜  ~ which tmux
+/usr/local/bin/tmux
+➜  ~ file /usr/local/bin/tmux
+/usr/local/bin/tmux: Mach-O 64-bit executable x86_64
+```
+
+So `tmux` is still an x86 executable.
+
+```bash
+➜  ~ which bash
+/bin/bash
+➜  ~ file /bin/bash
+/bin/bash: Mach-O universal binary with 2 architectures: [x86_64:Mach-O 64-bit executable x86_64] [arm64e:Mach-O 64-bit executable arm64e]
+/bin/bash (for architecture x86_64):	Mach-O 64-bit executable x86_64
+/bin/bash (for architecture arm64e):	Mach-O 64-bit executable arm64e
+```
+
+`bash` on the other hand, is a [Universal Binary](https://en.wikipedia.org/wiki/Universal_binary), an app format that encapsulates multiple architectures and acts as one of the bridges between Intel and Arm Macs.
+
+I wanted to find other binaries that were still x86_64 so I went into the `/usr/local/bin/` directory and ran the following command:
+```sh
+find -L . -type f -exec file {} + | grep 'x86_64' | grep -v 'arm64'
+``` 
+Breaking it down:
+- `find -L . -type f` searches in the current directory and subdirectory, limited to items that are files. The `-L` option follows symbolic links as well.
+- `-exec file {} +` executes the [file](https://en.wikipedia.org/wiki/File_(command)) command on each file.
+- `grep 'x86_64'` finds us instances of `x86_64` appearing in the output (the output for x86_64 binaries is `Mach-O 64-bit executable x86_64`).
+- `grep -v 'arm64'` excludes instances where there is a Universal Binary (like `bash`, as mentioned before), which has both x86_64 and arm variants available in one package.
+
+> **Side Note**: The `+` modifier is an interesting one. It instructs `find` to accumulate the found files execute the command passed to exec (in this case `file`) command on them in a single invocation. So while without `+` each of the found files would have `file` executed against them one by one, with `+` the files are passed to the command in one go.
+
+And now with the confidence of someone who is a tiny bit sleep deprived, I can run
 
 ## Easier Than I Imagined
 
