@@ -11,6 +11,9 @@ comments: true
 share: true
 ---
 
+![image](https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/f3db49bf-8d00-4cf0-bc57-c1e179d6b2a4)
+
+
 > **Note**: I will be using the terms `amd64`, `x86_64`, and `Intel` interchangeably in this post. They all refer to the same architecture. Similarly `arm64` and `Apple Silicon` are used interchangeably.
 
 I recently got handed a new MacBook at work. It's a MacBook Pro with an M3 chip and my first encounter with Apple Silicon. I have been hearing many good things about Apple Silicon and having experienced it for myself for the past day I must say that my old Intel MacBook can't compare. I know that comparing my 2020 Intel MacBook, which has been used and abused for 4 years, to a brand new, out-of-the-box 2023 M3 Mac is not an [Apples to Apples comparision](https://media.tenor.com/a2gst_5S-RAAAAAi/uarrr-finger-guns.gif). So I will take the word of tech reviewers through the years as well as my own biased experience (I no longer have to wait several seconds for a compilation step) and say that Apple Silicon is a game changer.
