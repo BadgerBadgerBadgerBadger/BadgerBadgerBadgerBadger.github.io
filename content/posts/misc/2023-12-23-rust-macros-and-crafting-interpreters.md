@@ -14,7 +14,7 @@ comments: true
 share: true
 ---
 
-I have never used [Rust](https://www.rust-lang.org/) extensively. The few times I have tried have ended up in me giving up due to unwinnable fights against the [borrow-checker](https://doc.rust-lang.org/1.8.0/book/references-and-borrowing.html). By the recommendation of a friend I am giving this another shot. 
+I have never used [Rust](https://www.rust-lang.org/) extensively. The few times I have tried, have ended up in me giving up due to unwinnable fights against the [borrow-checker](https://doc.rust-lang.org/1.8.0/book/references-and-borrowing.html). By the recommendation of a friend I am giving this another shot. 
 
 I'm making my way through [Robert Nystrom's](https://journal.stuffwithstuff.com/) [Crafting Interpreters](https://craftinginterpreters.com/) as well as doing [2023's Advent of Code](https://adventofcode.com/2023). I am late to the latter but I am enjoying myself regardless. I am using Rust as my language of choice for both endeavours.
 
