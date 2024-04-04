@@ -72,7 +72,7 @@ Now I can curl from any device anywhere and receive a notification on my phone!
 curl -i -H "Content-Type: application/json" -d "{\"message\": \"Sup?\"}" https://<home-assistant-server>/api/webhook/<wehook-id>
 ```
 
-<img src="https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/5cb38454-b29e-4d2b-a7a2-ccb81f0a73d2" width=200 />
+<img alt="image of MacOS notification that reads 'Sup?'" src="https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/5cb38454-b29e-4d2b-a7a2-ccb81f0a73d2" width=200 />
 
 I can plop this down at the end of any command chain or script and be notified when it completes.
 
