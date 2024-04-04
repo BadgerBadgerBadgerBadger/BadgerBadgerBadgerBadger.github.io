@@ -33,9 +33,11 @@ sdd () {
 
 Behold the `sdd` function I add to the end of every script and command chain. I can invoke it with a title and an optional message, or invoke it with nothing and let it default to "Done" and "Done". When invoked, I will be shown a [notification](https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/DisplayNotifications.html) on my screen along with an audible "Roger! Roger!"
 
-![sdd-invocation-demo.png](sdd-invocation-demo.png)
+![image](https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/630f82c6-758c-4b62-8869-863a457c26c4)
 
-> **Disclaimer**: I have no idea if this is required. I find copyright laws almost maliciously confusing. Anyway, just to cover my backside:\
+> **Disclaimer**\
+> I have no idea if this is required. I find copyright laws almost maliciously confusing. Anyway, just to cover my backside:
+>
 > _**I do not own any rights to the "Roger, Roger" voice line, which is associated with the Star Wars franchise created by George Lucas and owned by Lucasfilm Ltd. and The Walt Disney Company. This phrase is used here under the principles of fair use for educational or informational purposes only.**_
 
 This is all fine and dandy for my local machine, but what about my home-lab? I don't want to keep a live SSH session running all the time, nor do I want to have to check back on it at odd intervals. Nor am I _at_ a terminal all the time!
@@ -70,13 +72,11 @@ Now I can curl from any device anywhere and receive a notification on my phone!
 curl -i -H "Content-Type: application/json" -d "{\"message\": \"Sup?\"}" https://<home-assistant-server>/api/webhook/<wehook-id>
 ```
 
-![SharpieHASSNotification.jpg](sharpie-hass-notification.jpg)
+<img src="https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/5cb38454-b29e-4d2b-a7a2-ccb81f0a73d2" width=200 />
 
-I can plop this down on the end of any command chain or script and be notified when it completes.
+I can plop this down at the end of any command chain or script and be notified when it completes.
 
 But I figured out all this after the fact. During the fact (is that even a phrase?), I had already started a long-running process that I wanted to monitor and be informed of when it terminated. So there was no way for me to append a notification curl at the end of the chain without stopping the process.
-
-I had to learn how to monitor a live process.
 
 Enter the [ps](https://man7.org/linux/man-pages/man1/ps.1.html) command with the [-p](https://medium.com/@linuxschooltech/what-is-ps-p-command-in-linux-aede7e5f0751) flag. This can be passed a process ID and gives you information about the process.
 
@@ -92,7 +92,7 @@ Enter the [ps](https://man7.org/linux/man-pages/man1/ps.1.html) command with the
 
 > `$$` is the PID of the current shell process.
 
-That's the current shell session! Note that the exit code returned by the `ps -p` command returns `0`. If we were to try a pid that does not exist, we will get a `1`.
+Note that the exit code returned by the `ps -p` command is `0`. If we were to try a PID that does not exist, we will get a `1`.
 
 ```sh
 ➜  ~ ps -p 42069
@@ -110,7 +110,7 @@ process_exists() {
 }
 ```
 
-Checking if our target process is still running now becomes a matter of a sleepy loop (to avoid spamming the command).
+Checking if our target process is still running, now becomes a matter of a sleepy loop (to avoid spamming the command).
 
 ```sh
 # Loop until the process no longer exists
