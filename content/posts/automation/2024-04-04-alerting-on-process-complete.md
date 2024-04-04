@@ -9,6 +9,8 @@ comments: true
 share: true
 ---
 
+![image](https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/a441e00b-7376-4b82-9391-57e429287cdc)
+
 Most of my technical endeavours have something to do with enabling me to work as little as possible for as much reward as possible. And yet, paradoxically, in a pursuit of doing less I often end up doing more. I have this idea that in the long term this will eventually lead me to doing _much_ less. I'm not sure if that's true, but it's a nice thought and keeps me going. Plus, I learn a lot of fun things along the way.
 
 Whenever I have a long-running process on my home-lab I start it in a [screen session](https://linux.die.net/man/1/screen). I check back on it occasionally to see if it has completed. The same could be true of something I'm running on my local machine, though, in that case, it is in a live terminal session. The latter is usually during the course of my day-job and is somewhat of an easier problem to solve since I am at my machine for the duration of the process.
@@ -72,7 +74,7 @@ Now I can curl from any device anywhere and receive a notification on my phone!
 curl -i -H "Content-Type: application/json" -d "{\"message\": \"Sup?\"}" https://<home-assistant-server>/api/webhook/<wehook-id>
 ```
 
-<img src="https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/5cb38454-b29e-4d2b-a7a2-ccb81f0a73d2" width="200" >
+<img src="https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/5cb38454-b29e-4d2b-a7a2-ccb81f0a73d2" width="200">
 
 I can plop this down at the end of any command chain or script and be notified when it completes.
 
