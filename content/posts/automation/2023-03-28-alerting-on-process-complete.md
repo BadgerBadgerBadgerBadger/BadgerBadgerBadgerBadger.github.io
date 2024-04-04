@@ -1,17 +1,17 @@
 ---
 layout: post
 title: Alerting on Process Completion
-excerpt: "A way for me to know when a long running process has completed."
-modified: 2024-03-28T00:00:00-00:00
+excerpt: "A story of me figuring out how to alert myself when a long-running process has completed."
+modified: 2024-04-04T00:00:00-00:00
 categories: [automation]
 tags: [webhooks, home-assistant, shell-scripting]
 comments: true
 share: true
 ---
 
-Most of my technical endeavours have something to do with being lazy. I want to do less, so I often end up doing more in the pursuit of doing less. I have this idea that in the long term this will eventually lead me to doing much less. I'm not sure if that's true, but it's a nice thought and should keep me going.
+Most of my technical endeavours have something to do with enabling me to work as little as possible for as much reward as possible. And yet, paradoxically, in a pursuit of doing less I often end up doing more. I have this idea that in the long term this will eventually lead me to doing _much_ less. I'm not sure if that's true, but it's a nice thought and keeps me going. Plus, I learn a lot of fun things along the way.
 
-Whenever I have a long-running process on my home-lab, I start it in a [screen session](https://linux.die.net/man/1/screen) and then go about my day. I check back on it occasionally to see if it has completed. The same could be true of something I'm running on my local machine, though, in that case, it is in a live terminal session.
+Whenever I have a long-running process on my home-lab I start it in a [screen session](https://linux.die.net/man/1/screen). I check back on it occasionally to see if it has completed. The same could be true of something I'm running on my local machine, though, in that case, it is in a live terminal session. The latter is usually during the course of my day-job and is somewhat of an easier problem to solve since I am at my machine for the duration of the process.
 
 For my local machine (which is a MacBook), I use the [say](https://ss64.com/mac/say.html) command extensively. It's trivial to add a `say "Done"` at the end of a command chain to aurally inform me of a task's completion. But that wasn't quite spicy enough for me, so I came up with something more interesting.
 
@@ -31,18 +31,18 @@ sdd () {
 }
 ```
 
-Behold the `sdd` function I add to the end of every script and command chain. I can invoke it with a title and an optional message, or invoke it with nothing and let it default to "Done" and "Done". I will be shown a [notification](https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/DisplayNotifications.html) on my screen along with an audible "Roger! Roger!"
+Behold the `sdd` function I add to the end of every script and command chain. I can invoke it with a title and an optional message, or invoke it with nothing and let it default to "Done" and "Done". When invoked, I will be shown a [notification](https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/DisplayNotifications.html) on my screen along with an audible "Roger! Roger!"
 
 ![sdd-invocation-demo.png](sdd-invocation-demo.png)
 
 > **Disclaimer**: I have no idea if this is required. I find copyright laws almost maliciously confusing. Anyway, just to cover my backside:\
 > _**I do not own any rights to the "Roger, Roger" voice line, which is associated with the Star Wars franchise created by George Lucas and owned by Lucasfilm Ltd. and The Walt Disney Company. This phrase is used here under the principles of fair use for educational or informational purposes only.**_
 
-This is all fine and dandy for local machine, but what about my home-lab? I don't want to keep a live SSH session running all the time, nor do I want to have to check back on it at odd intervals.
+This is all fine and dandy for my local machine, but what about my home-lab? I don't want to keep a live SSH session running all the time, nor do I want to have to check back on it at odd intervals. Nor am I _at_ a terminal all the time!
 
 The solution to that comes from my Home Assistant setup (look out for another post that talks about my Home Assistant and dryer smartification journey). 
 
-I have created an Automation that listens to a webhook and sends a notification to my phone whenever that webhook fires.
+I have created an [Automation](https://www.home-assistant.io/docs/automation/) that listens to a webhook and sends a notification to my phone whenever that webhook fires.
 
 ```yaml
 alias: Notify Sharpie
@@ -52,7 +52,7 @@ trigger:
     allowed_methods:
       - POST
     local_only: false
-    webhook_id: "<some-webhook-id>"
+    webhook_id: "<webhook-id>"
 condition: []
 action:
   - service: notify.mobile_app_sharpie
@@ -72,11 +72,13 @@ curl -i -H "Content-Type: application/json" -d "{\"message\": \"Sup?\"}" https:/
 
 ![SharpieHASSNotification.jpg](sharpie-hass-notification.jpg)
 
-I can plop this down on the end of any command chain or script and be notified when it completes!
+I can plop this down on the end of any command chain or script and be notified when it completes.
 
-But I realised that after the fact. During the fact (is that even a phrase), I had already started a long-running process that I wanted to monitor and be informed when that process terminated.
+But I figured out all this after the fact. During the fact (is that even a phrase?), I had already started a long-running process that I wanted to monitor and be informed of when it terminated. So there was no way for me to append a notification curl at the end of the chain without stopping the process.
 
-Enter the [ps](https://man7.org/linux/man-pages/man1/ps.1.html) command with the [-p](https://medium.com/@linuxschooltech/what-is-ps-p-command-in-linux-aede7e5f0751) flag that can be passed a process ID and gives you info on it.
+I had to learn how to monitor a live process.
+
+Enter the [ps](https://man7.org/linux/man-pages/man1/ps.1.html) command with the [-p](https://medium.com/@linuxschooltech/what-is-ps-p-command-in-linux-aede7e5f0751) flag. This can be passed a process ID and gives you information about the process.
 
 ```sh
 ➜  ~ echo $$
@@ -88,6 +90,8 @@ Enter the [ps](https://man7.org/linux/man-pages/man1/ps.1.html) command with the
 0
 ```
 
+> `$$` is the PID of the current shell process.
+
 That's the current shell session! Note that the exit code returned by the `ps -p` command returns `0`. If we were to try a pid that does not exist, we will get a `1`.
 
 ```sh
@@ -97,7 +101,7 @@ That's the current shell session! Note that the exit code returned by the `ps -p
 1
 ```
 
-Thus, without knowing the exact details or output of using `ps -p` on our target process, we can just check the exit code and find out if the process is running. This leads us to a shell function that can check if a process is running.
+Thus, without knowing the exact details or output of using `ps -p` on our target process, we can check the exit code and find out if the process is running. This leads us to this helper function.
 
 ```sh
 # Check if the process with PID exists
@@ -106,7 +110,7 @@ process_exists() {
 }
 ```
 
-Checking if our target process is still running now becomes a matter of a sleepy loop to avoid spamming the command.
+Checking if our target process is still running now becomes a matter of a sleepy loop (to avoid spamming the command).
 
 ```sh
 # Loop until the process no longer exists
@@ -128,4 +132,8 @@ send_message() {
 }
 ```
 
-And with that we have a script that can monitor a process and let us know when it completes. This is mainly useful for processes that we don't start ourselves, of course.
+And with that we have a script that can monitor a process and let us know when it completes.
+
+# Wrapping it Up
+
+I hope you enjoyed this brief exploration of figuring out how to monitor a live process. If you were to try something like this yourself, you could, no doubt, switch out the notification part with any number of other services. Perhaps [send yourself an SMS](https://www.twilio.com/en-us/messaging/channels/sms) or blink the lights in your house on and off 21 times.
