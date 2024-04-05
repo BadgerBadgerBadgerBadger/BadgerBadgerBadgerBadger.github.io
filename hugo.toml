@@ -16,6 +16,14 @@ googleAnalytics = "UA-66106064-2"
     imageInArticlePreview = true
     fitImageInArticlePreview = true
     bigArticleTitle = false
+    paperCards = true
+
+    mainFontSizeMultiplier = 0.9
+
+    showRss = false
+    enableRelatedArticles = true
+
+commento = "https://commento.badgerbadgerbadgerbadger.dev/js/commento.js"
 
 [menu]
     [[menu.main]]
@@ -23,3 +31,16 @@ googleAnalytics = "UA-66106064-2"
     name = "About"
     url = "/about/"
     weight = 10
+
+    [[menu.icons]]
+    identifier = "twitter"
+    name = "Twitter"
+    url = "https://twitter.com/badgerbbbadger"
+    weight = 12
+
+    [[menu.icons]]
+    identifier = "linkedin"
+    name = "LinkedIn"
+    url = "https://www.linkedin.com/in/badgerbadgerbadgerbadger/"
+    weight = 10
+
