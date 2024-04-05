@@ -2,16 +2,15 @@
 layout: post
 title: Is it Dry Yet?
 excerpt: "The one where I talk about my dirty laundry."
-modified: 
+image: https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/61210f38-0a3a-40cd-854e-d38d7f6e685e
+modified: 2024-04-04
 categories: [misc]
 tags: [home-automation, home-assistant, smart-plugs]
 comments: true
 share: true
 ---
 
-![image](https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/61210f38-0a3a-40cd-854e-d38d7f6e685e)
-
-> **Clarification**: It is literally about my laundry. I am not being metaphorical. I am not talking about my feelings or my secrets. I am talking about my clothes.  
+> **Clarification**: This is literally about my laundry. I am not being metaphorical. I am not talking about my feelings or my secrets. I am talking about my clothes.  
 
 ## Intro
 
