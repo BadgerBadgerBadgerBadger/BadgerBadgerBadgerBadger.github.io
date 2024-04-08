@@ -18,13 +18,13 @@ Our washing machine is a Samsung something-something that sends me a notificatio
 
 The fact that our dryer is "dumb" is what led me to my automation journey. If it was Wifi-enabled and also sending out notifications as it completed a cycle, I wouldn't be writing this post. 
 
-Having been spoiled by knowing exactly when my washing has completed, so I know when to go move things to the dryer, I decided to do something similar for the dryer. This is especially useful, for example, when the clothes need an extra drying cycle or when there are more wet clothes that are waiting in the washer. In these times it is useful to know if the dryer has finished a cycle.
+Having been spoiled by knowing exactly when my washing has completed (so I know when to go move things to the dryer) I decided to do something similar for the dryer. This is especially useful, for example, when the clothes need an extra drying cycle or when there are more wet clothes that are waiting in the washer. In these times it is useful to know if the dryer has finished a cycle.
 
 And since it is not a smart device, I have to add the brains, somehow.
 
 ## Plan of Attack
 
-My plan of attack was this:
+This is how I decided to approach the problem:
 - I have a [Shelly smart plug](https://www.shelly.com/en-be/products/shop/shelly-plus-plug-s) that I would put between Drew (the dryer is called Drew) and the wall.
 - The plug would transmit power readings to my [Home Assistant](https://www.home-assistant.io/) setup.
 - I would do _something_ to detect when the power reading goes down from some high number to some very low number (I'm assuming it never goes to 0 since the little LED panel needs power).
@@ -88,7 +88,7 @@ action:
 mode: single
 ```
 
-> **Side Note**: The `notify.mobile_app_sharpie` and `notify.mobile_app_buttercups_android` are the entities exposed by the Home Assistant iOS and Android apps on my phone and my girlfriend's phone respectively. The `media_player.thuis` is the entity exposed by my Google Nest speaker group. Not being simply content to send a notification to my phone, I also wanted to play a sound on my Google Nest speaker group. The sound is a simple mp3 file that I host on a static host.
+`notify.mobile_app_sharpie` and `notify.mobile_app_buttercups_android` are the entities exposed by the Home Assistant iOS and Android apps on my phone and my girlfriend's phone respectively. `media_player.thuis` is the entity exposed by my Google Nest speaker group. Not being simply content to send a notification to my phone, I also wanted to play a sound on my Google Nest speaker group. The sound is a mp3 file that I host on a static host.
 
 `sensor.sheila_power` is the sensor entity exposed by my smart plug and what lets me monitor the power draw of the dryer. `sensor.sheila_power_5_minutes_ago` is a sensor that I created using the [SQL Integration](https://www.home-assistant.io/integrations/sql). I created a custom sensor to get the power draw 5 minutes ago.
 
@@ -115,7 +115,7 @@ So I decided to expose my Home Assistant server to the internet.
 
 My first attempt was using Let's Encrypt and DuckDNS, following a guide (or three) similar to [this](https://www.makeuseof.com/access-home-assistant-server-remotely-duckdns-letsencrypt/). I won't go into all the details, but I will say that it was a _pain_. Ultimately, after struggling for several days, I gave up. I gave up and decided to go back to my girlfriend, head bowed, and give her the bad news.
 
-But then I stumbled upon [Tailscale Funnels](https://tailscale.com/kb/1223/funnel). Since I was using Tailscale anyway, with a single additional invocation, I can have a secure, encrypted, tunnel to my Home Assistant server. 
+But then I stumbled upon [Tailscale Funnels](https://tailscale.com/kb/1223/funnel). Since I was using Tailscale anyway, with a single additional invocation, I could have a secure, encrypted, tunnel to my Home Assistant server. 
 ```sh
 ➜  ~ tailscale funnel --https=8443 --bg 8123
 ```

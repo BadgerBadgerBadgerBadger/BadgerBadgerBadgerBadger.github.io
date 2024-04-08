@@ -14,7 +14,7 @@ googleAnalytics = "UA-66106064-2"
     description = "A place for my thoughts."
 
     imageInArticlePreview = true
-    fitImageInArticlePreview = true
+    fitImageInArticlePreview = false
     bigArticleTitle = false
     paperCards = true
 
@@ -23,7 +23,7 @@ googleAnalytics = "UA-66106064-2"
     showRss = false
     enableRelatedArticles = true
 
-commento = "https://commento.badgerbadgerbadgerbadger.dev/js/commento.js"
+    commento = "https://commento.badgerbadgerbadgerbadger.dev/js/commento.js"
 
 [menu]
     [[menu.main]]
