@@ -2,7 +2,7 @@
 layout: post
 title: Is it Dry Yet?
 excerpt: "The one where I talk about my dirty laundry."
-image: https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/61210f38-0a3a-40cd-854e-d38d7f6e685e
+image: https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/7b71e898-f7bc-4d72-91e6-27fd20a74a88
 modified: 2024-04-08T00:00:00+01:00
 categories: [misc]
 tags: [home-automation, home-assistant, smart-plugs]
