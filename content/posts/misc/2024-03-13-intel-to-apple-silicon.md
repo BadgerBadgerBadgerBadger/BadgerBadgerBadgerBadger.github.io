@@ -4,7 +4,7 @@ title: Short Tale of Intel -> Apple Silicon Migration
 excerpt: A few notes about my experience getting my hands on an Apple Silicon Mac and migrating my stuff from my old Intel Mac.
 modified: 2024-03-13T00:00:00+01:00
 categories: [misc]
-image: https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/f3db49bf-8d00-4cf0-bc57-c1e179d6b2a4
+image: https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/0fd8a03e-97ac-4afd-8dbb-d93f233945c8
 tags: [apple, shell-scripting]
 comments: true
 share: true
