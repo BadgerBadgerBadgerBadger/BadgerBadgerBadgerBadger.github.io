@@ -3,12 +3,13 @@ layout: post
 title: Alerting on Process Completion
 excerpt: "A story of me figuring out how to alert myself when a long-running process has completed."
 modified: 2024-04-04T00:00:00-00:00
-image: https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/a441e00b-7376-4b82-9391-57e429287cdc
+image: https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/6ce2cd86-7228-4180-bbb6-36ab539bd69a
 categories: [automation]
 tags: [webhooks, home-assistant, shell-scripting]
 comments: true
 share: true
 ---
+
 
 Most of my technical endeavours have something to do with enabling me to work as little as possible for as much reward as possible. And yet, paradoxically, in a pursuit of doing less I often end up doing more. I have this idea that in the long term this will eventually lead me to doing _much_ less. I'm not sure if that's true, but it's a nice thought and keeps me going. Plus, I learn a lot of fun things along the way.
 
