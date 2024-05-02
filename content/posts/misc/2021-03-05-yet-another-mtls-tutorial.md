@@ -4,6 +4,7 @@ title: Yet Another mTLS Tutorial
 excerpt: "Is the internet full of mTLS tutorials? I'm not sure. Anyway, here's another one."
 modified: 2021-03-04T21:19:25-04:00
 categories: misc
+image: https://github.com/BadgerBadgerBadgerBadger/BadgerBadgerBadgerBadger.github.io/assets/5138570/47cdf97b-50ae-4ee3-8a47-aa5c2094a118
 tags: [tls, ssl, mtls]
 comments: true
 share: true
