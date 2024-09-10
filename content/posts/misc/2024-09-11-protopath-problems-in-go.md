@@ -2,7 +2,7 @@
 layout: post
 title: Protopath Problems in Go
 excerpt: "The one where I discuss a niche error that troubled me for months."
-image: 
+image: https://github.com/user-attachments/assets/5a8d3279-ada4-4c2c-8714-e8832b4544fe
 modified: 2024-09-11T00:00:00+01:00
 categories: [misc]
 tags: [grpc, golang, protobuf]
