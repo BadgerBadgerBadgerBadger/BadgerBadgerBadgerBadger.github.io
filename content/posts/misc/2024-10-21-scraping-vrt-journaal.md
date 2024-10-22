@@ -1,15 +1,15 @@
-My girlfriend works in the field of language and education research and sometimes makes lessons for the online Dutch language learning platform [Nedbox](https://www.nedbox.be/). The lessons are often based around real world events and having a way to gather interesting real world events is invaluable. She asked me for help listing news events from the show [VRT NWS journaal](https://www.vrt.be/vrtmax/a-z/vrt-nws-journaal) on [VRT Max](https://www.vrt.be/vrtmax/).
+My girlfriend works in the field of language and education research and sometimes makes lessons for the online Dutch language learning platform [Nedbox](https://www.nedbox.be/). The lessons are often based around real world events and having a way to _gather interesting real world events is invaluable. She asked me for help listing news events from the show [VRT NWS journaal](https://www.vrt.be/vrtmax/a-z/vrt-nws-journaal) on [VRT Max](https://www.vrt.be/vrtmax/).
 
 Their page looks like this.
-![[vrt-news-journaal-landing.png]]
+![image](https://github.com/user-attachments/assets/9e969878-fa0c-4748-ae1e-97703f0c0bfe)
 
-Each day there are two episodes, one for the 1 pm news and another for the 7 pm news. Clicking through, we can see that each episode has chapters within it with timestamps and titles. It's a list of these titles with links to that section (for quick viewing) that my girlfriend was interested in gathering, without having to click on each episode, each day, every day.
+Each day there are two episodes, one for the 13h news and another for the 19h news. Clicking through, we can see that each episode has chapters within it with timestamps and titles. It's a list of these titles with links to that chapter (for quick viewing) that my girlfriend was interested in gathering, without having to manually click on each episode, each day, every day.
 
-![[vrt-news-journaal-episode-page.png]]
+![vrt-news-journaal-episode-page](https://github.com/user-attachments/assets/d5fe96b9-dadf-42ed-8784-0089f95ea96c)
 
 I started off by exploring the html source of the landing page to find content already present. There's no need for complicated scraping if I can just grab the relevant html section, perhaps something between `<ul>` or `<ol>` tags.
 
-No such luck. The initial document loaded for the page is pretty barebones.
+No such luck. The initial document that loads is pretty barebones.
 
 ```html
 <!DOCTYPE html>
@@ -28,21 +28,20 @@ No such luck. The initial document loaded for the page is pretty barebones.
 </html>
 ```
 
-I have elided much from the head but the body is as you see it: extremely barebones. It looks all the actual content is loaded via Javascript. Not the best design, if you ask me. I'm not sure there is enough interactivity on a page like this to justify denying non-Javascript enabled users access to the content.
+I have elided much from the head but the body is as you see it: sparse. It looks as if all the actual content is loaded via Javascript. Not the best design, if you ask me. I'm not sure there is enough interactivity on a page like this to justify denying non-Javascript enabled users access to the page.
 
-Okay, so we can't do anything without running Javascrip. So let's do something to run Javascript.
+Okay, so we can't do anything without running Javascript. So let's do something to run Javascript.
 
-I originally wanted to program this in Go since that is my daily driver. But after exploring libraries, I couldn't find anything that beats [puppeteer](https://github.com/puppeteer/puppeteer) for the sheer number of features available, not to mention ease of use.
+I originally wanted to program this in Go since that is my daily driver. But after exploring libraries, I couldn't find anything that beats [puppeteer](https://github.com/puppeteer/puppeteer) for the sheer number of features available, not to mention ease of use, wealth of documentation, and example projects.
 
-I inspected the page after all the Javascript had run and found my content.
-![[vrt-news-journaal-episode-page-html.png]]
+ I started off by inspecting the page after all the Javascript had run and found my content.
+![vrt-news-journaal-episode-page-html](https://github.com/user-attachments/assets/b3263ca6-8831-4dda-b424-d72e92eda37e)
 
 After playing around a bit I decided on this CSS selector: `#main ul`. Short and gets the job done. Time to extract the list.
 ```javascript
 async function extractEpisodeList(url) {
 
 	try {
-	
 		// Launch the browser
 		const browser = await puppeteer.launch();
 		
@@ -88,11 +87,10 @@ async function extractEpisodeList(url) {
 	} catch (error) {
 		throw error;
 	}
-
 }
 ```
 
-The code should be pretty self-explanatory. I had to fiddle a bit to find the right query selectors to extract the link and title after I got the list. It's important we use [`waitUntil`](https://pptr.dev/api/puppeteer.waitforoptions) when loading the page to ensure most network activity is complete. [`networkidle0`](https://pptr.dev/api/puppeteer.puppeteerlifecycleevent) waits for at least 500 ms of no network connections.
+The code should be pretty self-explanatory. I had to fiddle a bit to find the right query selectors to extract the link and title after I got the list. It's important we use [`waitUntil`](https://pptr.dev/api/puppeteer.waitforoptions) when loading the page to ensure _most_ network activity is complete. [`networkidle0`](https://pptr.dev/api/puppeteer.puppeteerlifecycleevent) waits for at least 500 ms of no new network connections.
 
 The end result is a list of episodes.
 ```json
@@ -104,11 +102,11 @@ The end result is a list of episodes.
 ]
 ```
 
-> If you spend some time on that page you'll notice the episode list is a sort of carousel within which new episodes get loaded as you scroll horizontally. By default only 13 episodes or so are listed. But this is fine for us since we will check this page every day and we only care about the new episodes since the last time we checked.
+> If you spend some time on that page you'll notice the episode list is a sort of carousel within which new episodes get loaded as you scroll horizontally to the right. By default only 13 episodes or so are listed. But this is fine for us since we will check this page every day and we only care about new episodes.
 
 Before we start grabbing the chapters for each episode, let's talk about a very small optimization. We _could_ scrape the entire list of episodes every day, but given that we have only 2 new episodes each day, we could be re-scraping 11 episodes we have already scraped, every single day. Let's perform a very small optimization step.
 
-We will maintain a list of episodes we have already processed, and each day process only new episodes. This is achieved by this function (which itself calls the function to grab the episode list).
+We will maintain a list of episodes we have already processed, and each day process only new episodes. This is achieved by this function (which itself calls the function above to grab the episode list).
 
 ```javascript
 async function updateEpisodeList() {
@@ -175,17 +173,17 @@ async function updateEpisodeList() {
 }
 ```
 
-Once again, most of the code should be self-explanatory. We read our existing episodes list from a file, compare against the scraped list and generate lists of new episodes (and some extra but those aren't relevant).
+Once again, most of the code should be self-explanatory. We read our existing episodes list from a file, compare against the scraped list and generate lists of new episodes (and some extra stuff but those aren't relevant).
 
-Armed with new episodes to scrape, we need to figure how to extract the chapters of the episodes, mainly their title and the timestamp at which they occur. And if we can generate a link that will take you to the exact part of the video, even better.
+Armed with new episodes to scrape, we need to figure how to extract the chapters of the episodes, mainly their title and the timestamp at which they start. And if we can generate a link that will take you to the exact part of the video, even better.
 
 For this I started inspecting the episode page itself. As with the main page, the episode page is sparse and uses JS to load everything, but looking at the XHR calls, I noticed something.
 
-![[vrt-nws-journaal-graphql.png]]
+![vrt-nws-journaal-graphql](https://github.com/user-attachments/assets/a7b42447-d434-4dcd-8d12-146f8fdd7f8a)
 
 Is that a Graphql endpoint mine eyes spy?! I definitely know how to use one of those.
 
-This made the whole process much easier. It inspected the returned object, found the part with the episode chapters and the timstamps and bundled them up in a message I could send to a Slack channel. I won't show that code here as it's fairly mundane.
+This made the whole process much simpler. I inspected the Graphql response, found the part with the episode chapters and the timstamps and bundled them up in a message I could send to a Slack channel. I won't show that code here as it's fairly mundane.
 
 > Afterwards I had the thought that perhaps the main page also loaded its episode list via a Graphql call and I did not need to scrape anything. But I already had so no point thinking about it further.
 
@@ -246,10 +244,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-There is some stuff in there about loading NodeJS, cacheing dependencies and whatnot, but the meat of the code is in Steps 5 and 6 where we run our scraping and then committing them back to the repository.
+There is some stuff in there about loading NodeJS, cacheing dependencies and whatnot, but the meat of the code is in Steps 5 and 6 where we run our scraping and then commit the results back to the repository.
 
 And with that I had a tool that would let me know every day about the episodes of the VRT NWS Journaal.
 
-![[vrt-nws-journaal-slack-message.png]]
+![vrt-nws-journaal-slack-message](https://github.com/user-attachments/assets/90a280d1-6eb9-4ab6-9d6d-23167fcf8250)
 
 Hope you enjoyed the read.
