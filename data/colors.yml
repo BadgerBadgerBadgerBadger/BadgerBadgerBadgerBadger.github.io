@@ -1,22 +1,24 @@
-default: dark  # light
-auto_switch: false  # set to true to respect the user preference
+default: dark  # default theme set to dark
+auto_switch: false  # stay in dark mode, no auto switch
+
 dark:
-  bg: '#1a2f37'  # main site background
-  hl_bg: '#2a9d8f'  # card and circle navigation background color for paper card mode
-  fg: 'white'  # font color
-  dim_fg: '#e9c46a'  # will be used for secondary information like dates and tags
-  stroke: '#f4a261'  # stroke/border color used mostly in the icon menu tooltip
-  accent: '#cae319'  # pervasive accent color
+  bg: '#0d0c1d'  # deep dark blue/purple, main site background
+  hl_bg: '#1a1f33'  # dark navy for card and circle navigation background
+  fg: '#d0e6f6'  # light cyan font color for a neon glow effect
+  dim_fg: '#7e57c2'  # dimmed neon purple for secondary info like dates and tags
+  stroke: '#08fdd8'  # bright neon aqua stroke/border color, cyberpunk signature
+  accent: '#ff007f'  # neon pink as the pervasive accent color
   sidebar:
-    bg: '#34363b'  # sidebar background
-    fg: 'white'  # sidebar font color
+    bg: '#1e0631'  # very dark purple for sidebar background
+    fg: '#e2e2e3'  # almost white for sidebar font color
+
 light:
-  bg: '#f5f5f5'
-  hl_bg: '#e6e6e6'
-  fg: '#262625'
-  dim_fg: '#40403e'
-  stroke: '#575754'
-  accent: '#db5793'
+  bg: '#f7f7fa'  # lighter version with a futuristic glow
+  hl_bg: '#d8dbe7'  # soft light purple for card and circle navigation background
+  fg: '#1c1b29'  # dark charcoal for font color
+  dim_fg: '#a47da0'  # muted purple for secondary information
+  stroke: '#8afff7'  # soft aqua for stroke/border color
+  accent: '#ff77aa'  # softer neon pink for accents
   sidebar:
-    bg: '#e6e6e6'
-    fg: '#121211'
+    bg: '#f1e8f5'  # very light purple for the sidebar background
+    fg: '#2e2937'  # dark grayish for sidebar font color
