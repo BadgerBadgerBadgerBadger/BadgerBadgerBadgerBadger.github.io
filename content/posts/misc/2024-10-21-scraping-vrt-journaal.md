@@ -1,3 +1,15 @@
+---
+layout: post
+title: Scraping VRT News Journaal with Puppeteer and Github Actions
+excerpt: "The one where I remember a trick I learned in a tech talk and help out my girlfriend."
+image: https://github.com/user-attachments/assets/11722f4d-01c2-4db0-bed2-e7a3a336c10a
+modified: 2024-10-21T00:00:00+01:00
+categories: [misc]
+tags: [automation, puppeteer, github-actions, web-scraping]
+comments: true
+share: true
+---
+
 My girlfriend works in the field of language and education research and sometimes makes lessons for the online Dutch language learning platform [Nedbox](https://www.nedbox.be/). The lessons are often based around real world events and having a way to _gather interesting real world events is invaluable. She asked me for help listing news events from the show [VRT NWS journaal](https://www.vrt.be/vrtmax/a-z/vrt-nws-journaal) on [VRT Max](https://www.vrt.be/vrtmax/).
 
 Their page looks like this.
