@@ -1,7 +1,7 @@
 default: light  # default theme set to light
 auto_switch: false  # stay in light mode, no auto switch
 
-dark:  # Keeping the dark theme for completeness, but not used by default
+dark:  # Keeping the dark theme for completeness
   bg: '#1e1e1e'  # standard dark gray for background
   hl_bg: '#2b2b2b'  # slightly lighter dark gray
   fg: '#ffffff'  # white for font color
@@ -13,12 +13,12 @@ dark:  # Keeping the dark theme for completeness, but not used by default
     fg: '#e6e6e6'  # light gray for sidebar font color
 
 light:
-  bg: '#ffffff'  # pure white for the main site background
-  hl_bg: '#fff8e1'  # soft gold/cream for card and navigation background
-  fg: '#000000'  # black for the font color
-  dim_fg: '#b89f7a'  # muted gold for secondary information
-  stroke: '#ffd700'  # bright gold for strokes and borders
-  accent: '#ffbf00'  # warm gold for accent color
+  bg: '#f9f6f0'  # soft off-white with a hint of warmth for main site background
+  hl_bg: '#f4ebdb'  # very light cream for card and navigation background
+  fg: '#333333'  # dark charcoal for the font color to reduce glare
+  dim_fg: '#bfa680'  # muted gold for secondary information
+  stroke: '#d4af37'  # rich gold for strokes and borders
+  accent: '#f1c232'  # warm gold for accent color
   sidebar:
-    bg: '#fff4cc'  # light gold/cream for sidebar background
-    fg: '#000000'  # black for sidebar font color
+    bg: '#f7efe1'  # soft cream for the sidebar background
+    fg: '#4a4a4a'  # dark gray for sidebar font color
