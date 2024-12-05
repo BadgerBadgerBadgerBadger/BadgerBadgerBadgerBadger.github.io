@@ -1,5 +1,5 @@
 default: light  # default theme set to light
-auto_switch: false  # stay in light mode, no auto switch
+auto_switch: true
 
 dark:  # Keeping the dark theme for completeness
   bg: '#1e1e1e'  # standard dark gray for background
@@ -18,7 +18,7 @@ light:
   fg: '#333333'  # dark charcoal for the font color to reduce glare
   dim_fg: '#bfa680'  # muted gold for secondary information
   stroke: '#d4af37'  # rich gold for strokes and borders
-  accent: '#f1c232'  # warm gold for accent color
+  accent: '#c19a34'  # warm gold for accent color
   sidebar:
     bg: '#f7efe1'  # soft cream for the sidebar background
     fg: '#4a4a4a'  # dark gray for sidebar font color
