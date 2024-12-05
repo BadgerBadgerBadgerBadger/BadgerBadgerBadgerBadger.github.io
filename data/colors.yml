@@ -1,24 +1,24 @@
-default: dark  # default theme set to dark
-auto_switch: false  # stay in dark mode, no auto switch
+default: light  # default theme set to light
+auto_switch: true
 
-dark:
-  bg: '#0d0c1d'  # deep dark blue/purple, main site background
-  hl_bg: '#1a1f33'  # dark navy for card and circle navigation background
-  fg: '#d0e6f6'  # light cyan font color for a neon glow effect
-  dim_fg: '#7e57c2'  # dimmed neon purple for secondary info like dates and tags
-  stroke: '#08fdd8'  # bright neon aqua stroke/border color, cyberpunk signature
-  accent: '#ff007f'  # neon pink as the pervasive accent color
+dark:  # Keeping the dark theme for completeness
+  bg: '#1e1e1e'  # standard dark gray for background
+  hl_bg: '#2b2b2b'  # slightly lighter dark gray
+  fg: '#ffffff'  # white for font color
+  dim_fg: '#a0a0a0'  # muted gray for secondary info
+  stroke: '#ffdd00'  # gold stroke/border for a luxurious contrast
+  accent: '#ffcc00'  # bright gold for accents
   sidebar:
-    bg: '#1e0631'  # very dark purple for sidebar background
-    fg: '#e2e2e3'  # almost white for sidebar font color
+    bg: '#252525'  # dark gray for sidebar
+    fg: '#e6e6e6'  # light gray for sidebar font color
 
 light:
-  bg: '#f7f7fa'  # lighter version with a futuristic glow
-  hl_bg: '#d8dbe7'  # soft light purple for card and circle navigation background
-  fg: '#1c1b29'  # dark charcoal for font color
-  dim_fg: '#a47da0'  # muted purple for secondary information
-  stroke: '#8afff7'  # soft aqua for stroke/border color
-  accent: '#ff77aa'  # softer neon pink for accents
+  bg: '#f9f6f0'  # soft off-white with a hint of warmth for main site background
+  hl_bg: '#f4ebdb'  # very light cream for card and navigation background
+  fg: '#333333'  # dark charcoal for the font color to reduce glare
+  dim_fg: '#bfa680'  # muted gold for secondary information
+  stroke: '#d4af37'  # rich gold for strokes and borders
+  accent: '#c19a34'  # warm gold for accent color
   sidebar:
-    bg: '#f1e8f5'  # very light purple for the sidebar background
-    fg: '#2e2937'  # dark grayish for sidebar font color
+    bg: '#f7efe1'  # soft cream for the sidebar background
+    fg: '#4a4a4a'  # dark gray for sidebar font color
