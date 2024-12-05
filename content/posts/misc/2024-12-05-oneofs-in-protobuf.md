@@ -4,6 +4,7 @@ title: Exploring How Protobuf OneOfs Are Represented
 excerpt: "The one where my work doesn't get into production but I do learn something from it."
 modified: 2024-12-05T00:00:00+01:00
 categories: [misc]
+image: ![DALL·E 2024-12-05 10 55 23 - A sleek, modern cover image for a blog titled 'This is a short exploration of how Protobuf3 OneOf fields are represented using Golang as our explorati](https://github.com/user-attachments/assets/0f6d39aa-3af9-4691-8e6c-f17b8a84ac00)
 tags: [protobug, golang]
 comments: true
 share: true
