@@ -319,4 +319,6 @@ if requestAppID != s.config.AlexaSkillID {
 
 And with that...
 
+{{<rawhtml>}}
 <audio controls preload="auto"><source src="https://all-i-see-is-static.netlify.app/audio/babys-last-nap.mp4"></audio>
+{{</rawhtml>}}
