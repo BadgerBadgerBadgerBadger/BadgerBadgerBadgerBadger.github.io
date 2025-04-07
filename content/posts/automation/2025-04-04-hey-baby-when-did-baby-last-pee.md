@@ -1,3 +1,14 @@
+---
+layout: post
+title: Alexa, when did baby last pee?
+excerpt: "My laziness knows no bounds."
+modified: 2025-04-04T00:00:00-00:00
+image: https://github.com/user-attachments/assets/ea47af13-87d1-4a57-98ce-4cf3deb640e1
+categories: [automation]
+tags: [alexa, overengineering]
+comments: true
+share: true
+---
 
 People have complicated feelings about AI Coding assistants. I won't wade into that debate. For me, personally, while I enjoy learning about and playing with software, I also enjoy achieving end-goals. For this particular project, [Claude](https://claude.ai/) has been a boon. The reality of being the father to a nearly one-year old is that I no longer get a lot of time for my hobbies. But with Claude, I was able to do in days what might have taken me weeks.
 
