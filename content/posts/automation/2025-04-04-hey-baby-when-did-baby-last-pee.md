@@ -1,36 +1,24 @@
----
-layout: post
-title: Alexa, when did baby last pee?
-excerpt: "My laziness knows no bounds."
-modified: 2025-04-04T00:00:00-00:00
-image: https://github.com/user-attachments/assets/ea47af13-87d1-4a57-98ce-4cf3deb640e1
-categories: [automation]
-tags: [alexa, overengineering]
-comments: true
-share: true
----
 
-People have complicated feelings about AI Coding assistants. I won't wade into that debate. For, personally, while I enjoy learning about and playing with software, I also enjoy achieving end-goals. For this particular project, [Claude](https://claude.ai/) has been a boon. The reality of being a father to a nearly one-year old is that I don't get a lot of time for my hobbies, anymore. But with Claude, I was able to do in days what might have taken me weeks.
+People have complicated feelings about AI Coding assistants. I won't wade into that debate. For me, personally, while I enjoy learning about and playing with software, I also enjoy achieving end-goals. For this particular project, [Claude](https://claude.ai/) has been a boon. The reality of being the father to a nearly one-year old is that I no longer get a lot of time for my hobbies. But with Claude, I was able to do in days what might have taken me weeks.
 
-As I mentioned it's been about a year since we had our baby boy. When we first found out we were having him, we were overjoyed. The terrifying reality of parenthood did not set in until I held my child in my arms for the first time.
+When we first found out we were having our baby boy, I was overjoyed. The terrifying reality of parenthood did not set in until I held my child in my arms for the first time.
 
-Those first few days were the hardest. The first few weeks were all but a blur, and the first few months had us sleep deprived and somewhat cranky. All normal things, I am told by many a parent around me.
+Those first few days were the hardest. The first few weeks were all but a blur, and the first few months had us sleep deprived and somewhat cranky. All normal things, I am told by many a parent.
 
 It was not until recently that I have become comfortable enough looking after my child and family that I am able to let my brain wander into its more hobbyish moods. And when it did, it decided to start solving some real world problems, though I leave it up to you to decide if the returns are worth the trouble.
 
 We have been using one of the many baby tracking apps on the market to keep track of when we feed our baby, when he sleeps, how often he poops, and other beautiful bodily functions. It's a simple app in its engineering, but exquisite in its interface and UX.
 
-It maintains a "baby" as an entity for which it records various activities: food, bottle, sleep, etc. Some activities like "bottle" or "diaper" which are points in time have a time field for when they occurred. Activities like "sleep" have a start and end time. Activities can also have groups (such as "fruit" or "vegetables" for the "food" activity), and all activities can have a "notes" field. I and my partner's user accounts are added to the baby as "caregivers." When we update an activity on our phones, it syncs to both devices and the tracks who added the record.
+It maintains a "baby" as an entity for which it records various activities: food, bottle, sleep, etc. Some activities like "bottle" or "diaper" which are points in time have a time field for when they occurred. Activities like "sleep" have a start and end time. Activities can also have groups (such as "fruit" or "vegetables" for the "food" activity), and all activities can have a "notes" field. I and my partner's user accounts are added to the baby as "caregivers." When we update an activity on our phones, it syncs to both devices with detaials on who added the record.
 
 It's a system that has worked well for us and one we've used for months now. Recently, I wanted it to work even better (or I got lazier?).
 
-We have Google nest devices scattered across the house. We use them to play music, play white noise for when baby sleeps, control smart lights, learn about the weather, all the usual smart home stuff. So I asked myself: wouldn't it be nice if it could answer questions like "when did baby last have a bottle?", "how long was baby's last nap?", "how much did baby drink last week?".
+We have Google nest devices scattered around the house. We use them to play music, play white noise for when baby sleeps, control smart lights, learn about the weather, all the usual smart home stuff. So I asked myself: wouldn't it be nice if it could answer questions like "when did baby last have a bottle?", "how long was baby's last nap?", "how much did baby drink last week?".
 
 And thus started my journey.
-
 # Syncamajiggy
 
-Since the baby tracking app did not have an API I could access, step one was to figure out how to sync that data to a server I controlled. I don't have any mobile dev experience, but with Claude's help I figured out how to get a rooted emulator running on my Mac.
+Since the baby tracking app did not have an API I could access, step one was to figure out how to sync that data to a server I controlled. I don't have any mobile dev experience, but with Claude's help I figured out how to get a rooted Android emulator running on my Mac.
 
 ```sh
 ➜  ~ sdkmanager "system-images;android-30;google_apis;arm64-v8a"
@@ -321,4 +309,3 @@ if requestAppID != s.config.AlexaSkillID {
 And with that...
 
 <audio controls preload="auto"><source src="https://all-i-see-is-static.netlify.app/audio/babys-last-nap.mp4"></audio>
-
