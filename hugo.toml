@@ -18,7 +18,15 @@ googleAnalytics = "UA-66106064-2"
     bigArticleTitle = false
     paperCards = true
 
-    mainFontSizeMultiplier = 0.9
+    # Font configuration for our design system
+    fontFamily = "Inter"
+    titleFontFamily = "Inter"
+    monospaceFontFamily = "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace"
+    
+    # Typography scaling
+    mainFontSizeMultiplier = 1.0
+    titleFontSizeMultiplier = 1.0
+    monoFontSizeMultiplier = 0.9
 
     showRss = false
     enableRelatedArticles = true

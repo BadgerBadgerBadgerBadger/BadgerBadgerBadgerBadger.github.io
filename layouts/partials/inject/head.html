@@ -1,0 +1,9 @@
+{{/* Preload Inter font for better performance */}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;900&display=swap"></noscript>
+
+{{/* Include our custom design system and theme integration CSS */}}
+{{ $themeIntegration := resources.Get "/css/theme-integration.scss" | resources.ToCSS (dict "targetPath" "css/theme-integration.css" "outputStyle" "compressed" "enableSourceMap" "true") | resources.Fingerprint "sha512" }}
+<link type="text/css" rel="stylesheet" href="{{ $themeIntegration.Permalink }}" integrity="{{ $themeIntegration.Data.Integrity }}" />

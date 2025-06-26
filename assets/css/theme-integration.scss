@@ -1,0 +1,516 @@
+/*
+ * Theme Integration for Design System
+ * Overrides and extends the Ficurinia theme with our design system
+ */
+
+/* Import our design system */
+@import "design-system";
+
+/* ========== Theme-specific Overrides ========== */
+
+/* Override theme's font families */
+body, html {
+  font-family: var(--font-primary) !important;
+  font-weight: var(--font-weight-light) !important;
+  letter-spacing: var(--letter-spacing-tight) !important;
+  line-height: var(--line-height-normal) !important;
+}
+
+/* Override heading styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-primary) !important;
+  font-weight: var(--font-weight-medium) !important;
+  letter-spacing: var(--letter-spacing-tight) !important;
+}
+
+/* Override code font */
+code, pre, kbd, samp, .mono {
+  font-family: var(--font-mono) !important;
+}
+
+/* ========== Component-specific Styles ========== */
+
+/* Header styling */
+header {
+  background-color: var(--color-bg-dark);
+  border-bottom: 1px solid var(--color-border);
+  
+  h1 {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-medium);
+    
+    a {
+      color: var(--color-text-primary);
+      border-bottom: none;
+      
+      &:hover {
+        color: var(--color-primary);
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+/* Navigation styling */
+nav:not(#TableOfContents) {
+  ul {
+    li {
+      a {
+        font-family: var(--font-primary);
+        font-weight: var(--font-weight-light);
+        color: var(--color-text-secondary);
+        transition: color var(--transition-fast);
+        
+        &:hover, &:focus {
+          color: var(--color-primary);
+        }
+      }
+    }
+  }
+}
+
+/* Article cards */
+.card, .postlistitem.card {
+  background-color: var(--color-bg-light);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  transition: all var(--transition-fast);
+  
+  &:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  h2, h3 {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+  }
+  
+  p {
+    color: var(--color-text-secondary);
+  }
+}
+
+/* Article content */
+article {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-light);
+  line-height: var(--line-height-normal);
+  letter-spacing: var(--letter-spacing-tight);
+  
+  h1 {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-6);
+  }
+  
+  h2 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    margin: var(--space-8) 0 var(--space-4) 0;
+  }
+  
+  h3 {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    margin: var(--space-6) 0 var(--space-3) 0;
+  }
+  
+  p {
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+  }
+  
+  /* Code blocks */
+  pre {
+    background-color: var(--color-bg-lighter);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    margin: var(--space-6) 0;
+    overflow-x: auto;
+    
+    code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: var(--font-mono);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-primary);
+    }
+  }
+  
+  /* Inline code */
+  code {
+    background-color: var(--color-bg-lighter);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    color: var(--color-primary);
+  }
+  
+  /* Blockquotes */
+  blockquote {
+    margin: var(--space-6) 0;
+    padding: var(--space-4) 0 var(--space-4) var(--space-6);
+    border-left: 4px solid var(--color-primary);
+    background-color: var(--color-bg-light);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    
+    p {
+      color: var(--color-text-secondary);
+      font-style: italic;
+      margin-bottom: 0;
+    }
+  }
+  
+  /* Lists */
+  ul, ol {
+    margin: var(--space-4) 0;
+    padding-left: var(--space-6);
+    
+    li {
+      margin: var(--space-2) 0;
+      color: var(--color-text-primary);
+    }
+  }
+  
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-6) 0;
+    background-color: var(--color-bg-light);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    
+    th {
+      background-color: var(--color-bg-lighter);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-primary);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 2px solid var(--color-border);
+    }
+    
+    td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-primary);
+    }
+    
+    tr:hover {
+      background-color: var(--color-hover);
+    }
+  }
+}
+
+/* Links */
+a {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--transition-fast);
+  
+  &:hover, &:focus {
+    border-bottom-color: var(--color-primary);
+  }
+}
+
+/* Accent links */
+a.accent, .accent a {
+  color: var(--color-primary);
+  
+  &:hover, &:focus {
+    opacity: 0.8;
+  }
+}
+
+/* Date styling */
+.date, .date a {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-light);
+}
+
+/* Tag styling */
+.articleTagsContainer {
+  margin: var(--space-4) 0;
+  
+  .buttonTag {
+    background-color: var(--color-bg-lighter);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-light);
+    margin: var(--space-1);
+    transition: all var(--transition-fast);
+    
+    &:hover, &:focus {
+      background-color: var(--color-primary);
+      color: var(--color-bg-dark);
+      border-color: var(--color-primary);
+    }
+  }
+}
+
+/* Search bar */
+.search {
+  #searchbar {
+    background-color: var(--color-bg-lighter);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+    transition: border-color var(--transition-fast);
+    
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+    
+    &::placeholder {
+      color: var(--color-text-secondary);
+    }
+  }
+}
+
+/* Footer */
+footer {
+  background-color: var(--color-bg-light);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-8) 0;
+  margin-top: var(--space-12);
+  color: var(--color-text-secondary);
+  
+  a {
+    color: var(--color-text-secondary);
+    
+    &:hover, &:focus {
+      color: var(--color-primary);
+    }
+  }
+}
+
+/* ========== Responsive Overrides ========== */
+@media (max-width: 768px) {
+  article {
+    h1 {
+      font-size: var(--font-size-xl);
+    }
+    
+    h2 {
+      font-size: var(--font-size-lg);
+    }
+    
+    pre {
+      padding: var(--space-4);
+      font-size: 0.8rem;
+    }
+  }
+  
+  .card {
+    padding: var(--space-4);
+  }
+}
+
+/* ========== Dark Theme Enhancements ========== */
+@media (prefers-color-scheme: dark) {
+  /* Ensure our dark theme is applied */
+  :root {
+    color-scheme: dark;
+  }
+  
+  /* Enhanced contrast for better readability */
+  img {
+    opacity: 0.9;
+    transition: opacity var(--transition-fast);
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+  
+  /* Selection styling */
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-bg-dark);
+  }
+  
+  ::-moz-selection {
+    background-color: var(--color-primary);
+    color: var(--color-bg-dark);
+  }
+}
+
+/* ========== Print Styles ========== */
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  a, a:visited {
+    text-decoration: underline;
+    color: black !important;
+  }
+  
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+  
+  pre, blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    color: black !important;
+  }
+}
+
+/* ========== Accessibility Enhancements ========== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus styles */
+*:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: #666666;
+    --color-text-secondary: #cccccc;
+  }
+  
+  .card {
+    border-width: 2px;
+  }
+}
+
+/* ========== Missing Nerd Font Icons ========== */
+
+/* Date icon - calendar - catch all variations including empty title and card contexts */
+.date span[title="Date"]::before,
+.date span[title=""]::before,
+.date span:empty::before,
+.postlistitem .date span::before,
+span[title="Date"]::before {
+  content: "\f073" !important;
+  font-family: "Symbols Nerd Font" !important;
+  margin-right: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: 1rem !important;
+  font-weight: normal !important;
+}
+
+/* Tags icon - tags - catch all variations including card contexts */
+.articleTagsContainer span::before,
+.articleTagsContainer span[title="Tags"]::before,
+.postlistitem span[title="Tags"]::before,
+.postlistitem .date span:nth-child(2)::before,
+span[title="Tags"]::before {
+  content: "\f02c" !important;
+  font-family: "Symbols Nerd Font" !important;
+  margin-right: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: 1rem !important;
+  font-weight: normal !important;
+}
+
+/* Continue reading - hide original text and replace with clean arrow icon */
+.articlePreview p:last-child a[href*="/posts/"],
+.postlistitem .articlePreview p:last-child a[href*="/posts/"] {
+  font-size: 0 !important;
+  color: transparent !important;
+}
+
+.articlePreview p:last-child a[href*="/posts/"]::after,
+.postlistitem .articlePreview p:last-child a[href*="/posts/"]::after {
+  content: "Continue reading \f061" !important;
+  font-family: var(--font-primary), "Symbols Nerd Font" !important;
+  font-size: var(--font-size-base) !important;
+  font-weight: var(--font-weight-light) !important;
+  color: var(--color-text-primary) !important;
+  display: inline !important;
+  margin: 0 !important;
+  transition: color var(--transition-fast);
+}
+
+.articlePreview p:last-child a[href*="/posts/"]:hover::after,
+.postlistitem .articlePreview p:last-child a[href*="/posts/"]:hover::after {
+  color: var(--color-primary) !important;
+}
+
+/* Hide the space character in these spans */
+.date span[title="Date"],
+.date span[title=""],
+.date span:empty,
+.postlistitem .date span,
+.articleTagsContainer span,
+.articleTagsContainer span[title="Tags"],
+.postlistitem span[title="Tags"],
+span[title="Date"],
+span[title="Tags"] {
+  font-size: 0 !important; /* Hide the space character */
+  color: transparent !important;
+}
+
+/* Override any other styles that might interfere */
+.date span[title="Date"]::before,
+.date span[title=""]::before,
+.date span:empty::before,
+.postlistitem .date span::before,
+.articleTagsContainer span::before,
+.articleTagsContainer span[title="Tags"]::before,
+.postlistitem span[title="Tags"]::before,
+span[title="Date"]::before,
+span[title="Tags"]::before {
+  display: inline !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* General icon styling for nerd font symbols */
+.nerd, .nerdlink {
+  font-family: "Symbols Nerd Font", var(--font-mono);
+}
+
+/* Ensure the symbols font is properly loaded */
+.nerdlink .pseudofont {
+  fill: currentColor;
+  width: 1em;
+  height: 1em;
+}
+
+/* ========== Theme Toggle Support ========== */
+.theme-toggle {
+  background: none;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: var(--space-2);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  
+  &:hover, &:focus {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+}

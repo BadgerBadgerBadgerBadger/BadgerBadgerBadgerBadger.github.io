@@ -1,24 +1,24 @@
-default: light  # default theme set to light
+default: dark  # default theme set to dark
 auto_switch: true
 
-dark:  # Keeping the dark theme for completeness
-  bg: '#1e1e1e'  # standard dark gray for background
-  hl_bg: '#2b2b2b'  # slightly lighter dark gray
-  fg: '#ffffff'  # white for font color
-  dim_fg: '#a0a0a0'  # muted gray for secondary info
-  stroke: '#ffdd00'  # gold stroke/border for a luxurious contrast
-  accent: '#ffcc00'  # bright gold for accents
+dark:  # Modern dark theme with yellow accents
+  bg: '#171717'      # Main background - dark
+  hl_bg: '#212121'   # Card/section background - light
+  fg: '#fefbec'      # Primary text - off-white
+  dim_fg: '#a1a1aa'  # Secondary text - zinc-400
+  stroke: '#454545'  # Borders - medium gray
+  accent: '#fbbf24'  # Yellow accent color
   sidebar:
-    bg: '#252525'  # dark gray for sidebar
-    fg: '#e6e6e6'  # light gray for sidebar font color
+    bg: '#212121'    # Sidebar background - slightly lighter
+    fg: '#fefbec'    # Sidebar text - off-white
 
-light:
-  bg: '#f9f6f0'  # soft off-white with a hint of warmth for main site background
-  hl_bg: '#f4ebdb'  # very light cream for card and navigation background
-  fg: '#333333'  # dark charcoal for the font color to reduce glare
-  dim_fg: '#bfa680'  # muted gold for secondary information
-  stroke: '#d4af37'  # rich gold for strokes and borders
-  accent: '#c19a34'  # warm gold for accent color
+light:  # Light theme (kept for compatibility)
+  bg: '#fefbec'      # Light background
+  hl_bg: '#f5f5f5'   # Card background
+  fg: '#171717'      # Dark text
+  dim_fg: '#6b7280'  # Secondary text
+  stroke: '#d1d5db'  # Light borders
+  accent: '#f59e0b'  # Amber accent for light theme
   sidebar:
-    bg: '#f7efe1'  # soft cream for the sidebar background
-    fg: '#4a4a4a'  # dark gray for sidebar font color
+    bg: '#f9fafb'    # Light sidebar
+    fg: '#374151'    # Dark sidebar text
